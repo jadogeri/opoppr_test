@@ -3,7 +3,7 @@
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="jakarta.faces.core"
     xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html"
-    xmlns:p="http://primefaces.org/ui" xmlns:o="http://opoppr.svlogic.com/ui"
+    xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:o="http://opoppr.svlogic.com/ui"
     xmlns:c="jakarta.tags.core">
 <f:metadata>
     <f:event type="preRenderView" listener="#{lat5Section4.initConversation}" />
@@ -27,85 +27,24 @@
             <h:form id="form" styleClass="saveForm" prependId="false" style="float: left; width: 100%">
                 <p:growl id="messages" showSummary="true" showDetail="true" autoUpdate="true" sticky="true" />
                 <o:disablePanel disabled="#{userSession.currentFormSubmitted}">
-                    <p:dataTable id="filings" emptyMessage="#{userSession.emptyTableMessage}"
-                        value="#{lat5Section4.filings}" var="f" editable="#{!userSession.currentFormSubmitted}" scrollable="true" scrollHeight="425"
-                        editMode="cell" rowStyleClass="#{f.isValid('13') ? '' : 'error'}">
-                        <!--<p:ajax event="rowEdit" update=":form:messages" />
-                            <p:ajax event="rowEditCancel" update=":form:messages" />-->
-                        <p:ajax event="cellEdit" update=":form:messages" />
-                        <p:column width="350">
-                            <f:facet name="header">
-                                <p:outputLabel for="category">Property Type</p:outputLabel>
-                            </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{f.propertyAssetDescription}" />
-                                </f:facet>
-                                <f:facet name="input">
-                                    <h:selectOneMenu id="category" onchange="setConfirmUnload(true);"
-                                        label="Property Type" style="width: 335px" value="#{f.pptype}">
-                                        <f:selectItem itemValue="" itemLabel="Delete Row" />
-                                        <f:selectItems value="#{lat5Section4.propertyAssets}" var="i"
-                                            itemValue="#{i.pptype}" itemLabel="#{i.assetDescription}" />
-                                        <p:ajax update="item" />
-                                    </h:selectOneMenu>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column width="225">
-                            <f:facet name="header">
-                                <p:outputLabel for="item">Item</p:outputLabel>
-                            </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{f.noaPpLat5Filing.itemDescription}" />
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText id="item" value="#{f.noaPpLat5Filing.itemDescription}" required="false"
-                                        requiredMessage="Item is required if Property Type is unknown." size="27"
-                                        maxlength="50" />
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column width="80">
-                            <f:facet name="header">
-                                <p:outputLabel for="yearOfAcquisition">Year of<br />Acquisition</p:outputLabel>
-                            </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{f.noaPpLat5Filing.yracqd}" />
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText id="yearOfAcquisition" label="Year of Acquisition" size="4"
-                                        maxlength="4" value="#{f.noaPpLat5Filing.yracqd}" required="false">
-                                        <f:convertNumber maxFractionDigits="0" groupingUsed="false" />
-                                        <f:validateLongRange minimum="#{msgs.minYearOfAcquisition}"
-                                            maximum="#{currentYear}" />
-                                    </p:inputText>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column width="100">
-                            <f:facet name="header">
-                                <p:outputLabel for="acquisitionCost">Acquisition<br />Cost</p:outputLabel>
-                            </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{f.noaPpLat5Filing.acquisitionCost}">
-                                        <f:convertNumber type="currency" maxFractionDigits="0" />
-                                    </h:outputText>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText id="acquisitionCost" label="Acquisition Cost" size="10" maxlength="10"
-                                        value="#{f.noaPpLat5Filing.acquisitionCost}" required="false">
-                                        <f:convertNumber maxFractionDigits="0" groupingUsed="false" />
-                                        <f:validateLongRange minimum="0" maximum="9999999999" />
-                                        <p:ajax update="summary" />
-                                    </p:inputText>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                    </p:dataTable>
+                    <pe:sheet id="filings" widgetVar="filingSheet" value="#{lat5Section4.filings}" var="f"
+                        rowKey="#{f.sheetRowKey}" height="425" fixedRows="1" showRowHeaders="true"
+                        resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range"
+                        emptyMessage="#{userSession.emptyTableMessage}" rowStyleClass="#{f.isValid('13') ? '' : 'error'}"
+                        styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
+                        <p:ajax event="change" update=":form:messages :form:summary" />
+                        <pe:sheetcolumn headerText="Property Type" value="#{f.propertyAssetDescription}" colType="dropdown" selectItems="#{lat5Section4.propertyAssetDescriptions}" colWidth="350" />
+                        <pe:sheetcolumn headerText="Item Description" value="#{f.noaPpLat5Filing.itemDescription}" colType="text" colWidth="225" />
+                        <pe:sheetcolumn headerText="Year of Acquisition" value="#{f.noaPpLat5Filing.yracqd}" colType="numeric" numericLocale="en-US" numericPattern="0" colWidth="150">
+                            <f:convertNumber maxFractionDigits="0" groupingUsed="false" />
+                            <f:validateLongRange minimum="#{msgs.minYearOfAcquisition}" maximum="#{currentYear}" />
+                        </pe:sheetcolumn>
+                        <pe:sheetcolumn headerText="Acquisition Cost" value="#{f.noaPpLat5Filing.acquisitionCost}" colType="numeric" numericLocale="en-US" numericPattern="$0,0" colWidth="150">
+                            <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" groupingUsed="false" />
+                            <f:validateLongRange minimum="0" maximum="9999999999" />
+                        </pe:sheetcolumn>
+
+                    </pe:sheet>
                 </o:disablePanel>
                 <p:panelGrid id="summary" layout="grid" columns="2" styleClass="summary">
                     <p:outputLabel>Grand Total</p:outputLabel>
@@ -114,9 +53,7 @@
                     </h:outputText>
                 </p:panelGrid>
                 <div class="submit">
-                    <p:commandButton action="#{lat5Section4.addNewRow}" value="Add New Row" update="filings"
-                        onstart="return !editingTable();" rendered="#{!userSession.currentFormSubmitted}"
-                        oncomplete="jQuery('.ui-datatable-data tr').last().find('span.ui-icon-pencil').each(function(){jQuery(this).click()}); PrimeFaces.focus('table:'+args.newRowIndex+':category');" />
+                    <p:commandButton action="#{lat5Section4.addNewRow}" value="Add New Row" update="filings" rendered="#{!userSession.currentFormSubmitted}" />
                     <p:button outcome="previous" rendered="#{userSession.currentFormSubmitted}" value="Previous" />
                     <p:commandButton action="#{lat5Section4.previous()}" rendered="#{!userSession.currentFormSubmitted}"
                         value="Previous" ajax="false" styleClass="submitForm" />
