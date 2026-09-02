@@ -32,43 +32,45 @@
                         resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range"
                         styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
                         <p:ajax event="change" update=":form:messages :form:summary" />
+                        
                         <pe:sheetcolumn headerText="Month" value="#{ir.monthName}" readOnly="true" colWidth="125" />
+                        
                         <pe:sheetcolumn headerText="Merchandise" value="#{ir.data['01'].inventoryAmt}" colType="numeric"
-                            numericLocale="en-US" numericPattern="$0,0" colWidth="145">
-                            <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" />
+                            numericLocale="en-US" numericPattern="$0,000" colWidth="145">
                             <f:validateLongRange minimum="0" maximum="9999999999" />
                         </pe:sheetcolumn>
+                        
                         <pe:sheetcolumn headerText="Raw Materials" value="#{ir.data['02'].inventoryAmt}" colType="numeric"
-                            numericLocale="en-US" numericPattern="$0,0" colWidth="145">
-                            <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" />
+                            numericLocale="en-US" numericPattern="$0,000" colWidth="145">
                             <f:validateLongRange minimum="0" maximum="9999999999" />
                         </pe:sheetcolumn>
+                        
                         <pe:sheetcolumn headerText="Work In Process" value="#{ir.data['03'].inventoryAmt}" colType="numeric"
-                            numericLocale="en-US" numericPattern="$0,0" colWidth="145">
-                            <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" />
+                            numericLocale="en-US" numericPattern="$0,000" colWidth="145">
                             <f:validateLongRange minimum="0" maximum="9999999999" />
                         </pe:sheetcolumn>
+                        
                         <pe:sheetcolumn headerText="Finished Goods" value="#{ir.data['04'].inventoryAmt}" colType="numeric"
-                            numericLocale="en-US" numericPattern="$0,0" colWidth="145">
-                            <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" />
+                            numericLocale="en-US" numericPattern="$0,000" colWidth="145">
                             <f:validateLongRange minimum="0" maximum="9999999999" />
                         </pe:sheetcolumn>
+                        
                         <pe:sheetcolumn headerText="Supplies And/Or Goods Used" value="#{ir.data['05'].inventoryAmt}" colType="numeric"
-                            numericLocale="en-US" numericPattern="$0,0" colWidth="190">
-                            <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" />
+                            numericLocale="en-US" numericPattern="$0,000" colWidth="190">
                             <f:validateLongRange minimum="0" maximum="9999999999" />
                         </pe:sheetcolumn>
+                        
                         <pe:sheetcolumn headerText="Other" value="#{ir.data['99'].inventoryAmt}" colType="numeric"
-                            numericLocale="en-US" numericPattern="$0,0" colWidth="125">
-                            <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" />
+                            numericLocale="en-US" numericPattern="$0,000" colWidth="125">
                             <f:validateLongRange minimum="0" maximum="9999999999" />
                         </pe:sheetcolumn>
+                        
                         <pe:sheetcolumn headerText="Total" value="#{ir.total}" colType="numeric" readOnly="true"
-                            numericLocale="en-US" numericPattern="$0,0" colWidth="135">
-                            <f:convertNumber maxFractionDigits="0" />
+                            numericLocale="en-US" numericPattern="$0,000" colWidth="135">
                         </pe:sheetcolumn>
                     </pe:sheet>
                 </o:disablePanel>
+                
                 <p:panelGrid id="summary" layout="grid" columns="2" styleClass="summary">
                     <p:outputLabel>Grand Total</p:outputLabel>
                     <h:outputText value="#{lat5Section1.grandTotal}">
@@ -79,6 +81,7 @@
                         <f:convertNumber type="currency" maxFractionDigits="0"/>
                     </h:outputText>
                 </p:panelGrid>
+                
                 <div class="submit">
                     <p:button outcome="previous" rendered="#{userSession.currentFormSubmitted}" value="Previous" />
                     <p:commandButton action="#{lat5Section1.previous()}" rendered="#{!userSession.currentFormSubmitted}"
@@ -91,5 +94,4 @@
         </ui:define>
     </ui:composition>
 </h:body>
-
 </html>
