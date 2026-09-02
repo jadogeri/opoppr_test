@@ -256,3 +256,44 @@ li.ui-selectonemenu-item
 {
     margin-bottom: 1rem;
 }
+
+/* Excel-like editing surface for LAT5 filing grids. */
+.opoppr-sheet {
+    width: 100%;
+    margin: 0.75rem 0 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.opoppr-sheet .handsontable {
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+}
+
+.opoppr-sheet .handsontable th {
+    background: #e2e8f0;
+    color: #1e293b;
+    font-weight: 700;
+    border-color: #cbd5e1;
+}
+
+.opoppr-sheet .handsontable td {
+    background: #fff;
+    border-color: #e2e8f0;
+    color: #1e293b;
+}
+
+.opoppr-sheet .handsontable .current {
+    background: #eff6ff;
+}
+
+.opoppr-sheet .handsontable .area {
+    background: rgba(59, 130, 246, 0.12);
+}
+
+.opoppr-sheet .handsontable .htInvalid {
+    background: #fee2e2;
+    border-color: #ef4444;
+}
