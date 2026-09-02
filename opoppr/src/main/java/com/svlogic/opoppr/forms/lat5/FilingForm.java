@@ -53,6 +53,17 @@ abstract public class FilingForm extends EditableForm {
         this.propertyAssets = propertyAssets;
     }
 
+    public List<String> getPropertyAssetDescriptions() {
+        List<String> descriptions = new ArrayList<>();
+        descriptions.add("Delete Row");
+        if (propertyAssets != null) {
+            propertyAssets.stream()
+                    .map(PropertyAsset::getAssetDescription)
+                    .forEach(descriptions::add);
+        }
+        return descriptions;
+    }
+
     @Inject
     public void setCurrentForm(@CurrentForm Form currentForm) {
         super.setCurrentForm(currentForm);
@@ -81,7 +92,6 @@ abstract public class FilingForm extends EditableForm {
         filing.setNoaPpLat5Filing(f);
         filings.add(filing);
         setDirty(true);
-        PrimeFaces.current().executeScript("PF('filingTable').unselectAllRows();");
         PrimeFaces.current().ajax().addCallbackParam("newRowIndex", filings.size() - 1);
         return null;
     }
