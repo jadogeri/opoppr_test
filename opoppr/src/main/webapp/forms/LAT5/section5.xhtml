@@ -26,128 +26,29 @@
             <h:form id="form" styleClass="saveForm" prependId="false" style="float: left; width: 100%">
                 <p:growl id="messages" showSummary="true" showDetail="true" autoUpdate="true" sticky="true" />
                 <o:disablePanel disabled="#{userSession.currentFormSubmitted}">
-                    <p:dataTable id="filings" emptyMessage="#{userSession.emptyTableMessage}"
-                        value="#{lat5Section5.filings}" var="f" editable="#{!userSession.currentFormSubmitted}" scrollable="true" scrollHeight="425"
-                        editMode="cell" rowStyleClass="#{f.isValid('99') ? '' : 'error'}">
-                        <!--<p:ajax event="rowEdit" update=":form:messages" />
-                            <p:ajax event="rowEditCancel" update=":form:messages" />-->
-                        <p:ajax event="cellEdit" update=":form:messages" />
-                        <p:column width="165">
-                            <f:facet name="header">
-                                <p:outputLabel for="propertyDescription">Property Description</p:outputLabel><br />
-                                <span style="font-size: 7pt; font-weight: normal; font-style: italic;">
-                                    Leave blank to delete/ignore row.
-                                </span>
-                            </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="input">
-                                    <p:inputText required="false" id="propertyDescription" label="Property Description"
-                                        value="#{f.noaPpLat5Filing.itemDescription}" size="18" maxlength="50" />
-                                </f:facet>
-                                <f:facet name="output">
-                                    <h:outputText value="#{f.noaPpLat5Filing.itemDescription}" />
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column width="160">
-                            <f:facet name="header">
-                                <p:outputLabel for="name">Owner Name</p:outputLabel>
-                            </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="input">
-                                    <p:inputText required="false" id="name" label="Owner Name"
-                                        value="#{f.noaPpLat5Filing.consignerOwnerName}" size="18" maxlength="50" />
-                                </f:facet>
-                                <f:facet name="output">
-                                    <h:outputText value="#{f.noaPpLat5Filing.consignerOwnerName}" />
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column width="125">
-                            <f:facet name="header">
-                                <p:outputLabel for="address">
-                                    Owner Address
-                                </p:outputLabel><br />
-                                <span style="font-size: 7pt; font-weight: normal; font-style: italic;">
-                                    (House #, Street, City, State, Zip)
-                                </span>
-                            </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="input">
-                                    <p:inputText required="false" id="address" label="Owner Address"
-                                        value="#{f.noaPpLat5Filing.consignerMailingAddr}" size="14" maxlength="50" />
-                                </f:facet>
-                                <f:facet name="output">
-                                    <h:outputText value="#{f.noaPpLat5Filing.consignerMailingAddr}" />
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column width="100">
-                            <f:facet name="header">
-                                <p:outputLabel for="phone">
-                                    Owner<br />Phone #
-                                </p:outputLabel>
-                            </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="input">
-                                    <p:inputMask id="phone" mask="(999) 999-9999"
-                                        value="#{f.noaPpLat5Filing.consignerTelNo}" label="Owner Phone #"
-                                        required="false" size="10" maxlength="14">
-                                        <o:convertMask mask="(###) ###-####" />
-                                        <o:validatePhoneNumber />
-                                    </p:inputMask>
-                                </f:facet>
-                                <f:facet name="output">
-                                    <h:outputText value="#{f.noaPpLat5Filing.consignerTelNo}">
-                                        <o:convertMask mask="(###) ###-####" />
-                                    </h:outputText>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column width="60">
-                            <f:facet name="header">
-                                <p:outputLabel for="age">Age of<br />Property</p:outputLabel>
-                            </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="input">
-                                    <p:inputText id="age" value="#{f.noaPpLat5Filing.effectiveLife}"
-                                        label="Age of Property" size="3" maxlength="3" required="false">
-                                        <f:convertNumber maxIntegerDigits="3" maxFractionDigits="0" />
-                                        <f:validateLongRange minimum="0" maximum="999" />
-                                    </p:inputText>
-                                </f:facet>
-                                <f:facet name="output">
-                                    <h:outputText value="#{f.noaPpLat5Filing.effectiveLife}" />
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column width="100">
-                            <f:facet name="header">
-                                <p:outputLabel for="monthlyRental">Monthly Rental</p:outputLabel>
-                            </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="input">
-                                    <p:inputText id="monthlyRental" value="#{f.noaPpLat5Filing.consignerRentalAmt}"
-                                        label="Monthly Rental/Cost of Acquisition" size="10" maxlength="10"
-                                        required="false">
-                                        <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10"
-                                            groupingUsed="false" />
-                                        <f:validateLongRange minimum="0" maximum="9999999999" />
-                                    </p:inputText>
-                                </f:facet>
-                                <f:facet name="output">
-                                    <h:outputText value="#{f.noaPpLat5Filing.consignerRentalAmt}">
-                                        <f:convertNumber type="currency" maxFractionDigits="0" />
-                                    </h:outputText>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                    </p:dataTable>
+                    <pe:sheet id="filings" widgetVar="filingSheet" value="#{lat5Section5.filings}" var="f"
+                        rowKey="#{f.sheetRowKey}" height="425" fixedRows="1" showRowHeaders="true"
+                        resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range"
+                        emptyMessage="#{userSession.emptyTableMessage}" rowStyleClass="#{f.isValid('99') ? '' : 'error'}"
+                        styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
+                        <p:ajax event="change" update=":form:messages" />
+                        <pe:sheetcolumn headerText="Property Description" value="#{f.noaPpLat5Filing.itemDescription}" colType="text" colWidth="165" />
+                        <pe:sheetcolumn headerText="Owner Name" value="#{f.noaPpLat5Filing.consignerOwnerName}" colType="text" colWidth="160" />
+                        <pe:sheetcolumn headerText="Owner Address" value="#{f.noaPpLat5Filing.consignerMailingAddr}" colType="text" colWidth="225" />
+                        <pe:sheetcolumn headerText="Owner Phone #" value="#{f.noaPpLat5Filing.consignerTelNo}" colType="text" colWidth="135" />
+                        <pe:sheetcolumn headerText="Age of Property" value="#{f.noaPpLat5Filing.effectiveLife}" colType="numeric" numericLocale="en-US" numericPattern="0" colWidth="110">
+                            <f:convertNumber maxIntegerDigits="3" maxFractionDigits="0" />
+                            <f:validateLongRange minimum="0" maximum="999" />
+                        </pe:sheetcolumn>
+                        <pe:sheetcolumn headerText="Monthly Rental" value="#{f.noaPpLat5Filing.consignerRentalAmt}" colType="numeric" numericLocale="en-US" numericPattern="$0,0" colWidth="145">
+                            <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" groupingUsed="false" />
+                            <f:validateLongRange minimum="0" maximum="9999999999" />
+                        </pe:sheetcolumn>
+
+                    </pe:sheet>
                 </o:disablePanel>
                 <div class="submit">
-                    <p:commandButton action="#{lat5Section5.addNewRow}" value="Add New Row" update="filings"
-                        onstart="return !editingTable();" rendered="#{!userSession.currentFormSubmitted}"
-                        oncomplete="jQuery('.ui-datatable-data tr').last().find('span.ui-icon-pencil').each(function(){jQuery(this).click()}); PrimeFaces.focus('table:'+args.newRowIndex+':propertyDescription');" />
+                    <p:commandButton action="#{lat5Section5.addNewRow}" value="Add New Row" update="filings" rendered="#{!userSession.currentFormSubmitted}" />
                     <p:button outcome="previous" rendered="#{userSession.currentFormSubmitted}" value="Previous" />
                     <p:commandButton action="#{lat5Section5.previous()}" rendered="#{!userSession.currentFormSubmitted}"
                         value="Previous" ajax="false" styleClass="submitForm" />
