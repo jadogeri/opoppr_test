@@ -1,0 +1,42 @@
+function sheetExtender() {
+    // 'this' refers to the PrimeFaces Extensions Sheet Widget
+    // 'this.cfg' contains the raw Handsontable configuration options
+    
+    this.cfg.contextMenu = {
+        items: {
+            "row_above": { name: "Insert Row Above", disabled: true }, // Blocked
+            "row_below": { name: "Insert Row Below", disabled: true }, // Blocked
+            "col_left":  { name: "Insert Column Left", disabled: true }, // Blocked
+            "col_right": { name: "Insert Column Right", disabled: true }, // Blocked
+            "remove_row": { name: "Remove Row", disabled: true },      // Blocked
+            "remove_col": { name: "Remove Column", disabled: true },   // Blocked
+            "hsep1": "---------", // Separator line
+            "undo": { name: "Undo" },
+            "redo": { name: "Redo" },
+            "hsep2": "---------",
+            "make_read_only": { name: "Read only" },
+            "alignment": { name: "Alignment" },
+            "clear_custom": {
+                name: "Clear Content Only",
+                callback: function(key, selection, clickEvent) {
+                    this.clear(); // Wipes data entries cleanly without altering indices
+                }
+            }
+        }
+    };
+}
+
+
+
+
+<pe:sheet id="inventorySheet"
+          widgetVar="sheetWidget"
+          value="#{lat5Section1.inventoryRows}" 
+          var="row"
+          contextMenu="true"
+          extender="sheetExtender"
+          height="400">
+    
+    <!-- Your existing pe:sheetcolumn layout configuration here -->
+
+</pe:sheet>
