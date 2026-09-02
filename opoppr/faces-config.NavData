@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene Scope="Faces Configuration Only" version="2">
+    <Scope Scope="Faces Configuration Only"/>
+    <Scope Scope="Project">
+        <Node id="forms/LAT5/section5.xhtml" x="650" y="300" zoom="true"/>
+        <Node id="sections/common/navigation.xhtml" x="1150" y="150" zoom="true"/>
+        <Node id="sections/common/header.xhtml" x="900" y="300" zoom="true"/>
+        <Node id="forms/LAT5/section4.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="formTest.xhtml" x="150" y="300" zoom="true"/>
+        <Node id="sections/common/footer.xhtml" x="400" y="450" zoom="true"/>
+        <Node id="forms/LAT5/section3.xhtml" x="400" y="300" zoom="true"/>
+        <Node id="login.xhtml" x="650" y="150" zoom="true"/>
+        <Node id="forms/LAT5/section2.xhtml" x="150" y="450" zoom="true"/>
+        <Node id="home.xhtml" x="150" y="300" zoom="true"/>
+        <Node id="forms/LAT5/header.xhtml" x="150" y="600" zoom="true"/>
+        <Node id="forms/LAT5/validate.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="forms/LAT5/section1.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="templates/masterTemplate.xhtml" x="150" y="150" zoom="true"/>
+    </Scope>
+    <Scope Scope="All Faces Configurations"/>
+</Scene>

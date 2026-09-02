@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="" antiJARLocking="true">
+    <!-- Disable session persistence across Tomcat restarts -->
+    <Manager pathname="" />
+    <Resource auth="Container" driverClassName="com.mysql.cj.jdbc.Driver" initialSize="5" logAbandoned="true" maxTotal="50" maxIdle="15" maxWaitMillis="60000" name="jdbc/OPOPPR" password="opoppr" removeAbandonedOnBorrow="true" type="jakarta.sql.DataSource" url="jdbc:mysql://localhost:3306/opoppr?zeroDateTimeBehavior=convertToNull" username="opoppr" validationQuery="SELECT 1 FROM DUAL"/>
+    <Resource auth="Container" mail.smtp.host="localhost" name="mail/Session" type="jakarta.mail.Session"/>
+    <Resource auth="Container" factory="org.jboss.weld.resources.ManagerObjectFactory" name="BeanManager" type="jakarta.enterprise.inject.spi.BeanManager"/>
+    <!-- Uncomment to enable injection into Servlet -->
+    <!-- <Listener className="org.jboss.weld.environment.tomcat.WeldLifecycleListener"/> -->
+    <Realm className="org.apache.catalina.realm.DataSourceRealm"
+       dataSourceName="jdbc/OPOPPR"
+       userTable="account" userNameCol="BILL_NUMBER" userCredCol="PIN"
+       userRoleTable="account" roleNameCol="BILL_NUMBER"
+       localDataSource="true" />
+</Context>

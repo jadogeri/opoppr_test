@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/masterTemplate.xhtml">
+            <ui:define name="contentHeading">Administration</ui:define>
+            <ui:define name="content">
+                <div>
+                    <div style="float: left;">
+                        <h2>Purge Database</h2>
+                    </div>
+                    <div style="float: right"><a href="help.html" onclick="javascript:void window.open('help.html#BusinessInfo', '1359749959948', 'width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');
+                                return false;">Help</a></div>
+                </div>
+                <h:form id="form" enctype="multipart/form-data" style="float: left; width: 100%">
+                    <p:growl id="messages" showSummary="true" showDetail="true" sticky="true" autoUpdate="true" />
+                    <p>Click to purge the database of all data.</p>
+                    <p:fieldset styleClass="reallyNarrow centered single">
+                        <ol>
+                            <li>
+                                <p:outputLabel for="year">Year to Purge</p:outputLabel><br />
+                                <p:selectOneMenu id="year" value="#{purge.year}" required="true" label="Year to Close">
+                                    <f:selectItem itemValue="" itemLabel="Select One" />
+                                    <f:selectItems value="#{purge.filingYears}" var="i" itemValue="#{i}" itemLabel="#{i}" />
+                                </p:selectOneMenu>
+                            </li>
+                        </ol>
+                        <div class="sub">
+                            <p:commandButton value="Purge" ajax="false" onclick="return confirmPrompt('Are you sure you want to purge the database?');" action="#{purge.purgeDatabase()}" />
+                        </div>
+                    </p:fieldset>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

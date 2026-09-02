@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>IGNORED</title>
+</h:head>
+<h:body>
+    <ui:composition template="/templates/masterTemplate.xhtml">
+        <ui:define name="contentHeading">User Management</ui:define>
+        <ui:define name="content">
+            <ui:include src="/templates/sessionTemplate.xhtml" />
+            <p:growl id="messages1" showDetail="true"  />
+            <div style="float: right"><a href="help.html" onclick="javascript:void window.open('forms/LAT5/help.html#Home', '1359749959948', 'width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');
+                        return false;">Help</a></div>
+            <h:form id="form">
+                <p>The table below shows all of the users in the database.</p>
+    
+               <p:fieldset styleClass="narrow double">
+                    <ol>
+                        <li>
+                            <p:commandButton value="Create Account" action="adminCreateUserAccount" ajax="false" id="createAccount"/>
+                            <p:tooltip for="createAccount" value="Create a new user account" position="right" showDelay="500" />
+                       </li>
+                    </ol>
+                </p:fieldset>
+                <p:dataTable id="userTable" value="#{userList.users}" var="u" filteredValue="#{userList.filteredUsers}"
+                    paginator="true" rows="10" widgetVar="userTableWV"  >
+                    <p:column headerText="Full Name" filterBy="#{u.fullName}" filterMatchMode="contains" width="250">
+                        <h:outputText value="#{u.fullName}" />
+                    </p:column>
+                    <p:column headerText="Email Address" filterBy="#{u.emailAddress}" filterMatchMode="contains">
+                        <h:outputText value="#{u.emailAddress}" />
+                    </p:column>
+                    <p:column headerText="Role" filterBy="#{u.userRoleId.name}" filterMatchMode="exact" width="120">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('userTableWV').filter()" styleClass="ui-custom-filter">
+                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{userList.roles}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{u.userRoleId.name}" />
+                    </p:column>
+                    <p:column headerText="Status" filterBy="#{u.userStatus.name}" filterMatchMode="exact" width="90">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('userTableWV').filter()" styleClass="ui-custom-filter">
+                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{userList.statuses}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{u.userStatus.name}" />
+                    </p:column>              
+                    <p:column headerText="Actions" width="80" >
+                        <p:toolbar>
+                            <p:toolbarGroup style="gap: 5px; align-items: center;justify-items: center;">
+                                <p:commandButton icon="pi pi-pencil" action="#{userList.selectUser(u, true)}"  update="messages1" title="Edit Profile" styleClass="ui-button-flat ui-button-danger" style="width:20px; height: 20px;"/>
+                                <p:column headerText="Status">
+                                    <!-- 1. The Main Trigger Button -->
+                                    <p:commandButton id="statusBtn" 
+                                                    icon="#{u.userStatus.name eq 'Locked' ? 'pi pi-lock' : (u.userStatus.name eq 'Disabled' ? 'pi pi-ban' : 'pi pi-check-circle')}" 
+                                                    title="Status" 
+                                                    type="button"
+                                                    styleClass="ui-button-flat ui-button-danger" 
+                                                    style="width:20px; height: 20px;"/>
+
+                                    <!-- 2. The OverlayPanel tied specifically to this row's button -->
+                                    <p:overlayPanel for="statusBtn" dismissable="true" showCloseIcon="true">
+                                        <p:toolbar>
+                                            <f:facet name="left">
+                                                <!-- Enable Button -->
+                                                <p:commandButton value="Enable" icon="pi pi-check-circle" id="enable"
+                                                                action="#{adminEnableUserAccount.enable(u)}"
+                                                                disabled="#{u.userStatus.name eq 'Enabled'}"
+                                                                ajax="false" style="width: 100%; text-align: left;" />
+                                                <p:tooltip for="enable" value="Enable user account for #{u.emailAddress}" position="right" showDelay="500" />
+
+                                                <!-- Disable Button -->
+                                                <p:commandButton value="Disable" icon="pi pi-ban" id="disable"
+                                                                action="#{adminDisableUserAccount.disable(u)}"
+                                                                disabled="#{u.userStatus.name eq 'Disabled'}"
+                                                                ajax="false" style="width: 100%; text-align: left;" />
+                                                <p:tooltip for="disable" value="Disable user account for #{u.emailAddress}" position="right" showDelay="500" />
+
+                                                <!-- Lock Button -->
+                                                <p:commandButton value="Lock" icon="pi pi-lock" id="lock"
+                                                                action="#{adminLockUserAccount.lock(u)}"
+                                                                disabled="#{u.userStatus.name eq 'Locked'}"
+                                                                ajax="false" style="width: 100%; text-align: left;" />
+                                                <p:tooltip for="lock" value="Lock user account for #{u.emailAddress}" position="right" showDelay="500" />
+                                            </f:facet>
+                                        </p:toolbar>
+                                    </p:overlayPanel>
+                                </p:column>
+                                <p:commandButton icon="pi pi-external-link" action="#{userList.selectUser(u, false)}" title="View Profile" styleClass="ui-button-flat ui-button-danger" style="width:20px; height: 20px;"/>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                    </p:column>
+                </p:dataTable>   
+                <p:commandButton action="homeAdmin" value="previous" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>
+
+

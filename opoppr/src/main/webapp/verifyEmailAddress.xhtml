@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="jakarta.faces.facelets"
+    xmlns:h="jakarta.faces.html" xmlns:p="http://primefaces.org/ui" xmlns:o="http://opoppr.svlogic.com/ui"
+    xmlns:c="jakarta.tags.core" xmlns:f="jakarta.faces.core">
+<f:metadata>
+    <f:viewParam name="verificationCode" value="#{verifyEmailAddress.verificationCode}" />
+</f:metadata>
+<h:head>
+    <title>IGNORED</title>
+</h:head>
+<h:body>
+    <ui:composition template="/templates/masterTemplate.xhtml">
+        <ui:define name="contentHeading">Verify Email Address</ui:define>
+        <ui:define name="content">
+            <div style="float: right"><a href="help.html"
+                    onclick="javascript:void window.open('forms/LAT5/help.html#Login','1359749959948','width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');return false;">Help</a>
+            </div>
+            <h:form id="form" prependId="false">
+                <p:focus />
+                <p:growl id="messages" showSummary="true" showDetail="true" sticky="true" autoUpdate="true" />
+                <p:fieldset id="fieldset" styleClass="narrow centered single">
+                    <c:choose>
+                        <c:when test="#{verifyEmailAddress.checkVerificationCode(verifyEmailAddress.verificationCode) == 1}">
+                            <ol>
+                                <c:if test="#{verifyEmailAddress.verificationFailed}">
+                                    <li style="width: 100%">
+                                        <span style="color:red">
+                                            Failed to verify your email address. Ensure you are entering the correct
+                                            password and
+                                            try again.
+                                        </span>
+                                    </li>
+                                </c:if>
+                                <li style="width: 100%">
+                                    <p:outputLabel for="password">Password</p:outputLabel>
+                                    <p:password required="true" label="Password" id="password" size="32" maxlength="32"
+                                        value="#{verifyEmailAddress.password}" />
+                                    <p:inputText id="verificationCode" value="${verifyEmailAddress.verificationCode}"
+                                        type="hidden" />
+                                </li>
+                            </ol>
+                            <div class="sub">
+                                <p:commandButton value="Submit" action="#{verifyEmailAddress.verifyEmail()}" ajax="false" />
+                            </div>
+                        </c:when>
+                        <c:when test="#{verifyEmailAddress.checkVerificationCode(verifyEmailAddress.verificationCode) == -1}">
+                            <ol>
+                                <li>
+                                    <h:outputText
+                                        value="The verification code has expired.  Please click the button to have a new verification code emailed to you." />
+                                </li>
+                            </ol>
+                            <div class="sub">
+                                <p:commandButton value="Resend Verification Code" action="#{verifyEmailAddress.resendVerificationCode()}" ajax="false"/>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <ol>
+                                <li>
+                                    <h:outputText value="The verification code is invalid." />
+                                </li>
+                            </ol>
+                            <div class="sub">
+                                <p:button value="Back to Login" outcome="login" ajax="false" />
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </p:fieldset>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+
+</html>

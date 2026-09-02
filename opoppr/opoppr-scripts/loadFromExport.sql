@@ -1,0 +1,36 @@
+delete from noa_pp_lat5_temp;
+delete from noa_pp_lat_5_filing_temp;
+delete from noa_pp_lat_5_inventories_temp;
+
+LOAD DATA LOCAL INFILE '/tmp/noa_pp_lat5.csv' INTO TABLE noa_pp_lat5_temp FIELDS TERMINATED BY ',' ENCLOSED BY '\"' lines terminated by '\n' IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE '/tmp/noa_pp_lat_5_filing.csv' INTO TABLE noa_pp_lat_5_filing_temp FIELDS TERMINATED BY ',' ENCLOSED BY '\"' lines terminated by '\n' IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE '/tmp/noa_pp_lat_5_inventories.csv' INTO TABLE noa_pp_lat_5_inventories_temp FIELDS TERMINATED BY ',' ENCLOSED BY '\"' lines terminated by '\n' IGNORE 1 LINES;
+
+INSERT INTO form (status_id, title, filing_year, form_type_id, bill_number, pin) 
+  SELECT (SELECT status_id FROM status WHERE NAME=@FORM_STATUS) , CONCAT(t.taxyr, ' ', t.ownername, ' LAT 5'), t.taxyr, 1, t.altid, t.pin
+          FROM noa_pp_lat5_temp as t;
+
+insert into noa_pp_lat5 (JUR, PARID, ALTID, TAXYR, OWNERNAME, ADDR1, ADDR2, CITYNAME, STATECODE, ZIP1, PIN, CONTACT_NAME, CONTACT_PHONE, CONTACT_FAX,
+                        CONTACT_EMAIL, PROPERTY_ADDRESS, TAXPAYER_NAME, TAXPAYER_PREPARED_DATE, TAX_PREPARER_NAME, TAX_PREPARER_PHONE, TAX_PREPARER_EMAIL,
+                        TAX_PREPARER_PREPARED_DATE, FORM_ID, CONTACT_SEND_EMAILS, BUSINESS_TYPE_ID)
+select t.JUR, t.PARID, t.ALTID, t.TAXYR, t.OWNERNAME, t.ADDR1, t.ADDR2, t.CITYNAME, t.STATECODE, t.ZIP1, t.PIN, t.CONTACT_NAME,
+       REPLACE(REPLACE(REPLACE(REPLACE(t.CONTACT_PHONE, '(', ''),')',''),'-',''),' ',''), t.CONTACT_FAX, t.CONTACT_EMAIL, t.PROPERTY_ADDRESS,
+       t.TAXPAYER_NAME, t.TAXPAYER_PREPARED_DATE, t.TAX_PREPARER_NAME, t.TAX_PREPARER_PHONE, t.TAX_PREPARER_EMAIL, t.TAX_PREPARER_PREPARED_DATE, f.FORM_ID, t.CONTACT_SEND_EMAILS, bt.BUSINESS_TYPE_ID
+from noa_pp_lat5_temp as t
+inner join FORM as f on f.bill_number = t.altid AND f.pin = t.pin
+left outer join BUSINESS_TYPE bt on t.BUSINESS_CODE = bt.BUSINESS_CODE;
+
+INSERT INTO noa_pp_lat_5_filing(JUR, PARID, TAXYR, CATEGORY, PPTYPE, FILEYR, YRACQD, NOUNITS, ACQUISITION_COST, EFFECTIVE_LIFE, CONSIGNER_OWNER_NAME,
+                                CONSIGNER_MAILING_ADDR, CONSIGNER_RENTAL_AMT, ITEM_DESCRIPTION, CONSIGNER_TEL_NO, NOA_PP_LAT_5_ID, PROPERTY_ASSET_ID)
+SELECT a.JUR, a.PARID, a.TAXYR, a.CATEGORY, a.PPTYPE, a.FILEYR, a.YRACQD, a.NOUNITS, a.ACQUISITION_COST, a.EFFECTIVE_LIFE, a.CONSIGNER_OWNER_NAME,
+       a.CONSIGNER_MAILING_ADDR, a.CONSIGNER_RENTAL_AMT, a.ITEM_DESCRIPTION, a.CONSIGNER_TEL_NO, b.NOA_PP_LAT_5_ID,
+       (SELECT p.PROPERTY_ASSET_ID FROM opoppr.property_asset p WHERE p.PPTYPE=a.PPTYPE AND p.CATEGORY=a.CATEGORY) AS PROPERTY_ASSET_ID
+FROM opoppr.noa_pp_lat_5_filing_temp a
+INNER JOIN opoppr.noa_pp_lat5 b ON a.PARID=b.PARID AND a.JUR=b.JUR AND a.TAXYR=b.TAXYR AND a.FILEYR=b.TAXYR;
+
+INSERT INTO noa_pp_lat_5_inventories(JUR, PARID, TAXYR, FILEYR, INVENTORY_TYPE, INVENTORY_MONTH, INVENTORY_AMT, NOA_PP_LAT_5_ID)
+SELECT a.JUR, a.PARID, a.TAXYR, a.FILEYR, a.INVENTORY_TYPE, a.INVENTORY_MONTH, a.INVENTORY_AMT, b.NOA_PP_LAT_5_ID
+FROM opoppr.noa_pp_lat_5_inventories_temp a
+INNER JOIN opoppr.noa_pp_lat5 b ON a.PARID=b.PARID AND a.JUR=b.JUR AND a.TAXYR=b.TAXYR AND a.FILEYR=b.TAXYR;
+
+commit;

@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:o="http://opoppr.svlogic.com/ui"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/masterTemplate.xhtml">
+            <ui:define name="contentHeading">Administration</ui:define>
+            <ui:define name="content">
+                <div>
+                    <div style="float: left;"><h2>Reset Form Status Confirmation</h2></div>
+                    <div style="float: right"><a href="help.html" onclick="javascript:void window.open('help.html#BusinessInfo','1359749959948','width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');return false;">Help</a></div>
+                </div>
+                <h:form id="form" enctype="multipart/form-data" style="float: left; width: 100%">
+                    <p:growl id="messages" showSummary="true" showDetail="true" sticky="true" autoUpdate="true" />
+                    <p>Confirm that this is the correct form that you wish to reset.</p>
+                    <o:disablePanel disabled="true">
+                        <p:fieldset styleClass="wide centered triple">
+                            <ol>
+                                <li style="width: 50%">
+                                    <p:outputLabel value="Tax Bill Number" />
+                                    <p:inputText value="#{currentForm.billNumber}" />
+                                </li>
+                                <li style="width: 50;">
+                                    <p:outputLabel value="Status" />
+                                    <p:inputText value="#{currentForm.status.name}" />
+                                </li>
+                                <li style="width: 50%">
+                                    <p:outputLabel for="businessName">Business Name</p:outputLabel>
+                                    <p:inputText id="businessName" label="Business Name" size="40" maxlength="40" value="#{currentForm.noaPpLat5Collection[0].ownername}" required="true"/>
+                                </li>
+                                <li style="width: 50%">
+                                    <p:outputLabel>Business Address</p:outputLabel><br/>
+                                    <h:outputText id="prop_address1" value="#{currentForm.noaPpLat5Collection[0].propertyAddress}" />
+                                </li>
+                                <li style="width: 100%">
+                                    <p:fieldset styleClass="medium triple">
+                                        <legend>Mailing Address</legend>
+                                        <ol>
+                                            <li style="width: 100%">
+                                                <p:outputLabel for="address1">Address Line 1</p:outputLabel>
+                                                <p:inputText id="address1" label="Address Line 1" size="80" maxlength="80" value="#{currentForm.noaPpLat5Collection[0].addr1}" required="true">
+                                                    <f:validateLength maximum="80" />
+                                                </p:inputText>
+                                            </li>
+                                            <li style="width: 100%">
+                                                <p:outputLabel for="address2">Address Line 2</p:outputLabel>
+                                                <p:inputText id="address2" label="Address Line 2" size="80" maxlength="80" value="#{currentForm.noaPpLat5Collection[0].addr2}">
+                                                    <f:validateLength maximum="80" />
+                                                </p:inputText>
+                                            </li>
+                                            <li style="width: 45%">
+                                                <p:outputLabel for="city">City</p:outputLabel>
+                                                <p:inputText id="city" label="City" size="40" maxlength="40" value="#{currentForm.noaPpLat5Collection[0].cityname}" required="true">
+                                                    <f:validateLength maximum="40" />
+                                                </p:inputText>
+                                            </li>
+                                            <li style="width: 10%">
+                                                <p:outputLabel for="state">State</p:outputLabel>
+                                                <p:inputText id="state" label="State" validatorMessage="State: Validation Error: Value must consist of 2 uppercase letters." size="2" maxlength="2" value="#{currentForm.noaPpLat5Collection[0].statecode}" required="true">
+                                                    <f:validateRegex pattern="[A-Z]{2}" />
+                                                </p:inputText>
+                                            </li>
+                                            <li>
+                                                <p:outputLabel for="zipCode">Zip Code</p:outputLabel>
+                                                <p:inputText id="zipCode" label="Zip Code" validatorMessage="Zip Code: Validation Error: Value must consist of 5 digits." size="5" maxlength="5" value="#{currentForm.noaPpLat5Collection[0].zip1}" required="true">
+                                                    <f:validateRegex pattern="\d{5}" />
+                                                </p:inputText>
+                                            </li>
+                                        </ol>
+                                    </p:fieldset>
+                                </li>
+                                <li style="width: 33%">
+                                    <p:outputLabel for="ownerName">Owner/Contact Name</p:outputLabel>
+                                    <p:inputText id="ownerName" label="Owner/Contact Name" size="40" maxlength="40" value="#{currentForm.noaPpLat5Collection[0].contactName}" required="true">
+                                        <f:validateLength maximum="40" />
+                                    </p:inputText>
+                                </li>
+                                <li style="width: 33%">
+                                    <p:outputLabel for="contactPhone">Contact Phone</p:outputLabel>
+                                    <p:inputMask id="contactPhone" mask="(999) 999-9999" label="Contact Phone" size="14" maxlength="14" value="#{currentForm.noaPpLat5Collection[0].contactPhone}" required="true">
+                                        <o:convertMask mask="(###) ###-####" />
+                                        <o:validatePhoneNumber />
+                                    </p:inputMask>
+                                </li>
+                                <li style="width: 33%">
+                                    <p:outputLabel for="contactFax">Contact Fax</p:outputLabel>
+                                    <p:inputMask id="contactFax" mask="(999) 999-9999" label="Contact Fax" size="14" maxlength="14" value="#{currentForm.noaPpLat5Collection[0].contactFax}">
+                                        <o:convertMask mask="(###) ###-####" />
+                                        <o:validatePhoneNumber />
+                                    </p:inputMask>
+                                </li>
+                                <li style="width: 100%">
+                                    <p:outputLabel for="contactEmail">Contact EMail</p:outputLabel>
+                                    <p:inputText id="contactEmail" label="Contact EMail" size="50" maxlength="75" value="#{currentForm.noaPpLat5Collection[0].contactEmail}" required="true">
+                                        <f:validateLength maximum="75" />
+                                        <o:validateEmail />
+                                    </p:inputText>
+                                </li>
+                            </ol>
+                        </p:fieldset>
+                    </o:disablePanel>
+                    <div class="submit">
+                        <p:commandButton value="Submit" rendered="#{userSession.currentFormSubmitted}" action="#{resetFormStatus.confirmReset()}" ajax="false" />
+                        <p:commandButton value="Cancel" action="success" />                        
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

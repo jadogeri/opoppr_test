@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://opoppr.svlogic.com/ui">
+    <h:head>
+        <title>LAT 5</title>
+        <h:outputStylesheet name="opoppr.css" library="css" />
+    </h:head>
+    <h:body style="background-color: white">
+        <f:view locale="en_US">
+            <p:button styleClass="noPrint" onclick="window.print()" value="Print" icon="ui-icon-print"/>
+            <div style="text-align: center; font-size: 24pt">#{currentForm.title}</div>
+            <h2>Business Information</h2>
+            <p:fieldset styleClass="wide centered triple">
+                <ol>
+                    <li style="width: 50%">
+                        <p:outputLabel for="businessName">Business Name</p:outputLabel><br/>
+                        <h:outputText id="businessName" value="#{currentForm.noaPpLat5Collection[0].ownername}" />
+                    </li>
+                    <li style="width: 50%">
+                        <p:outputLabel for="taxBillNumber">Tax Bill Number</p:outputLabel><br/>
+                        <h:outputText id="taxBillNumber" value="#{currentForm.noaPpLat5Collection[0].altid}" />
+                    </li>
+                    <li style="width: 50%">
+                        <p:outputLabel>Business Address</p:outputLabel><br/>
+                        <h:outputText id="prop_address1" value="#{currentForm.noaPpLat5Collection[0].propertyAddress}" />
+                    </li>
+                    <li style="width: 50%">
+                        <p:outputLabel>Business Type</p:outputLabel><br/>
+                        <h:outputText value="#{currentForm.noaPpLat5Collection[0].businessType.businessDescription}" />
+                    </li>
+                    <li style="width: 100%">
+                        <p:fieldset styleClass="medium triple">
+                            <legend>Mailing Address</legend>
+                            <ol>
+                                <li style="width: 100%">
+                                    <p:outputLabel for="address1">Address Line 1</p:outputLabel><br/>
+                                    <h:outputText id="address1" value="#{currentForm.noaPpLat5Collection[0].addr1}" />
+                                </li>
+                                <li style="width: 100%">
+                                    <p:outputLabel for="address2">Address Line 2</p:outputLabel><br/>
+                                    <h:outputText id="address2" value="#{currentForm.noaPpLat5Collection[0].addr2}" />
+                                </li>
+                                <li style="width: 45%">
+                                    <p:outputLabel for="city">City</p:outputLabel><br/>
+                                    <h:outputText id="city" value="#{currentForm.noaPpLat5Collection[0].cityname}" />
+                                </li>
+                                <li style="width: 10%">
+                                    <p:outputLabel for="state">State</p:outputLabel><br/>
+                                    <h:outputText id="state" value="#{currentForm.noaPpLat5Collection[0].statecode}" />
+                                </li>
+                                <li>
+                                    <p:outputLabel for="zipCode">Zip Code</p:outputLabel><br/>
+                                    <h:outputText id="zipCode" value="#{currentForm.noaPpLat5Collection[0].zip1}" />
+                                </li>
+                            </ol>
+                        </p:fieldset>
+                    </li>
+                    <li style="width: 100%">
+                        <p:outputLabel for="ownerName">Owner/Contact Name</p:outputLabel><br/>
+                        <h:outputText id="ownerName" value="#{currentForm.noaPpLat5Collection[0].contactName}" />
+                    </li>
+                    <li>
+                        <p:outputLabel for="contactPhone">Contact Phone</p:outputLabel><br/>
+                        <h:outputText id="contactPhone" value="#{currentForm.noaPpLat5Collection[0].contactPhone}">
+                            <o:convertMask mask="(###) ###-####" />
+                        </h:outputText>
+                    </li>
+                    <li>
+                        <p:outputLabel for="contactFax">Contact Fax</p:outputLabel><br/>
+                        <h:outputText id="contactFax" value="#{currentForm.noaPpLat5Collection[0].contactFax}">
+                            <o:convertMask mask="(###) ###-####" />
+                        </h:outputText>
+                    </li>
+                    <li>
+                        <p:outputLabel for="contactEmail">Contact EMail</p:outputLabel><br/>
+                        <h:outputText id="contactEmail" value="#{currentForm.noaPpLat5Collection[0].contactEmail}" />
+                    </li>
+                    <li style="width: 100%">
+                        <p:outputLabel for="contactSendEmails">Subscribe to assessor's mailing list</p:outputLabel><br/>
+                        <h:outputText id="contactSendEmails" value="#{currentForm.noaPpLat5Collection[0].contactSendEmails ? 'Yes' : 'No'}" />
+                    </li>
+                </ol>
+            </p:fieldset>
+            <h2>Section 1 - Inventories / Merchandise and Cost of Goods Used</h2>
+            <p:dataTable id="items" value="#{lat5Section1.inventoryRows}" var="ir" editable="false" widgetVar="itemsTable">
+                <p:column headerText="Month">
+                    #{ir.monthName}
+                </p:column>
+                <p:column headerText="Merchandise">
+                    <h:outputText value="#{ir.data['01'].inventoryAmt}">
+                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Raw Materials">
+                    <h:outputText value="#{ir.data['02'].inventoryAmt}">
+                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Work In Progress">
+                    <h:outputText value="#{ir.data['03'].inventoryAmt}">
+                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Finished Goods">
+                    <h:outputText value="#{ir.data['04'].inventoryAmt}">
+                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Supplies And/Or Goods Used">
+                    <h:outputText value="#{ir.data['05'].inventoryAmt}">
+                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Other">
+                    <h:outputText value="#{ir.data['99'].inventoryAmt}">
+                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Total">
+                    <h:outputText value="#{ir.total}">
+                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+            <p:panelGrid id="summary" layout="grid" columns="2" styleClass="summary">
+                <p:outputLabel>Grand Total</p:outputLabel>
+                <h:outputText value="#{lat5Section1.grandTotal}" style="text-align: right;">
+                    <f:convertNumber type="currency" maxFractionDigits="0"/>
+                </h:outputText>
+                <p:outputLabel>Average</p:outputLabel>
+                <h:outputText value="#{lat5Section1.average}" style="text-align: right;">
+                    <f:convertNumber type="currency" maxFractionDigits="0"/>
+                </h:outputText>
+            </p:panelGrid>
+            <h2>Section 2 - Furniture and Fixtures</h2>
+            <p:dataTable id="table" value="#{userSession.getCurrentFormFilingsWithCategory('08')}" var="f">
+                <p:column headerText="Property Type" width="475">
+                    <h:outputText value="#{f.propertyAsset.assetDescription}" />
+                </p:column>
+                <p:column headerText="Year of Acquisition" width="150">
+                    <h:outputText value="#{f.yracqd}" />
+                </p:column>
+                <p:column headerText="Acquisition Cost" width="150">
+                    <h:outputText value="#{f.acquisitionCost}">
+                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+            <p:panelGrid id="summary2" layout="grid" columns="2" styleClass="summary2">
+                <p:outputLabel>Grand Total</p:outputLabel>
+                <h:outputText value="#{userSession.getCurrentFormSumOfFilingsWithCategory('08')}" style="text-align: right;">
+                    <f:convertNumber type="currency" maxFractionDigits="0"/>
+                </h:outputText>
+            </p:panelGrid>
+            <h2>Section 3 - Machinery and Equipment</h2>
+            <p:dataTable id="table1" value="#{userSession.getCurrentFormFilingsWithCategory('10')}" var="f">
+                <p:column headerText="Property Type" width="475">
+                    <h:outputText value="#{f.propertyAsset.assetDescription}" />
+                </p:column>
+                <p:column headerText="Year of Acquisition" width="150">
+                    <h:outputText value="#{f.yracqd}" />
+                </p:column>
+                <p:column headerText="Acquisition Cost" width="150">
+                    <h:outputText value="#{f.acquisitionCost}">
+                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+            <p:panelGrid id="summary3" layout="grid" columns="2" styleClass="summary3">
+                <p:outputLabel>Grand Total</p:outputLabel>
+                <h:outputText value="#{userSession.getCurrentFormSumOfFilingsWithCategory('10')}" style="text-align: right;">
+                    <f:convertNumber type="currency" maxFractionDigits="0"/>
+                </h:outputText>
+            </p:panelGrid>
+            <h2>Section 4 - Leasehold Improvements and Miscellaneous Property</h2>
+            <p:dataTable id="table2" value="#{userSession.getCurrentFormFilingsWithCategory('13')}" var="f">
+                <p:column headerText="Property Type" width="350">
+                    <h:outputText value="#{f.propertyAsset.assetDescription}" />
+                </p:column>
+                <p:column headerText="Item" width="225">
+                    <h:outputText value="#{f.itemDescription}" />
+                </p:column>
+                <p:column width="80">
+                    <f:facet name="header">
+                        Year of<br/>Acquisition
+                    </f:facet>
+                    <h:outputText value="#{f.yracqd}" />
+                </p:column>
+                <p:column width="100">
+                    <f:facet name="header">
+                        Acquisition<br/>Cost
+                    </f:facet>
+                    <h:outputText value="#{f.acquisitionCost}">
+                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+            <p:panelGrid id="summary4" layout="grid" columns="2" styleClass="summary4">
+                <p:outputLabel>Grand Total</p:outputLabel>
+                <h:outputText value="#{userSession.getCurrentFormSumOfFilingsWithCategory('13')}" style="text-align: right;">
+                    <f:convertNumber type="currency" maxFractionDigits="0"/>
+                </h:outputText>
+            </p:panelGrid>            
+            <h2>Section 5 - Consigned Goods, Leased, Loaned or Rented Equipment, Furniture, Etc.</h2>
+            <p:dataTable id="table3" value="#{userSession.getCurrentFormFilingsWithCategory('99')}" var="f">
+                <p:column headerText="Property Description" width="165">
+                    <h:outputText value="#{f.itemDescription}"/>
+                </p:column>
+                <p:column headerText="Owner Name" width="165">
+                    <h:outputText value="#{f.consignerOwnerName}" />
+                </p:column>
+                <p:column width="115">
+                    <f:facet name="header">
+                        Owner<br/>Address
+                    </f:facet>
+                    <h:outputText value="#{f.consignerMailingAddr}" />
+                </p:column>
+                <p:column width="100">
+                    <f:facet name="header">
+                        Owner<br/>Phone #
+                    </f:facet>
+                    <h:outputText value="#{f.consignerTelNo}">
+                        <o:convertMask mask="(###) ###-####" />
+                    </h:outputText>
+                </p:column>
+                <p:column width="50">
+                    <f:facet name="header">
+                        Age of<br/>Property
+                    </f:facet>
+                    <h:outputText value="#{f.effectiveLife}"/>
+                </p:column>
+                <p:column width="115">
+                    <f:facet name="header">
+                        Monthly Rental<br/>Cost of Acquisition
+                    </f:facet>
+                    <h:outputText value="#{f.consignerRentalAmt}">
+                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+            <h2>Signature and Verification</h2>
+            <p>
+                “I declare under the penalties for filing false reports (R.S. 14:125; up to 500.00 fine or imprisonment for one year or both, plus
+                additional penalties defined in Act 2330B of the 1989 Regular Session) that this return has been examined by me and to the
+                best of my knowledge and belief is a true, correct and complete return.” “If the return is prepared by someone other than the
+                taxpayer, authorized officer, or partner, this form must be notarized.”
+            </p>
+            <p:fieldset id="fieldset" styleClass="narrow centered single">
+                <ol>
+                    <li>
+                        <p:outputLabel>Business Name</p:outputLabel><br/>
+                        <h:outputText value="#{currentForm.noaPpLat5Collection[0].ownername}" />
+                    </li>
+                    <li>
+                        <p:outputLabel for="preparedBy">Tax Preparer Name</p:outputLabel><br />
+                        <h:outputText id="preparedBy" value="#{currentForm.noaPpLat5Collection[0].taxPreparerName}" >
+                        </h:outputText>
+                    </li>
+                    <li>
+                        <p:outputLabel for="preparedByPhone">Tax Preparer Phone #</p:outputLabel><br />
+                        <h:outputText id="preparedByPhone" value="#{currentForm.noaPpLat5Collection[0].taxPreparerPhone}">
+                            <o:convertMask mask="(###) ###-####" />
+                        </h:outputText>
+                    </li>
+                    <li>
+                        <p:outputLabel for="preparedByEmail">Tax Preparer EMail</p:outputLabel><br />
+                        <h:outputText id="preparedByEmail" value="#{currentForm.noaPpLat5Collection[0].taxPreparerEmail}" >
+                        </h:outputText>
+                    </li>
+                </ol>
+            </p:fieldset>
+            <h2 class="noPrint">End of Form</h2>
+        </f:view>
+    </h:body>
+</html>
+

@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:c="jakarta.tags.core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/masterTemplate.xhtml">
+            <ui:define name="contentHeading">LAT 5</ui:define>
+            <ui:define name="content">
+                <ui:include src="/templates/sessionTemplate.xhtml" />
+                <div>
+                    <div style="float: left;"><h2>Validation</h2></div>
+                    <div style="float: right"><a href="help.html" onclick="javascript:void window.open('help.html#Validation','1359749959948','width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');return false;">Help</a></div>
+                </div>
+                <h:form id="form" prependId="false" style="float: left; width: 100%">
+                    <c:choose>
+                        <c:when test="#{userSession.currentFormSubmitted}">
+                            <iframe style="height: 460px; width: 100%; overflow-y: scroll" src="printable.xhtml" />
+                        </c:when>
+                        <c:when test="#{validate.valid}">
+                            <p>Your LAT 5 has been successfully validated and no errors were found.
+                               Please review the form below and click Next if you have no more changes.
+                            </p>
+                            <iframe style="height: 460px; width: 100%; overflow-y: scroll" src="printable.xhtml" />
+                        </c:when>
+                        <c:otherwise>
+                            <p>
+                                Your LAT 5 is not valid.  Please be sure that you have filled in the data in at least
+                                one of Sections 1 through 5.
+                            </p>
+                        </c:otherwise>
+                    </c:choose>
+                    <div class="submit">
+                        <p:button outcome="previous" value="Previous" />
+                        <p:button rendered="#{validate.valid}" outcome="next" value="Next" />
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
+

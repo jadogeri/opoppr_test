@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:o="http://opoppr.svlogic.com/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+    <title>IGNORED</title>
+</h:head>
+<h:body>
+    <ui:composition template="/templates/masterTemplate.xhtml" style="width: 100%;">
+        <ui:define name="contentHeading">Admin Create User Account</ui:define>
+        <ui:define name="content">
+            <ui:include src="/templates/sessionTemplate.xhtml" />            
+            <div style="float: right"><a href="help.html"
+                    onclick="javascript:void window.open('forms/LAT5/help.html#Login','1359749959948','width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');return false;">Help</a>
+            </div>
+            <h:form id="form" >
+                <p:focus />
+                <p:growl id="messages" showSummary="true" showDetail="true" autoUpdate="true" life="5000"/>
+                <p:fieldset id="fieldset" styleClass="medium centered single">
+                    <ol>
+                        <c:if test="#{adminCreateUserAccount.createUserAccountFailed}">
+                            <li style="width: 100%">
+                                <span style="color:red">
+                                    You have entered an Email Address that already exists in the database.
+                                </span>
+                            </li>
+                        </c:if>
+                        <li>
+                            <p:outputLabel for="role">Role</p:outputLabel>                           
+                            <h:selectOneMenu id="role" value="#{adminCreateUserAccount.roleNameKey}" required="true">
+                            <f:selectItem itemValue="#{null}" itemLabel="-- Select a Role --" noSelectionOption="true" />
+                                <f:selectItems value="#{userList.roles}" />
+                            </h:selectOneMenu> 
+                        </li>
+                        <li>
+                            <p:outputLabel for="emailAddress">Email Address</p:outputLabel>
+                            <p:inputText id="emailAddress" label="Email Address" size="50" maxlength="75"
+                                value="#{adminCreateUserAccount.emailAddress}" required="true" placeholder="user@email.com">
+                                <f:validateLength maximum="75" />
+                                <o:validateEmail />
+                            </p:inputText>
+                        </li>
+                        <li>
+                            <p:outputLabel for="confirmEmailAddress">Confirm Email Address</p:outputLabel>
+                            <p:inputText id="confirmEmailAddress" label="Confirm Email Address" size="50" maxlength="75"
+                                value="#{adminCreateUserAccount.emailAddress}" required="true">
+                                <f:validateLength maximum="75" />
+                                <o:validateEmail />
+                                <o:validateEquals to="emailAddress" />
+                            </p:inputText>
+                        </li>
+                        <li>
+                            <p:outputLabel for="password">Password</p:outputLabel><br/>
+                            <p:tooltip for="password" showEvent="focus" hideEvent="blur" position="right" escape="false" value="#{msgs.passwordHint}" />
+                            <p:password required="true" label="Password" id="password" size="32" maxlength="32"
+                                value="#{adminCreateUserAccount.password}" alt="hint">
+                                <o:validatePassword />
+                            </p:password>
+                        </li>
+                        <li style="width: 100%">
+                            <p:outputLabel for="confirmPassword">Confirm Password</p:outputLabel>
+                            <p:tooltip for="confirmPassword" showEvent="focus" hideEvent="blur" position="right" escape="false" value="#{msgs.passwordHint}" />
+                            <p:password required="true" label="Confirm Password" id="confirmPassword" size="32"
+                                maxlength="32" value="#{adminCreateUserAccount.password}">
+                                <o:validatePassword />
+                                <o:validateEquals to="password" />
+                            </p:password>
+                        </li>
+                        <li>
+                            <p:outputLabel for="fullName">Full Name</p:outputLabel>
+                            <p:inputText required="true" label="Full Name" id="fullName" size="50" maxlength="50"
+                                value="#{adminCreateUserAccount.fullName}">
+                                <o:validateFullName />
+                            </p:inputText>
+                        </li>
+                        <li>
+                            <p:outputLabel for="phoneNumber">Phone Number</p:outputLabel>
+                            <p:inputMask id="phoneNumber" mask="(999) 999-9999" label="PhoneNumber" size="14"
+                                maxlength="14" value="#{adminCreateUserAccount.phoneNumber}" required="true">
+                                <o:convertMask mask="(###) ###-####" />
+                                <o:validatePhoneNumber />
+                            </p:inputMask>
+                        </li>
+                    </ol>
+                    <div class="sub">
+                        <p:commandButton value="Submit" action="#{adminCreateUserAccount.createAccount()}" ajax="false" />
+                    </div>
+                </p:fieldset>
+            </h:form>
+            <!-- Ensure PrimeFlex is included in your project -->
+            <h:form styleClass="medium centered single">
+               
+                <h:panelGrid columns="2">
+                    <p:commandButton value="Generate Temporary Password" action="#{randomPasswordGenerator.generateSecurePassword}">
+                        <f:ajax render="password" /> 
+                    </p:commandButton>
+                    <h:inputText id="password" value="#{randomPasswordGenerator.generatedPassword}" 
+                        readonly="true" size="20" style="width: 200px;"
+                    />
+                </h:panelGrid>
+            </h:form>
+            <p:commandButton action="userManagement" value="previous" />
+        </ui:define>
+    </ui:composition>
+</h:body>
+
+</html>

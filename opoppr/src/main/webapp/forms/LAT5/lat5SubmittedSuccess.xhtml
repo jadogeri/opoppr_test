@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>IGNORED</title>
+</h:head>
+<h:body>
+    <ui:composition template="/templates/masterTemplate.xhtml">
+        <ui:include src="/templates/sessionTemplate.xhtml" />
+        <ui:define name="contentHeading">LAT 5 Successfully Submitted</ui:define>
+        <ui:define name="content">
+            <p>This is a confirmation that you have submitted a LAT5 on
+                #{DateFormat.getDateInstance().format(currentForm.lastModifiedDate)} for:</p>
+            <p>
+                Business Name: #{currentForm.noaPpLat5Collection[0].ownername}<br />
+                Business Address: #{currentForm.noaPpLat5Collection[0].addr1}<br />
+                Tax Bill number: #{currentForm.billNumber}
+            </p>
+            <p>We will review the LAT5 and contact you if additional information is required.</p>
+            <p>Thank you.</p>
+            <p>
+                Orleans Parish Assessor's Office<br />
+                Business Personal Property Department<br />
+                Contact Phone: 504 754-8818<br />
+                Contact Email: personal_property@orleansassessors.com
+            </p>
+            <p>
+                A copy of this information has been emailed to #{currentForm.noaPpLat5Collection[0].contactEmail}.
+            </p>
+        </ui:define>
+    </ui:composition>
+</h:body>
+
+</html>

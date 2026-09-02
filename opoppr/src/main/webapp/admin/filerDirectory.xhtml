@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui">
+    <f:metadata>
+        <f:viewParam name="activeTab" value="#{filerList.activeTab}" />
+        <f:viewParam name="searchEmailAddress" value="#{filerDetail.searchEmailAddress}" />
+        <f:viewAction action="#{filerDetail.performSearch}" onPostback="false" />
+    </f:metadata>
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+
+    <h:body>
+        <ui:composition template="/templates/masterTemplate.xhtml">
+            <ui:define name="contentHeading">Filer Directory</ui:define>
+            <ui:define name="content">
+                <ui:include src="/templates/sessionTemplate.xhtml" />
+                <p:growl id="messages" showDetail="true"  />
+
+                <div style="float: right"><a href="help.html" onclick="javascript:void window.open('forms/LAT5/help.html#Home', '1359749959948', 'width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');
+                            return false;">Help</a></div>
+                <h:form id="form">
+                    <p>The table below shows all of the filers and their associated forms in the database.</p>
+                    <p:tabView id="mainTabs" activeIndex="#{filerList.activeTab}" dynamic="true" cache="false" binding="#{filerList.tabView}">                    
+                        <p:tab title="Forms List">
+                            <div>
+                                <h2>Forms List</h2>
+                            </div>
+                            <p:dataTable id="formsTable" value="#{filerList.forms}" filteredValue="#{filerList.filteredForms}" var="form" 
+                                        paginator="true" rows="10" emptyMessage="No forms found for these criteria" rowHover="true"
+                                        onRowClick="var email = $(this).find('.forms-email-cell').text().trim(); 
+                                                        window.location.href='filerDirectory.xhtml?activeTab=2&amp;searchEmailAddress=' + encodeURIComponent(email);">                         
+                                <p:column headerText="Filer Name" filterBy="#{form.userId.fullName}" filterMatchMode="contains">
+                                    <h:outputText value="#{form.userId.fullName}" />
+                                </p:column>
+                                <p:column headerText="Email Address" filterBy="#{form.userId.emailAddress}" filterMatchMode="contains" styleClass="forms-email-cell">
+                                    <h:outputText value="#{form.userId.emailAddress}" style="font-weight: bold;" />
+                                </p:column>
+                                <p:column headerText="Tax Bill #" filterBy="#{form.billNumber}" filterMatchMode="contains" width="80">
+                                    <h:outputText value="#{form.billNumber}" style="font-weight: bold;"  size="10" maxlength="14"/>
+                                </p:column>
+                                <p:column headerText="Filing Year" filterBy="#{form.filingYear}" filterMatchMode="exact" width="80">
+                                    <h:outputText value="#{form.filingYear}"/>
+                                </p:column>
+                                <p:column headerText="Form Status" style="text-align: left;" width="100">
+                                    <i class="pi #{form.status.statusId eq 1 ? 'pi-plus-circle' : 
+                                                (form.status.statusId eq 2 ? 'pi-spinner' : 
+                                                (form.status.statusId eq 3 ? 'pi-send' : 
+                                                (form.status.statusId eq 4 ? 'pi-check-square' : 'pi-question-circle')))}" 
+                                    style="font-size: 1.2rem; vertical-align: middle; 
+                                            color: #{form.status.statusId eq 1 ? 'blue' : 
+                                                    (form.status.statusId eq 2 ? 'orange' : 
+                                                    (form.status.statusId eq 3 ? 'purple' : 
+                                                    (form.status.statusId eq 4 ? 'green' : 'gray')))};" />
+                                    
+                                    <h:outputText value=" #{form.status.name}" style="font-weight: bold; margin-left: 5px;" />
+                                </p:column>
+
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="Users List">
+                            <div>
+                                <h2>Users List</h2>
+                            </div>
+                            <p:dataTable id="usersTable" value="#{filerList.users}" filteredValue="#{filerList.filteredUsers}" var="user" 
+                                        paginator="true" rows="10" emptyMessage="No users found for these criteria" rowHover="true" 
+                                        onRowClick="var email = $(this).find('.users-email-cell').text().trim(); 
+                                            window.location.href='filerDirectory.xhtml?activeTab=2&amp;searchEmailAddress=' + encodeURIComponent(email);">                            
+                            
+                                <p:column headerText="Filer Name" filterBy="#{user.fullName}" filterMatchMode="contains">
+                                    <h:outputText value="#{user.fullName}" />
+                                </p:column>
+                                <p:column headerText="Email Address" filterBy="#{user.emailAddress}" filterMatchMode="contains" styleClass="users-email-cell">
+                                    <h:outputText value="#{user.emailAddress}" style="font-weight: bold;" />
+                                </p:column>
+                                <p:column headerText="Total Forms" filterBy="#{filerList.totalForms(user)}" filterMatchMode="contains" width="80">
+                                    <h:outputText value="#{filerList.totalForms(user)}" style="font-weight: bold;"  size="10" maxlength="14"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="User Details">
+                            <h:panelGroup id="searchContainer">
+                                <!-- Search Bar Layout -->
+                                <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                                    <p:inputText id="emailSearch" 
+                                                value="#{filerDetail.searchEmailAddress}" 
+                                                placeholder="e.g. user@example.com" 
+                                                style="width: 350px;" validatorMessage="Not a valid email address">
+                                        <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$" />                                   
+                                    </p:inputText>
+                                    <p:commandButton value="Search" 
+                                                    action="#{filerDetail.performSearch}" 
+                                                    update="searchContainer messages" 
+                                                    icon="pi pi-search" />                                    
+                                    <p:commandButton value="Clear" 
+                                                    action="#{filerDetail.clearSearch}" 
+                                                    update="searchContainer" 
+                                                    process="@this"
+                                                    styleClass="ui-button-flat ui-button-plain" />
+                                </div>
+                                <p:separator style="margin: 20px 0; color:black;" />
+                                <!-- Placeholder: Show when no search has been made -->
+                                <h:panelGroup rendered="#{empty filerDetail.selectedUser}">
+                                    <div style="padding: 50px; text-align: center; border: 2px dashed #e0e0e0; border-radius: 8px;">
+                                        <i class="pi pi-user-plus" style="font-size: 3rem; color: #ccc; margin-bottom: 15px;"></i>
+                                        <h3 style="color: #666;">Filer Lookup</h3>
+                                        <p style="color: #999;">Enter a user's email address above to view their management profile.</p>
+                                    </div>
+                                </h:panelGroup>
+                                <h:panelGroup id="resultsArea" rendered="#{not empty filerDetail.selectedUser}">
+                                    <p:tabView orientation="left" styleClass="vertical-tabs" style="margin-top: 20px;">                                        
+                                        <!-- TAB 1: PROFILE DETAILS -->
+                                        <p:tab title="Profile Details">
+                                            <div style="padding: 5px;">                                               
+                                                <div class="profile-section" style="margin-bottom: 30px; padding: 10px; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; border-width: 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                                                    <h4 style="margin-top: 0; color: #007ad9; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px;">
+                                                        <i class="pi pi-shield" style="margin-right: 10px;"></i>Account Security
+                                                    </h4>
+                                                    <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-3 ui-weight-bold, ui-grid-col-9" styleClass="ui-panelgrid-blank">
+                                                        <h:outputText value="Account Status:" />
+                                                        <p:tag value="#{filerDetail.selectedUser.userStatus.name}" severity="success" style="font-size: 0.9rem;" />
+                                                        <h:outputText value="Created:" />
+                                                        <h:outputText value="#{filerDetail.selectedUser.creationTime}" style="font-family: monospace; color: #666;" />                                                        
+                                                        <h:outputText value="Last Login:" />
+                                                        <h:outputText value="#{filerDetail.selectedUser.lastLoginTime}" style="color: #666;" >
+                                                            <f:convertDateTime pattern="MMM dd, yyyy" />
+                                                        </h:outputText>
+                                                    </p:panelGrid>
+                                                </div>
+                                                <!-- Section 2: Personal Information -->
+                                                <div class="profile-section" style="padding: 20px; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; border-width: 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                                                    <h4 style="margin-top: 0; color: #007ad9; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px;">
+                                                        <i class="pi pi-user" style="margin-right: 10px;"></i>Personal Information
+                                                    </h4>
+                                                    <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-3 ui-weight-bold, ui-grid-col-9" styleClass="ui-panelgrid-blank">
+                                                        <h:outputText value="Full Name:" />
+                                                        <h:outputText value="#{filerDetail.selectedUser.fullName}" />
+                                                        <h:outputText value="Email Address:" />
+                                                        <h:outputText value="#{filerDetail.selectedUser.emailAddress}" />
+                                                        <h:outputText value="Phone Number:" />
+                                                        <h:outputText value="#{filerDetail.selectedUser.phoneNumber}" />
+                                                    </p:panelGrid>
+                                                </div>
+                                            </div>
+                                        </p:tab>
+                                        <!-- TAB 2: FILING HISTORY -->
+                                        <p:tab title="Filing History">                                            
+                                            <div style="padding: 5px;">
+                                                <div style="margin-top: 1px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #e0e0e0; border-width: 2px; " >
+                                                                <!-- Section Header: Submission Archive (GOLD THEME) -->
+                                                    <div style="padding: 15px 20px; background: #d4af37; border-bottom: 1px solid #b8860b; display: flex; justify-content: space-between; align-items: center;">
+                                                        <h2 style="margin: 0; font-size: 1rem; color: #ffffff; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.2);">
+                                                            <i class="pi pi-history" style="margin-right: 8px; color: #fff; font-size: 0.9rem;"></i>Submission Archive
+                                                        </h2>
+                                                        <p:badge value="#{filerDetail.userForms.size()} FISCAL PERIOD#{filerDetail.userForms.size() == 1 ? '' : 'S'}" severity="info"
+                                                                style="font-size: 0.65rem; padding: 0 8px; background: #ffffff; color: #d4af37; border: none;" />
+                                                    </div>
+                                                    <!-- Scrollable Body: Enforces height and scrolling -->
+                                                    <div style="height: 257px; max-height: 257px; overflow-y: auto; scrollbar-width: thin; background: #f8fafc;  border-width:2px; border: width 10px;">                                                      
+                                                        <!-- Empty State -->
+                                                        <h:panelGroup rendered="#{empty filerDetail.userForms}">
+                                                            <div style="padding: 60px; text-align: center;">
+                                                                <i class="pi pi-folder-open" style="font-size: 3rem; color: #e2e8f0; margin-bottom: 15px; display: block;"></i>
+                                                                <p style="color: #718096; font-size: 1rem; margin: 0;">No history records found for this account.</p>
+                                                            </div>
+                                                        </h:panelGroup>
+                                                        <!-- Data Content -->
+                                                        <h:panelGroup rendered="#{not empty filerDetail.userForms}">
+                                                            <div style="padding: 15px 25px;">
+                                                                <ui:repeat value="#{filerDetail.userForms.entrySet().toArray()}" var="entry">
+                                                                    <!-- Year Panel -->
+                                                                    <p:panel toggleable="true" collapsed="true" style="margin-bottom: 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                                                                        <f:facet name="header">
+                                                                            <div style="display: flex; align-items: center; width: 100%;">
+                                                                                <i class="pi pi-calendar" style="margin-right: 12px; color: #007ad9;"></i>
+                                                                                <span style="font-weight: 700; color: #2d3748; font-size: 1.05rem;">Tax Year #{entry.key}</span>
+                                                                                <span style="margin-left: auto; background: #f1f5f9; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; color: #475569; font-weight: 600;">
+                                                                                    #{entry.value.size()} Forms
+                                                                                </span>
+                                                                            </div>
+                                                                        </f:facet>                                                                        
+                                                                        <!-- Form Table for the specific Year -->
+                                                                        <p:dataTable value="#{entry.value}" var="form" size="small" 
+                                                                                    styleClass="ui-datatable-borderless"
+                                                                                    rowHover="true" style="margin-top: 5px; border: 1px solid #f1f5f9;">                                                                            
+                                                                            <p:column headerText="Owner" style="width: 40%">
+                                                                                <div style="display: flex; align-items: center; gap: 10px;">
+                                                                                    <i class="pi pi-file-pdf" style="color: #ef4444;"></i>
+                                                                                    <h:outputText value="#{form.noaPpLat5Collection[0].ownername}" style="font-weight: 500; color: #1a202c;"/>
+                                                                                </div>
+                                                                            </p:column>
+                                                                            <p:column headerText="Tax Bill #" style="width: 25px">
+                                                                                <div style="display: flex; align-items: center; gap: 10px;">
+                                                                                    <h:outputText value="#{form.billNumber}" style="font-weight: 500; color: #1a202c;"/>
+                                                                                </div>
+                                                                            </p:column>
+                                                                            <p:column headerText="Last Modified" style="width: 25px">
+                                                                                <h:outputText value="#{form.lastModifiedDate}" style="color: #64748b;">
+                                                                                    <f:convertDateTime pattern="MMM dd, yyyy" />
+                                                                                </h:outputText>
+                                                                            </p:column>
+                                                                            <p:column headerText="Status" style="width: 25px; text-align: center;">
+                                                                                <p:tag value="#{form.status.name}" 
+                                                                                    severity="#{form.status.name eq 'Submitted' ? 'success' : 'warning'}" 
+                                                                                    rounded="true" />
+                                                                            </p:column>
+                                                                        </p:dataTable>
+                                                                    </p:panel>
+                                                                </ui:repeat>
+                                                            </div>
+                                                        </h:panelGroup>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </p:tab>
+                                    </p:tabView>
+                                </h:panelGroup>                                
+                            </h:panelGroup>
+                        </p:tab>                        
+                    </p:tabView>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

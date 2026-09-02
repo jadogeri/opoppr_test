@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>IGNORED</title>
+</h:head>
+<h:body>
+    <ui:composition template="/templates/masterTemplate.xhtml">
+        <ui:define name="contentHeading">LAT5 List</ui:define>
+        <ui:define name="content">
+            <ui:include src="/templates/sessionTemplate.xhtml" />
+            <p:growl id="messages" showDetail="true"  />
+            <div style="float: right"><a href="help.html" onclick="javascript:void window.open('forms/LAT5/help.html#Home', '1359749959948', 'width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');
+                        return false;">Help</a></div>
+            <h:form id="form">
+                <p>The table below shows all of the LAT5s for the given Filing Year.</p>
+                <p:fieldset styleClass="narrow double">
+                    <ol>
+                        <li>
+                            <p:outputLabel for="year">Filing Year</p:outputLabel>
+                            <p:selectOneMenu id="year" value="#{lat5List.filingYear}" required="true"
+                                label="Year of Filing">
+                                <f:selectItems value="#{lat5List.filingYears}" var="i" itemValue="#{i}"
+                                    itemLabel="#{i}" />
+                            </p:selectOneMenu>
+                        </li>
+                        <li>
+                            <p:commandButton value="Search" action="#{lat5List.search()}" ajax="false" />
+                        </li>
+                    </ol>
+                </p:fieldset>
+                <p:dataTable value="#{lat5List.forms}" var="f" filteredValue="#{lat5List.filteredForms}"
+                    paginator="true" rows="10">
+                    <p:column headerText="Parid" filterBy="#{f.noaPpLat5Collection[0].parid}" filterMatchMode="contains">
+                        <h:outputText value="#{f.noaPpLat5Collection[0].parid}" />
+                    </p:column>
+                    <p:column headerText="Bill Number" filterBy="#{f.noaPpLat5Collection[0].altid}" filterMatchMode="startsWith" width="100">
+                        <h:outputText value="#{f.noaPpLat5Collection[0].altid}" />
+                    </p:column>
+                    <p:column headerText="Owner Name" filterBy="#{f.noaPpLat5Collection[0].ownername}" filterMatchMode="contains">
+                        <h:outputText value="#{f.noaPpLat5Collection[0].ownername}" />
+                    </p:column>
+                    <p:column headerText="Status" filterBy="#{f.status.name}" filterMatchMode="contains"
+                        filterOptions="#{lat5List.statuses}" width="80">
+                        <h:outputText value="#{f.status.name}" />
+                    </p:column>
+                    <p:column headerText="Actions" width="80" >
+                        <p:toolbar>
+                            <p:toolbarGroup style="gap: 5px; align-items: center;justify-items: center;">
+                                <p:commandButton ajax="false" action="#{lat5List.viewLat5Form(f)}" icon="pi pi-list" title="View LAT5 Details" styleClass="ui-button-secondary" style="width:20px; height: 20px;" />
+                                <p:commandButton id="filerBtn"
+                                                action="#{lat5List.prepareFilerNavigation(f.userId)}" 
+                                                update=":form:confirmFilerDialog"
+                                                oncomplete="PF('filerConfirmWV').show()"
+                                                icon="#{empty f.userId.emailAddress ? 'pi pi-ban' : 'pi pi-user'}" 
+                                                styleClass="ui-button-info" 
+                                                disabled="#{empty f.userId.emailAddress}"
+                                                style="width:20px; height: 20px; 
+                                                        #{empty f.userId.emailAddress ? 'border: 1px solid red !important; background: #fff1f0 !important;' : ''}">
+                                    
+                                    <style>
+                                        #{empty f.userId.emailAddress ? '#form\\:filerBtn .ui-icon { color: red !important; opacity: 1 !important; }' : ''}
+                                    </style>
+                                </p:commandButton>
+
+                                <p:tooltip for="filerBtn" 
+                                        value="#{empty f.userId.emailAddress ? 'Email address is missing - cannot view info' : 'View Filer Information'}" 
+                                        position="top"/>
+                                <p:commandButton action="#{lat5List.selectForm(f)}" icon="pi pi-file-pdf" title="View Full Form" styleClass="ui-button-help" style="width:20px; height: 20px;" />
+                            </p:toolbarGroup>
+                        </p:toolbar>
+              
+                    </p:column>
+                </p:dataTable>
+                    <!-- Custom Confirmation Dialog -->
+                <p:dialog id="confirmFilerDialog" widgetVar="filerConfirmWV" header="Navigation Notice" modal="true" resizable="false">
+                    <h:panelGroup layout="block" style="margin-bottom: 15px;">
+                        <i class="pi pi-info-circle" style="color: #3B82F6; margin-right: 10px;"></i>
+                        <h:outputText value="Redirecting to Filer Management for: " />
+                        <h:outputText value="#{lat5List.selectedUser.emailAddress}" style="font-weight: bold;" />
+                    </h:panelGroup>
+                    
+                    <div style="text-align: right; gap: 10px; display: flex; justify-content: flex-end;">
+                        <p:button value="Proceed" outcome="filerDirectory" styleClass="ui-button-info">
+                            <f:param name="activeTab" value="2" /> <!-- Assuming Tab 3 (Index 2) is User Details -->
+                            <f:param name="searchEmailAddress" value="#{lat5List.selectedUser.emailAddress}" />
+                        </p:button>
+                        <p:commandButton value="Cancel" type="button" onclick="PF('filerConfirmWV').hide()" styleClass="ui-button-secondary" />
+                    </div>
+                </p:dialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+
+</html>

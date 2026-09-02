@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:o="http://opoppr.svlogic.com/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" >
+<h:head>
+    <title>IGNORED</title>
+</h:head>
+<h:body>
+    <ui:composition template="/templates/masterTemplate.xhtml">
+        <ui:define name="contentHeading">User Profile</ui:define>
+        <span><p>${userSession.currentUser.fullName}</p></span>
+        <ui:define name="content">
+            <ui:include src="/templates/sessionTemplate.xhtml" />
+            <div>
+                <br/>
+                <div style="float: right"><a href="help.html"
+                        onclick="javascript:void window.open('help.html#Home','1359749959948','width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');return false;">Help</a>
+                </div>
+            </div>
+                <p:dialog header="Change Password" widgetVar="changePassword" modal="true" height="300">
+                    <h:form id="form1" prependId="false">
+                        <p:focus />
+                        <p:growl id="messages" showSummary="true" showDetail="true" sticky="true" autoUpdate="true" />
+                        <!-- <p:growl id="toastMessages" life="7000" position="top-right" showSummary="true" showDetail="true" sticky="true" autoUpdate="true"/> -->
+                        <p:fieldset id="fieldset" styleClass="narrow centered single">
+                            <div>
+                                <ol>
+                                    <li style="#{resetPassword.resetPasswordFailed ? '' : 'display: none;'} width: 100%">
+                                        <span style="color:red">
+                                            There was an error updating your password. Please try again.
+                                        </span>
+                                    </li>
+                                    <li style="width: 100%">
+                                        <p:outputLabel for="newPassword">New Password</p:outputLabel>
+                                        <p:tooltip for="newPassword" showEvent="focus" hideEvent="blur" position="right"
+                                            escape="false" value="#{msgs.passwordHint}" />
+                                        <p:password required="true" label="Password" id="newPassword" size="32" maxlength="32"
+                                            value="#{resetPassword.password}">
+                                            <o:validatePassword />
+                                        </p:password>
+                                    </li>
+                                    <li style="width: 100%">
+                                        <p:outputLabel for="confirmNewPassword">Confirm New Password</p:outputLabel>
+                                        <p:tooltip for="confirmNewPassword" showEvent="focus" hideEvent="blur" position="right" escape="false" value="#{msgs.passwordHint}" />
+                                        <p:password required="true" label="Confirm New Password" id="confirmNewPassword" size="32"
+                                            maxlength="32" value="#{resetPassword.password}">
+                                            <o:validatePassword />
+                                            <o:validateEquals to="newPassword" />
+                                        </p:password>
+                                    </li>
+                                </ol>
+                                <div class="sub">
+                                    <p:commandButton value="Submit" action="#{resetPassword.resetProfilePassword(userSession.currentUser.userId)}" ajax="false" />
+                                </div>
+                            </div>
+                        </p:fieldset>
+                    </h:form>
+                        <!-- Add other components here, like input fields or another button to close it -->
+                </p:dialog>
+            <p:dialog header="Change Display Name" widgetVar="changeUsername" modal="true" height="300">
+                <h:outputText value="Change Email - This is the content of the dialog." />
+                <!-- Add other components here, like input fields or another button to close it -->
+            </p:dialog>
+            <h:form id="form" styleClass="saveForm" style="float: left; width: 100%">            
+                <p:growl id="messages" showSummary="true" showDetail="true" sticky="true" autoUpdate="true" />
+                <p:focus />
+                <o:disablePanel >
+                    <p:fieldset id="fieldset" styleClass="wide centered triple">
+                        <ol>
+                            <li style="width: 100%">
+                                <p:outputLabel for="businessName">Full Name</p:outputLabel>
+                                <span>(NOTE: If not current business owner, please contact assessor's office.</span>)
+                            </li>
+                            <h:outputText id="businessName" value="#{userSession.currentUser.fullName}"
+                                readonly="true" />
+                            <p:fieldset styleClass="medium triple">
+                                <ol>
+                                    <li style="width: 35%">
+                                        <p:outputLabel for="fullName">Full Name</p:outputLabel><br />
+                                        <p:inputText required="true" label="Full Name" id="fullName" size="30" maxlength="50"
+                                            value="#{userSession.currentUser.fullName}" >
+                                        <o:validateFullName />
+                                        </p:inputText>
+                                    </li>
+                                    <li style="width: 35%">
+                                        <p:outputLabel for="phoneNumber">Phone Number</p:outputLabel><br />
+                                        <p:inputMask id="phoneNumber" mask="(999) 999-9999" label="PhoneNumber" size="14"
+                                            maxlength="14" value="#{userSession.currentUser.phoneNumber}" required="true">
+                                            <o:convertMask mask="(###) ###-####" />
+                                            <o:validatePhoneNumber />
+                                        </p:inputMask>
+                                    </li>
+                                    <li style="width: 25%">
+                                        <p:outputLabel for="creationTime">Creation Date</p:outputLabel><br />
+                                        <h:outputText id="creationTime"  size="40" maxlength="40"
+                                            value="#{userSession.currentUser.creationTime}" />
+                                    </li>
+                                </ol>
+                                <ol>
+                                    <li style="width: 35%">
+                                        <p:outputLabel for="username">Username</p:outputLabel><br />
+                                        <h:outputText  required="true" label="User Name" id="username" size="30" maxlength="50"
+                                            value="#{userSession.currentUser.username}"  readonly="true" />
+                                    </li> 
+                                    <li style="width: 35%">
+                                        <p:outputLabel for="emailAddress">Email Address</p:outputLabel><br/>
+                                        <h:outputText id="emailAddress" label="Email Address" size="40" maxlength="75"
+                                            value="#{userSession.currentUser.emailAddress}" readonly="true"  placeholder="user@email.com" />
+                                    </li>
+                                    <li style="width: 30%">
+                                        <p:outputLabel for="lastLoginTime">Last Login Date</p:outputLabel><br />
+                                        <h:outputText id="lastLoginTime"  size="40" maxlength="40"
+                                            value="#{userSession.currentUser.lastLoginTime}" />
+                                    </li>
+                                </ol>
+                            </p:fieldset>
+                        </ol>
+                    </p:fieldset>
+                    
+                </o:disablePanel>
+                <p:commandButton value="Change Password" type="button" onclick="PF('changePassword').show();" />
+                <p:commandButton value="Save Changes" action="#{userProfile.updateProfile(userSession.currentUser.userId, userSession.currentUser)}"
+                    oncomplete="if (args.validationFailed) { PF('failureDialog').show(); setTimeout(function(){ PF('failureDialog').hide(); }, 3000); } 
+                                 else { PF('successDialog').show(); setTimeout(function(){ PF('successDialog').hide(); }, 3000); }" 
+                    onclick="window.onbeforeunload = null;"  >
+                      <f:ajax execute="@form" render=":navigationForm :form successDialog failureDialog" />                
+                </p:commandButton>
+                <p:dialog widgetVar="successDialog" header="Success" modal="true">
+                    <h:outputText value=" Profile updated successfully." />
+                    <p:commandButton value="Close" onclick="PF('successDialog').hide()" type="button" />
+                </p:dialog>
+                <p:dialog widgetVar="failureDialog" header="Failure" modal="true">
+                    <h:outputText value=" Failed to update profile." />
+                    <p:commandButton value="Close" onclick="PF('failureDialog').hide()" type="button" />                    
+                </p:dialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+
+</html>

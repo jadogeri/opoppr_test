@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="jakarta.faces.facelets"
+    xmlns:h="jakarta.faces.html" xmlns:p="http://primefaces.org/ui" xmlns:f="jakarta.faces.core"
+    xmlns:o="http://opoppr.svlogic.com/ui" xmlns:c="jakarta.tags.core">
+<h:head>
+    <title>IGNORED</title>
+</h:head>
+<h:body>
+    <ui:composition template="/templates/masterTemplate.xhtml">
+        <ui:define name="contentHeading">LAT 5</ui:define>
+        <ui:define name="content">
+            <ui:include src="/templates/sessionTemplate.xhtml" />
+            <div>
+                <div style="float: left;">
+                    <h2>Signature and Verification</h2>
+                </div>
+                <div style="float: right"><a href="help.html"
+                        onclick="javascript:void window.open('help.html#Submit','1359749959948','width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');return false;">Help</a>
+                </div>
+            </div>
+            <h:form id="form" styleClass="saveForm" prependId="false" style="float: left; width: 100%">
+                <p:growl id="messages" showSummary="true" showDetail="true" sticky="true" autoUpdate="true" />
+                <p:focus />
+                <p>
+                    “I declare under the penalties for filing false reports (R.S. 14:125; up to 500.00 fine or
+                    imprisonment for one year or both, plus
+                    additional penalties defined in Act 2330B of the 1989 Regular Session) that this return has been
+                    examined by me and to the
+                    best of my knowledge and belief is a true, correct and complete return.” “If the return is prepared
+                    by someone other than the
+                    taxpayer, authorized officer, or partner, this form must be notarized.”
+                </p>
+                <p>
+                    NOTE: Once you have submitted your LAT 5 form, you will no longer be allowed to make changes. Enter
+                    your PIN below
+                    as your signature.
+                </p>
+                <o:disablePanel disabled="#{userSession.currentFormSubmitted}">
+                    <p:fieldset id="fieldset" styleClass="narrow centered single">
+                        <ol>
+                            <li>
+                                <p:outputLabel>Business Name</p:outputLabel><br />
+                                <h:outputText value="#{currentForm.noaPpLat5Collection[0].ownername}" />
+                            </li>
+                            <li>
+                                <p:outputLabel for="preparedBy">Tax Preparer Name</p:outputLabel>
+                                <p:inputText id="preparedBy" label="Tax Preparer Name"
+                                    value="#{currentForm.noaPpLat5Collection[0].taxPreparerName}" size="50"
+                                    maxlength="50" required="true">
+                                    <f:validateLength maximum="50" />
+                                </p:inputText>
+                            </li>
+                            <li>
+                                <p:outputLabel for="preparedByPhone">Tax Preparer Phone #</p:outputLabel>
+                                <p:inputMask id="preparedByPhone" mask="(999) 999-9999" label="Tax Preparer Phone #"
+                                    value="#{currentForm.noaPpLat5Collection[0].taxPreparerPhone}" size="14"
+                                    maxlength="14" required="true">
+                                    <o:convertMask mask="(###) ###-####" />
+                                    <o:validatePhoneNumber />
+                                </p:inputMask>
+                            </li>
+                            <li>
+                                <p:outputLabel for="preparedByEmail">Tax Preparer EMail</p:outputLabel>
+                                <p:inputText id="preparedByEmail" label="Tax Preparer Email"
+                                    value="#{currentForm.noaPpLat5Collection[0].taxPreparerEmail}" size="50"
+                                    maxlength="75" required="true">
+                                    <f:validateLength maximum="75" />
+                                    <o:validateEmail />
+                                </p:inputText>
+                            </li>
+                            <li>
+                                <p:outputLabel for="confirmPreparedByEmail">Confirm Tax Preparer EMail</p:outputLabel>
+                                <p:inputText id="confirmPreparedByEmail" label="Confirm Tax Preparer Email"
+                                    value="#{currentForm.noaPpLat5Collection[0].taxPreparerEmail}" size="50"
+                                    maxlength="75" required="true">
+                                    <f:validateLength maximum="75" />
+                                    <o:validateEmail />
+                                    <o:validateEquals to="preparedByEmail" />
+                                </p:inputText>
+                            </li>
+                            <c:if test="#{lat5SignatureAndVerification.invalidPin}">
+                                <li>
+                                    <span style="color:red">You entered an invalid PIN.</span>
+                                </li>
+                            </c:if>
+                            <li>
+                                <p:outputLabel for="PIN">PIN</p:outputLabel>
+                                <p:password id="PIN" value="#{lat5SignatureAndVerification.pin}" size="6" maxlength="6"
+                                    required="true" />
+                            </li>
+                        </ol>
+                    </p:fieldset>
+                </o:disablePanel>
+                <div class="submit">
+                    <p:button outcome="previous" value="Previous" />
+                    <p:button outcome="${userSession.isAdmin() || userSession.isSuper() ? 'homeAdmin' : 'home'}"
+                        value="Home" rendered="#{userSession.currentFormSubmitted}" />
+                    <p:commandButton rendered="#{!userSession.currentFormSubmitted}"
+                        action="#{lat5SignatureAndVerification.submit()}" value="Submit" ajax="false" />
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</h:body>
+
+</html>

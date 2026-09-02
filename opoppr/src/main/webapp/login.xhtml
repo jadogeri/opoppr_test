@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{login.logout()}" />
+    </f:metadata>
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/masterTemplate.xhtml">
+            <ui:define name="contentHeading">Online Business Personal Property Reporting</ui:define>
+            <ui:define name="content">
+                <h:form id="form" prependId="false">
+                    <p:focus />
+                    <p:growl id="messages" showSummary="true" showDetail="true" sticky="true" autoUpdate="true" />
+                    <p>
+                        Welcome to the Orleans Parish Assessor’s Office Business Personal Property Reporting e-File page.
+                        This page allows you to electronically file your LAT-5 self-reporting form.
+                    </p>
+                    <p>
+                        If you are an agent submitting this form on behalf of a business owner, you must download and complete this
+                        <a href="resources/files/LETTER_OF_AUTHORIZATION.pdf"  target="_blank"> authorization form</a>.
+                        Completed forms must then be notarized and emailed to <a href="mailto:personalproperty@orleansassessors.com">personalproperty@orleansassessors.com</a>
+                    </p>
+                    <p>
+                        All LAT-5s must be completed and submitted by <u><strong>April 1</strong></u>. <strong>(Extended until <u>May 1, 2026</u>)</strong>
+                    </p>
+                    <p>
+                        To file online, you must first <a href="createUserAccount.xhtml">create an account </a> using your email address.<br/>
+                        <p>If you created an account last year,  you can login using the same email address to access the LAT-5 you filed last year and file the LAT-5 for the current tax year. </p>
+
+                        Once you have created an account and logged in, you will be able to enter the <strong>Tax ID</strong> number and <strong>PIN</strong> to add that business LAT-5 to your online account.<br/><br/>
+                        You can enter LAT-5's for multiple businesses under a single account as long as you have the <strong>Tax ID</strong> number and <strong>PIN</strong>,  and are an authorized agent or the business owner.
+                    </p>
+                    <p:fieldset id="fieldset" styleClass="medium centered double">
+                        <ol>
+                            <li>
+                                <div style="text-align: centered; font-weight: bold;">Already have an account?</div>
+                                <p:fieldset styleClass="reallyNarrow centered single">
+                                    <ol>
+                                        <li style="width: 100%; #{login.loginFailed ? '' : 'display: none;'}">
+                                            <span style="color:red">
+                                                #{login.loginFailedReason}
+                                            </span>
+                                        </li>
+                                        <li style="width: 100%">
+                                            <p:outputLabel for="username">Email Address</p:outputLabel>
+                                            <p:inputText required="true" label="Username" id="username" size="32" maxlength="75" value="#{login.username}" />
+                                        </li>
+                                        <li style="width: 100%">
+                                            <p:outputLabel for="password">Password</p:outputLabel>
+                                            <p:password required="true" label="password" id="password" size="32" maxlength="32" value="#{login.password}" />
+                                        </li>
+                                    </ol>
+                                    <div class="sub">
+                                        <p:button outcome="forgotPassword" value="Forgot Password" />
+                                        <p:commandButton value="Login" action="#{login.login()}" ajax="false" />
+                                    </div>
+                                </p:fieldset>
+                            </li>
+                            <li>
+                                <div style="text-align: centered; font-weight: bold;">Don't have an account?</div>
+                                <p:fieldset styleClass="reallyNarrow centered single">
+                                    <ol>
+                                        <li style="width: 100%">Click <strong>Create Account</strong> to submit a new account request.<br/><br/></li>
+                                        <li style="width: 24%">&nbsp;</li>
+                                        <li style="width: 52%">
+                                            <p:button value="Create Account" outcome="createUserAccount" ajax="false" />
+                                        </li>
+                                        <li style="width: 24%">&nbsp;</li>
+                                    </ol>
+                                    <div class="sub">&nbsp;</div>
+                                </p:fieldset>
+                            </li>
+                        </ol>
+                    </p:fieldset>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

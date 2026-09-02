@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>IGNORED</title>
+
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/masterTemplate.xhtml">
+            <ui:define name="contentHeading">Home</ui:define>
+            <ui:define name="content">
+                <div style="float: right"><a href="help.html" onclick="javascript:void window.open('forms/LAT5/help.html#Home', '1359749959948', 'width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');
+                        return false;">Help</a></div>
+                <h:form id="form">
+                    <p>The table below shows your returns and their current status.</p>
+                    <div id="fileNewLat5">
+                        <p:button outcome="fileNewLAT5" value="File New LAT5" ajax="false" />
+                    </div>
+                    <p:dataTable value="#{userSession.forms}" var="f">
+                        <p:column headerText="Name">
+                            <p:commandLink value="#{f.title}" action="#{home.selectForm(f)}" />
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{f.status.name}" />
+                        </p:column>
+                        <p:column headerText="Last Modified">
+                            <h:outputText value="#{f.lastModifiedDate}">
+                                <f:convertDateTime timeZone="CST" pattern="MM/dd/yyyy hh:mm a" />
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

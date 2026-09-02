@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="jakarta.faces.facelets"
+    xmlns:h="jakarta.faces.html" xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>IGNORED</title>
+</h:head>
+<h:body>
+    <ui:composition>
+        <h:form id="navigationForm">
+            <p:menubar>
+                <p:menuitem outcome="home" value="Home" id="home"
+                    rendered="#{userSession.currentUser != null and !userSession.isAdmin() and !userSession.isSuper()}" />
+                <p:menuitem outcome="homeAdmin" value="Home" id="homeAdmin"
+                    rendered="#{userSession.currentUser != null and (userSession.isAdmin() or userSession.isSuper())}" />
+                <p:menuitem outcome="contact" value="Contact Us" />
+                <p:menuitem outcome="faq" value="FAQ" />
+                <p:menuitem url="/resources/files/LETTER_OF_AUTHORIZATION.pdf" target="_blank"
+                    value="Authorization Form" />
+                <p:menuitem outcome="userProfile" value="${userSession.getUserFullName()}'s Profile" rendered="#{userSession.currentUser != null}" />
+                <p:menuitem outcome="login" value="Login" rendered="#{userSession.currentUser == null}" />
+                <p:menuitem outcome="logout" value="Logout ${userSession.getUserFullName()}"
+                    onclick="return confirmLogout();" rendered="#{userSession.currentUser != null}" />
+            </p:menubar>
+        </h:form>
+    </ui:composition>
+</h:body>
+
+</html>

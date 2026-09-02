@@ -1,0 +1,319 @@
+{
+  "configuration" : {
+    "scope" : "SoftwareSystem"
+  },
+  "description" : "Orleans Parish Online Personal Property Reporting",
+  "documentation" : { },
+  "id" : 0,
+  "model" : {
+    "people" : [ {
+      "description" : "A user who prepares and submits property tax reports online.",
+      "id" : "1",
+      "location" : "Unspecified",
+      "name" : "Tax Prepaper",
+      "properties" : {
+        "structurizr.dsl.identifier" : "taxpreparer"
+      },
+      "relationships" : [ {
+        "description" : "Prepares and submits property tax reports using",
+        "destinationId" : "5",
+        "id" : "9",
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Prepares and submits property tax reports using",
+        "destinationId" : "4",
+        "id" : "10",
+        "linkedRelationshipId" : "9",
+        "sourceId" : "1"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "A user with full administrative access to the system. Administrators can manage users, purge the OPOPPR database, import data, and run reports.",
+      "id" : "2",
+      "location" : "Unspecified",
+      "name" : "Administrator",
+      "properties" : {
+        "structurizr.dsl.identifier" : "administrator"
+      },
+      "relationships" : [ {
+        "description" : "Performs administrative functions using",
+        "destinationId" : "5",
+        "id" : "11",
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Performs administrative functions using",
+        "destinationId" : "4",
+        "id" : "12",
+        "linkedRelationshipId" : "11",
+        "sourceId" : "2"
+      }, {
+        "description" : "Imports OPOPPR data to",
+        "destinationId" : "8",
+        "id" : "13",
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "A user who has elevated privileges to run reports and flush the EntityManager cache.",
+      "id" : "3",
+      "location" : "Unspecified",
+      "name" : "Super User",
+      "properties" : {
+        "structurizr.dsl.identifier" : "superuser"
+      },
+      "relationships" : [ {
+        "description" : "Runs reports and flushes the EntityManager cache using",
+        "destinationId" : "5",
+        "id" : "14",
+        "sourceId" : "3",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Runs reports and flushes the EntityManager cache using",
+        "destinationId" : "4",
+        "id" : "15",
+        "linkedRelationshipId" : "14",
+        "sourceId" : "3"
+      } ],
+      "tags" : "Element,Person"
+    } ],
+    "softwareSystems" : [ {
+      "containers" : [ {
+        "description" : "Displays the user interface for the OPOPPR application.",
+        "documentation" : { },
+        "id" : "5",
+        "name" : "OPOPPR UI",
+        "properties" : {
+          "structurizr.dsl.identifier" : "opopprsystem.web"
+        },
+        "relationships" : [ {
+          "description" : "Is rendered by",
+          "destinationId" : "6",
+          "id" : "16",
+          "sourceId" : "5",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,UI",
+        "technology" : "JavaScript, HTML5"
+      }, {
+        "description" : "Renders the OPOPPR UI and processes user actions.",
+        "documentation" : { },
+        "id" : "6",
+        "name" : "OPOPPR Web Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "opopprsystem.wa"
+        },
+        "relationships" : [ {
+          "description" : "Reads from and writes to",
+          "destinationId" : "7",
+          "id" : "17",
+          "sourceId" : "6",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,AppServer",
+        "technology" : "Java, JSF, JPA"
+      }, {
+        "description" : "The database schema for the OPOPPR application.",
+        "documentation" : { },
+        "id" : "7",
+        "name" : "OPOPPR Database Schema",
+        "properties" : {
+          "structurizr.dsl.identifier" : "opopprsystem.db"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "MySQL"
+      } ],
+      "description" : "The Orleans Parish Online Personal Property Reporting system (OPOPPR) allows tax preparers to submit personal property tax reports online. The tools support preparation and submission of LAT5 forms.",
+      "documentation" : { },
+      "id" : "4",
+      "location" : "Unspecified",
+      "name" : "OPOPPR",
+      "properties" : {
+        "structurizr.dsl.identifier" : "opopprsystem"
+      },
+      "tags" : "Element,Software System"
+    }, {
+      "description" : "The Tax Reporting System is used by the Orleans Parish Tax Assessor's Office to manage and process property tax reports that were exported from OPOPPR.",
+      "documentation" : { },
+      "id" : "8",
+      "location" : "Unspecified",
+      "name" : "Tax Reporting System",
+      "properties" : {
+        "structurizr.dsl.identifier" : "taxreportingsystem"
+      },
+      "tags" : "Element,Software System,External Software System"
+    } ]
+  },
+  "name" : "OPOPPR",
+  "properties" : {
+    "structurizr.dsl" : "d29ya3NwYWNlICJPUE9QUFIiICJPcmxlYW5zIFBhcmlzaCBPbmxpbmUgUGVyc29uYWwgUHJvcGVydHkgUmVwb3J0aW5nIiB7CgogICAgIWlkZW50aWZpZXJzIGhpZXJhcmNoaWNhbAoKICAgIG1vZGVsIHsKICAgICAgICB0YXhQcmVwYXJlciA9IHBlcnNvbiAiVGF4IFByZXBhcGVyIiB7CiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBIHVzZXIgd2hvIHByZXBhcmVzIGFuZCBzdWJtaXRzIHByb3BlcnR5IHRheCByZXBvcnRzIG9ubGluZS4iCiAgICAgICAgICAgIHRhZ3MgIlBlcnNvbiIKICAgICAgICB9CgogICAgICAgIGFkbWluaXN0cmF0b3IgPSBwZXJzb24gIkFkbWluaXN0cmF0b3IiIHsKICAgICAgICAgICAgZGVzY3JpcHRpb24gIkEgdXNlciB3aXRoIGZ1bGwgYWRtaW5pc3RyYXRpdmUgYWNjZXNzIHRvIHRoZSBzeXN0ZW0uIEFkbWluaXN0cmF0b3JzIGNhbiBtYW5hZ2UgdXNlcnMsIHB1cmdlIHRoZSBPUE9QUFIgZGF0YWJhc2UsIGltcG9ydCBkYXRhLCBhbmQgcnVuIHJlcG9ydHMuIgogICAgICAgICAgICB0YWdzICJQZXJzb24iCiAgICAgICAgfQoKICAgICAgICBzdXBlclVzZXIgPSBwZXJzb24gIlN1cGVyIFVzZXIiIHsKICAgICAgICAgICAgZGVzY3JpcHRpb24gIkEgdXNlciB3aG8gaGFzIGVsZXZhdGVkIHByaXZpbGVnZXMgdG8gcnVuIHJlcG9ydHMgYW5kIGZsdXNoIHRoZSBFbnRpdHlNYW5hZ2VyIGNhY2hlLiIKICAgICAgICAgICAgdGFncyAiUGVyc29uIgogICAgICAgIH0KCiAgICAgICAgb3BvcHByU3lzdGVtID0gc29mdHdhcmVTeXN0ZW0gIk9QT1BQUiIgIHsKICAgICAgICAgICAgZGVzY3JpcHRpb24gIlRoZSBPcmxlYW5zIFBhcmlzaCBPbmxpbmUgUGVyc29uYWwgUHJvcGVydHkgUmVwb3J0aW5nIHN5c3RlbSAoT1BPUFBSKSBhbGxvd3MgdGF4IHByZXBhcmVycyB0byBzdWJtaXQgcGVyc29uYWwgcHJvcGVydHkgdGF4IHJlcG9ydHMgb25saW5lLiBUaGUgdG9vbHMgc3VwcG9ydCBwcmVwYXJhdGlvbiBhbmQgc3VibWlzc2lvbiBvZiBMQVQ1IGZvcm1zLiIKICAgICAgICAgICAgd2ViID0gY29udGFpbmVyICJPUE9QUFIgVUkiIHsKICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJEaXNwbGF5cyB0aGUgdXNlciBpbnRlcmZhY2UgZm9yIHRoZSBPUE9QUFIgYXBwbGljYXRpb24uIgogICAgICAgICAgICAgICAgdGVjaG5vbG9neSAiSmF2YVNjcmlwdCwgSFRNTDUiCiAgICAgICAgICAgICAgICB0YWdzICJVSSIKICAgICAgICAgICAgfQogICAgICAgICAgICB3YSA9IGNvbnRhaW5lciAiT1BPUFBSIFdlYiBBcHBsaWNhdGlvbiIgewogICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlJlbmRlcnMgdGhlIE9QT1BQUiBVSSBhbmQgcHJvY2Vzc2VzIHVzZXIgYWN0aW9ucy4iCiAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICJKYXZhLCBKU0YsIEpQQSIKICAgICAgICAgICAgICAgIHRhZ3MgIkFwcFNlcnZlciIKICAgICAgICAgICAgfQogICAgICAgICAgICBkYiA9IGNvbnRhaW5lciAiT1BPUFBSIERhdGFiYXNlIFNjaGVtYSIgewogICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlRoZSBkYXRhYmFzZSBzY2hlbWEgZm9yIHRoZSBPUE9QUFIgYXBwbGljYXRpb24uIgogICAgICAgICAgICAgICAgdGVjaG5vbG9neSAiTXlTUUwiCiAgICAgICAgICAgICAgICB0YWdzICJEYXRhYmFzZSIKICAgICAgICAgICAgfQogICAgICAgIH0KCiAgICAgICAgdGF4UmVwb3J0aW5nU3lzdGVtID0gc29mdHdhcmVTeXN0ZW0gIlRheCBSZXBvcnRpbmcgU3lzdGVtIiB7CiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJUaGUgVGF4IFJlcG9ydGluZyBTeXN0ZW0gaXMgdXNlZCBieSB0aGUgT3JsZWFucyBQYXJpc2ggVGF4IEFzc2Vzc29yJ3MgT2ZmaWNlIHRvIG1hbmFnZSBhbmQgcHJvY2VzcyBwcm9wZXJ0eSB0YXggcmVwb3J0cyB0aGF0IHdlcmUgZXhwb3J0ZWQgZnJvbSBPUE9QUFIuIgogICAgICAgICAgICB0YWdzICJFeHRlcm5hbCBTb2Z0d2FyZSBTeXN0ZW0iCiAgICAgICAgfQoKICAgICAgICB0YXhQcmVwYXJlciAtPiBvcG9wcHJTeXN0ZW0ud2ViICJQcmVwYXJlcyBhbmQgc3VibWl0cyBwcm9wZXJ0eSB0YXggcmVwb3J0cyB1c2luZyIKICAgICAgICBhZG1pbmlzdHJhdG9yIC0+IG9wb3BwclN5c3RlbS53ZWIgIlBlcmZvcm1zIGFkbWluaXN0cmF0aXZlIGZ1bmN0aW9ucyB1c2luZyIKICAgICAgICBhZG1pbmlzdHJhdG9yIC0+IHRheFJlcG9ydGluZ1N5c3RlbSAiSW1wb3J0cyBPUE9QUFIgZGF0YSB0byIKICAgICAgICBzdXBlclVzZXIgLT4gb3BvcHByU3lzdGVtLndlYiAiUnVucyByZXBvcnRzIGFuZCBmbHVzaGVzIHRoZSBFbnRpdHlNYW5hZ2VyIGNhY2hlIHVzaW5nIgogICAgICAgIG9wb3BwclN5c3RlbS53ZWIgLT4gb3BvcHByU3lzdGVtLndhICJJcyByZW5kZXJlZCBieSIKICAgICAgICBvcG9wcHJTeXN0ZW0ud2EgLT4gb3BvcHByU3lzdGVtLmRiICJSZWFkcyBmcm9tIGFuZCB3cml0ZXMgdG8iCiAgICB9CgogICAgdmlld3MgewogICAgICAgIHN5c3RlbUxhbmRzY2FwZSBrZXkgIk9QT1BQUl9MYW5kc2NhcGVfRGlhZ3JhbSIgewogICAgICAgICAgaW5jbHVkZSAqIAogICAgICAgICAgYXV0b0xheW91dAogICAgICAgIH0KCiAgICAgICAgc3lzdGVtQ29udGV4dCBvcG9wcHJTeXN0ZW0gIk9QT1BQUl9Db250ZXh0X0RpYWdyYW0iIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgICAgIGF1dG9sYXlvdXQgbHIKICAgICAgICB9CgogICAgICAgIGNvbnRhaW5lciBvcG9wcHJTeXN0ZW0gIk9QT1BQUl9Db250YWluZXJfRGlhZ3JhbSIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b2xheW91dCBscgogICAgICAgIH0KCiAgICAgICAgc3R5bGVzIHsKICAgICAgICAgICAgZWxlbWVudCAiRWxlbWVudCIgewogICAgICAgICAgICAgICAgY29sb3IgI2ZmZmZmZgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIlBlcnNvbiIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjMDU1MjdkCiAgICAgICAgICAgICAgICBzaGFwZSBwZXJzb24KICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJTb2Z0d2FyZSBTeXN0ZW0iIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzA2NjI5NgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIkV4dGVybmFsIFNvZnR3YXJlIFN5c3RlbSIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjOTk5OTk5CiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiQXBwU2VydmVyIiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICMwNzczYWYKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJVSSIgewogICAgICAgICAgICAgICAgc2hhcGUgd2ViYnJvd3NlcgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIkRhdGFiYXNlIiB7CiAgICAgICAgICAgICAgICBzaGFwZSBjeWxpbmRlcgogICAgICAgICAgICB9CiAgICAgICAgfQogICAgfQoKICAgIGNvbmZpZ3VyYXRpb24gewogICAgICAgIHNjb3BlIHNvZnR3YXJlc3lzdGVtCiAgICB9Cgp9"
+  },
+  "views" : {
+    "configuration" : {
+      "branding" : { },
+      "styles" : {
+        "elements" : [ {
+          "color" : "#ffffff",
+          "tag" : "Element"
+        }, {
+          "background" : "#05527d",
+          "shape" : "Person",
+          "tag" : "Person"
+        }, {
+          "background" : "#066296",
+          "tag" : "Software System"
+        }, {
+          "background" : "#999999",
+          "tag" : "External Software System"
+        }, {
+          "background" : "#0773af",
+          "tag" : "AppServer"
+        }, {
+          "shape" : "WebBrowser",
+          "tag" : "UI"
+        }, {
+          "shape" : "Cylinder",
+          "tag" : "Database"
+        } ]
+      },
+      "terminology" : { }
+    },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "OPOPPR_Container_Diagram",
+      "order" : 3,
+      "relationships" : [ {
+        "id" : "11"
+      }, {
+        "id" : "14"
+      }, {
+        "id" : "16"
+      }, {
+        "id" : "17"
+      }, {
+        "id" : "9"
+      } ],
+      "softwareSystemId" : "4"
+    } ],
+    "systemContextViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "OPOPPR_Context_Diagram",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "10"
+      }, {
+        "id" : "12"
+      }, {
+        "id" : "15"
+      } ],
+      "softwareSystemId" : "4"
+    } ],
+    "systemLandscapeViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "description" : "OPOPPR_Landscape_Diagram",
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "key",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "10"
+      }, {
+        "id" : "12"
+      }, {
+        "id" : "13"
+      }, {
+        "id" : "15"
+      } ]
+    } ]
+  }
+}

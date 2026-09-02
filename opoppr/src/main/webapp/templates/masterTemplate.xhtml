@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="jakarta.faces.facelets"
+    xmlns:h="jakarta.faces.html"
+    xmlns:c="jakarta.tags.core"
+    xmlns:f="jakarta.faces.core">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <h:outputStylesheet name="opoppr.css" library="css" />
+    <!-- <h:outputStylesheet name="theme-compatibility.css" library="css" /> -->
+    <title>
+        <ui:insert name="pageTitle">OPOPPR - Orleans Parish Personal Property Reporting</ui:insert>
+    </title>
+    <ui:remove>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    </ui:remove>
+    <script>
+        $(function () {
+            // Set the unload message whenever any input element is changed.
+            $('.saveForm').on('change', 'input', function () {
+                setConfirmUnload(true);
+            });
+
+            // Turn off the unload message whenever a form is submitted properly.
+            $('form.saveForm').on('submit', function () {
+                setConfirmUnload(false);
+            });
+
+            // Turn off enter key on saveForms since submitting on such
+            // forms will be annoying.
+            $('form.saveForm').on('keypress', function (event) {
+                if (event.keyCode === 13) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            });
+
+            // Turn off the unload message when 'submitForm' button is clicked.
+            // (used for ajax submits).
+            $('.saveForm .submitForm').on('click', function () {
+                var ret;
+                if (!editingTable()) {
+                    setConfirmUnload(false);
+                    ret = true;
+                }
+                else {
+                    ret = false;
+                }
+                return ret;
+            });
+        });
+
+        function setConfirmUnload(on) {
+            var message = "You have unsaved data.";
+            window.onbeforeunload = (on) ? function () { return message; } : null;
+        }
+
+        function confirmLogout() {
+            var msg = "Are you sure that you want to log out of the application?";
+            return confirmPrompt(msg);
+        }
+
+        function confirmPrompt(msg) {
+            return window.confirm(msg);
+        }
+
+        function editingTable() {
+            var ret;
+            if ($(".ui-cell-editor-input:visible").length) {
+                alert('You must save or cancel all edits before proceeding to the next action. Please select the field and press the ENTER key to exit from the field. To delete a record, please select "Delete Row" at the top of the list.');
+                ret = true;
+            }
+            else {
+                ret = false;
+            }
+            return ret;
+        }
+    </script>
+</h:head>
+<h:body>
+    <f:view locale="en_US">
+        <div id="container">
+            <div id="header">
+                <ui:insert name="header">
+                    <ui:include src="/sections/common/header.xhtml" />
+                </ui:insert>
+            </div>
+            <div id="navigation">
+                <ui:insert name="navigation">
+                    <ui:include src="/sections/common/navigation.xhtml" />
+                </ui:insert>
+            </div>
+            <div id="content">
+                <h1>
+                    <ui:insert name="contentHeading">TODO: define contentHeading</ui:insert>
+                </h1>
+                <ui:insert name="content">TODO: define content.</ui:insert>
+            </div>
+            <div id="footer">
+                <ui:insert name="footer">
+                    <ui:include src="/sections/common/footer.xhtml" />
+                </ui:insert>
+            </div>
+        </div>
+    </f:view>
+</h:body>
+
+</html>

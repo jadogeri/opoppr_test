@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui" xmlns:o="http://opoppr.svlogic.com/ui"
+    xmlns:c="jakarta.tags.core">
+<f:metadata>
+    <f:event type="preRenderView" listener="#{lat5Section1.initConversation}" />
+</f:metadata>
+<h:head>
+    <title>IGNORED</title>
+</h:head>
+<h:body>
+    <ui:composition template="/templates/masterTemplate.xhtml">
+        <ui:define name="contentHeading">LAT 5</ui:define>
+        <ui:define name="content">
+            <ui:include src="/templates/sessionTemplate.xhtml" />
+            <div>
+                <div style="float: left;">
+                    <h2>Section 1 - Inventories / Merchandise and Cost of Goods Used</h2>
+                </div>
+                <div style="float: right"><a href="help.html"
+                        onclick="javascript:void window.open('help.html#Section1','1359749959948','width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');return false;">Help</a>
+                </div>
+            </div>
+            <h:form id="form" styleClass="saveForm" prependId="false" style="float: left; width: 100%">
+                <p:growl id="messages" showSummary="true" showDetail="true" autoUpdate="true" sticky="true" />
+                <o:disablePanel disabled="#{userSession.currentFormSubmitted}">
+                    <p:dataTable id="items" value="#{lat5Section1.inventoryRows}" var="ir" editable="#{!userSession.currentFormSubmitted}"
+                        editMode="cell" widgetVar="itemsTable">
+                        <p:column headerText="Month">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{ir.monthName}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{ir.monthName}" readonly="true" />
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Merchandise">
+                            <p:cellEditor>
+                                <f:facet name="input">
+                                    <p:inputText id="merchandise" readonly="#{userSession.currentFormSubmitted}"
+                                        label="Merchandise" value="#{ir.data['01'].inventoryAmt}" size="10"
+                                        maxlength="10" style="width: 100%">
+                                        <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" />
+                                        <f:validateLongRange minimum="0" maximum="9999999999" />
+                                        <p:ajax update="total,summary" />
+                                    </p:inputText>
+                                </f:facet>
+                                <f:facet name="output">
+                                    <h:outputText value="#{ir.data['01'].inventoryAmt}">
+                                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                                    </h:outputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Raw Materials">
+                            <p:cellEditor>
+                                <f:facet name="input">
+                                    <p:inputText id="rawMaterials" readonly="#{userSession.currentFormSubmitted}"
+                                        label="Raw Materials" value="#{ir.data['02'].inventoryAmt}" size="10"
+                                        maxlength="10" style="width: 100%">
+                                        <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" />
+                                        <f:validateLongRange minimum="0" maximum="9999999999" />
+                                        <p:ajax update="total,summary" />
+                                    </p:inputText>
+                                </f:facet>
+                                <f:facet name="output">
+                                    <h:outputText value="#{ir.data['02'].inventoryAmt}">
+                                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                                    </h:outputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Work In Process">
+                            <p:cellEditor>
+                                <f:facet name="input">
+                                    <p:inputText id="workInProgress" readonly="#{userSession.currentFormSubmitted}"
+                                        label="Work In Process" value="#{ir.data['03'].inventoryAmt}" size="10"
+                                        maxlength="10" style="width: 100%">
+                                        <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" />
+                                        <f:validateLongRange minimum="0" maximum="9999999999" />
+                                        <p:ajax update="total,summary" />
+                                    </p:inputText>
+                                </f:facet>
+                                <f:facet name="output">
+                                    <h:outputText value="#{ir.data['03'].inventoryAmt}">
+                                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                                    </h:outputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Finished Goods">
+                            <p:cellEditor>
+                                <f:facet name="input">
+                                    <p:inputText id="finishedGoods" readonly="#{userSession.currentFormSubmitted}"
+                                        label="Finished Goods" value="#{ir.data['04'].inventoryAmt}" size="10"
+                                        maxlength="10" style="width: 100%">
+                                        <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" />
+                                        <f:validateLongRange minimum="0" maximum="9999999999" />
+                                        <p:ajax update="total,summary" />
+                                    </p:inputText>
+                                </f:facet>
+                                <f:facet name="output">
+                                    <h:outputText value="#{ir.data['04'].inventoryAmt}">
+                                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                                    </h:outputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Supplies And/Or Goods Used">
+                            <p:cellEditor>
+                                <f:facet name="input">
+                                    <p:inputText id="supplies" readonly="#{userSession.currentFormSubmitted}"
+                                        label="Supplies And/Or Goods Used" value="#{ir.data['05'].inventoryAmt}"
+                                        size="10" maxlength="10" style="width: 100%">
+                                        <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" />
+                                        <f:validateLongRange minimum="0" maximum="9999999999" />
+                                        <p:ajax update="total,summary" />
+                                    </p:inputText>
+                                </f:facet>
+                                <f:facet name="output">
+                                    <h:outputText value="#{ir.data['05'].inventoryAmt}">
+                                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                                    </h:outputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Other">
+                            <p:cellEditor>
+                                <f:facet name="input">
+                                    <p:inputText id="other" readonly="#{userSession.currentFormSubmitted}" label="Other"
+                                        value="#{ir.data['99'].inventoryAmt}" size="10" maxlength="10"
+                                        style="width: 100%">
+                                        <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" />
+                                        <f:validateLongRange minimum="0" maximum="9999999999" />
+                                        <p:ajax update="total,summary" />
+                                    </p:inputText>
+                                </f:facet>
+                                <f:facet name="output">
+                                    <h:outputText value="#{ir.data['99'].inventoryAmt}">
+                                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                                    </h:outputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Total">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputLabel id="total" value="#{ir.total}">
+                                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                                    </h:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{ir.total}" readonly="true">
+                                        <f:convertNumber type="currency" maxFractionDigits="0" />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                    </p:dataTable>
+                </o:disablePanel>
+                <p:panelGrid id="summary" layout="grid" columns="2" styleClass="summary">
+                    <p:outputLabel>Grand Total</p:outputLabel>
+                    <h:outputText value="#{lat5Section1.grandTotal}">
+                        <f:convertNumber type="currency" maxFractionDigits="0"/>
+                    </h:outputText>
+                    <p:outputLabel>Average</p:outputLabel>
+                    <h:outputText value="#{lat5Section1.average}">
+                        <f:convertNumber type="currency" maxFractionDigits="0"/>
+                    </h:outputText>
+                </p:panelGrid>
+                <div class="submit">
+                    <p:button outcome="previous" rendered="#{userSession.currentFormSubmitted}" value="Previous" />
+                    <p:commandButton action="#{lat5Section1.previous()}" rendered="#{!userSession.currentFormSubmitted}"
+                        value="Previous" styleClass="submitForm" ajax="false" onclick2="PF('itemsTable').saveCell(PF('itemsTable').currentCell);return true;" />
+                    <p:button outcome="next" value="Next" rendered="#{userSession.currentFormSubmitted}" />
+                    <p:commandButton rendered="#{!userSession.currentFormSubmitted}" action="#{lat5Section1.next()}"
+                        value="Next" styleClass="submitForm" ajax="false" onclick2="PF('itemsTable').saveCell(PF('itemsTable').currentCell);return true;" />
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+
+</html>

@@ -1,0 +1,258 @@
+body
+{
+    background-color: black;
+    font-size: 10pt;
+}
+
+#container
+{
+    margin: 0 auto;
+    width: 960px;
+    background:#fff;
+}
+
+#header
+{
+    background: black;
+    width: 950px;
+    padding: 5px;
+    position: relative;
+}
+
+.siteTitle
+{
+    color: gold;
+    font-size: 24pt;
+    text-align: center;
+    position: absolute;
+    right: 1em;
+    bottom: 2em;
+}
+
+#header h1 { margin: 0; }
+
+#navigation
+{
+    float: left;
+    width: 960px;
+    background:#333;
+}
+
+#content
+{
+    clear: left;
+    width: 950px;
+    padding: 5px;
+    height: 600px;
+    position: relative;
+}
+
+#content h1 {margin: 0;}
+#content h2 {margin: 0;}
+
+#footer
+{
+    clear: both;
+    float: left;
+    background:#ccc;
+    width: 950px;
+    padding: 5px;
+    height: 1%;
+}
+
+.reallyNarrow
+{
+    width: 240px;
+}
+
+.narrow
+{
+    width: 480px;
+}
+
+.medium
+{
+    width: 720px;
+}
+
+.wide
+{
+    width: 900px;
+}
+
+.centered
+{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bottom
+{
+    position: absolute;
+    bottom: 50px;
+}
+
+#faq
+{
+    height: 570px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+fieldset 
+{
+    margin-top: 5px;
+}
+
+fieldset ol
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+fieldset li
+{
+    float: left;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 5px;
+}
+
+fieldset.single li { width: 100%; }
+fieldset.double li { width: 50%; }
+fieldset.triple li { width: 33.3%; }
+fieldset.quadruple li { width: 25%;}
+fieldset.quintuple li { width: 20%;}
+fieldset.sixtuple li { width: 16%; }
+
+fieldset li label
+{
+    text-align: left;
+    width: 100px;
+    font-weight: bold;
+}
+
+fieldset li input[type="text"], fieldset li input[type="password"], fieldset li select, fieldset li input[type="file"]
+{
+    display: block;
+}
+
+fieldset .sub
+{
+    clear: both;
+    text-align: right;
+    padding-top: 10px;
+    width: 100%;
+}
+
+.summary
+{
+    width: 25%;
+    margin-left: 75%;
+    font-weight: bold;
+}
+
+.summary2
+{   width: 375px;    
+    margin-right: 0;    
+    margin-left: auto;    
+    font-weight: bold;
+}
+
+.summary3
+{
+    width: 375px;    
+    margin-right: 0;    
+    margin-left: auto;    
+    font-weight: bold;
+}
+
+.summary4
+{
+    width: 245px;    
+    margin-right: 0;    
+    margin-left: auto;    
+    font-weight: bold;
+}
+
+.summary label {
+    font-weight: bold;
+}
+
+form .submit
+{
+    width: 100%;
+    text-align: right;
+    clear: both;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.ui-widget, .ui-widget .ui-widget
+{
+    font-size: 10pt;
+}
+
+li.ui-selectonemenu-item
+{
+    font-size: 10pt;
+}
+
+/*** overrides for primefaces sunny theme style ***/
+.ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled
+{
+    background-image: none;
+    opacity: 0.70;
+}
+.ui-icon-pencil {
+    background-position: 0px 0px;
+    width: 60px;
+    height: 15px;
+}
+
+.ui-icon-check {
+    background-position: 0px 0px;
+    width: 35px;
+    height: 15px;
+}
+
+.ui-icon-close {
+    background-position: 0px 0px;
+    width: 35px;
+    height: 15px;
+}
+
+.ui-datatable .ui-row-editor .ui-icon-pencil {
+    background-image: url("#{resource['images/edit.png']}");
+}
+
+.ui-datatable .ui-row-editor .ui-icon-check {
+    background-image: url("#{resource['images/save.png']}");
+}
+
+.ui-datatable .ui-row-editor .ui-icon-close {
+    background-image: url("#{resource['images/cancel.png']}");
+}
+
+@media print 
+{
+    .noPrint 
+    {
+        display:none;
+    }
+}
+
+.error
+{
+    background-color: red;
+    border-color: red;
+    color: red;
+}
+
+#fileNewLat5
+{
+    margin-bottom: 1rem;
+}

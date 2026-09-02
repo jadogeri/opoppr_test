@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="jakarta.faces.facelets"
+    xmlns:h="jakarta.faces.html" xmlns:p="http://primefaces.org/ui"
+    xmlns:c="jakarta.tags.core" xmlns:f="jakarta.faces.core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/masterTemplate.xhtml">
+            <ui:define name="contentHeading">File New LAT5</ui:define>
+            <ui:define name="content">
+                <div style="float: right"><a href="help.html"
+                        onclick="javascript:void window.open('forms/LAT5/help.html#Login','1359749959948','width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');return false;">Help</a>
+                </div>
+                <h:form id="form" prependId="false">
+                    <p:focus />
+                    <p:growl id="messages" showSummary="true" showDetail="true" sticky="true" autoUpdate="true" />
+                    <p>
+                        Enter the <strong>Bill Number</strong> and <strong>PIN</strong> that were sent to you in the mail.
+                    </p>
+                    <p:fieldset id="fieldset" styleClass="reallyNarrow centered single">
+                        <ol>
+                            <c:if test="#{fileNewLAT5.fileNewLAT5Failed}">
+                                <li>
+                                    <span style="color:red">
+                                        You have entered and invalid Bill Number and PIN.
+                                    </span>
+                                </li>
+                            </c:if>
+                            <li>
+                                <p:outputLabel for="billNumber">Bill Number</p:outputLabel>
+                                <p:inputText required="true" label="Bill Number" id="billNumber" size="25" maxlength="25"
+                                    value="#{fileNewLAT5.billNumber}" />
+                            </li>
+                            <li>
+                                <p:outputLabel for="PIN">PIN</p:outputLabel>
+                                <p:password required="true" label="PIN" id="PIN" size="6" maxlength="6"
+                                    value="#{fileNewLAT5.PIN}" />
+                            </li>
+                        </ol>
+                        <div class="sub">
+                            <p:commandButton value="Submit" action="#{fileNewLAT5.submit()}" ajax="false" />
+                        </div>
+                    </p:fieldset>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

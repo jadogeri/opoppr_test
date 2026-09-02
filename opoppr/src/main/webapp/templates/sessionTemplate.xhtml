@@ -1,0 +1,58 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:o="http://opoppr.svlogic.com/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:outputStylesheet name="opoppr.css" library="css" />
+    <script type="text/javascript">
+        //<![CDATA[
+        var idleWarnTimeout = 5 * 60 * 1000; // 5 minutes in milliseconds
+        var sessionExpireTimeout = 30 * 60 * 1000; // 30 minutes in milliseconds
+        var idleWarnTimer, sessionExpireTimer;
+
+
+        function startIdleTimers() {
+            // Set the 5-minute timer to show the warning dialog
+            idleWarnTimer = setTimeout(function() {
+                PF('idleWarnDialog').show();
+            }, idleWarnTimeout);
+
+            // Set the 30-minute timer to show the session expired dialog and redirect
+            sessionExpireTimer = setTimeout(function() {
+                PF('idleWarnDialog').hide(); // Hide the first dialog if it's open
+                PF('sessionExpiredDialog').show();
+                // The commandButton within sessionExpiredDialog handles the actual logout and redirect
+            }, sessionExpireTimeout);
+        }
+
+        // Function to reset timers on user activity (mouse movement, clicks, etc.)
+        function resetIdleTimers() {
+            clearTimeout(idleWarnTimer);
+            clearTimeout(sessionExpireTimer);
+            PF('idleWarnDialog').hide(); // Hide the warning dialog if it's shown
+            startIdleTimers();
+        }
+
+        // Listen for user activity events to reset timers
+        $(document).on('mousemove click keydown', function() {
+            resetIdleTimers();
+        });
+
+        // Initial start of timers when the page loads
+        $(document).ready(function() {
+            startIdleTimers();
+        });
+        //]]>
+    </script>
+    <h:form>
+        <!-- Modal 1: Idle for 5 minutes, dismissible by hover -->
+        <p:dialog widgetVar="idleWarnDialog" header="Session Warning" modal="true" closable="false" resizable="false" onmouseover="resetIdleTimers()">
+            <p>You have been idle for 5 minutes. Hover over this dialog or move your mouse to continue your session.</p>
+        </p:dialog>
+
+        <!-- Modal 2: Idle for 30 minutes, requires click, redirects -->
+        <p:dialog widgetVar="sessionExpiredDialog" header="Session Expired" modal="true" closable="false" resizable="false">
+            <p>Your session has expired due to 30 minutes of inactivity. Please log in again.</p>
+            <p:commandButton value="Log In" action="#{globalSession.logoutAndRedirect()}" ajax="false"/>
+        </p:dialog>
+    </h:form>
+</ui:composition>

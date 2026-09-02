@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="jakarta.faces.facelets"
+    xmlns:h="jakarta.faces.html" xmlns:p="http://primefaces.org/ui" xmlns:f="jakarta.faces.core"
+    xmlns:o="http://opoppr.svlogic.com/ui" xmlns:c="jakarta.tags.core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body> 
+        <ui:composition template="/templates/masterTemplate.xhtml">
+            <ui:define name="contentHeading">LAT 5 Details</ui:define>
+            <ui:define name="content">
+                <ui:include src="/templates/sessionTemplate.xhtml" />
+                <div>
+                    <div style="float: left;">
+                        <h4>#{lat5Detail.userSession.currentForm.noaPpLat5Collection[0].ownername}'s Information</h4>
+                    </div>
+                    <div style="float: right"><a href="help.html"
+                            onclick="javascript:void window.open('help.html#Home','1359749959948','width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');return false;">Help</a>
+                    </div>
+                </div>
+                <h:form id="form" styleClass="saveForm" style="float: left; width: 100%">
+                    <p:growl id="messages" showSummary="true" showDetail="true" sticky="true" autoUpdate="true" />
+                    <p:fieldset legend="Form Information" style="margin-bottom:10px">
+                        <h:panelGrid columns="4" 
+                                    columnClasses="inlineLabel, inlineValue, inlineLabel, inlineValue" 
+                                    cellpadding="3" 
+                                    style="width: 100%; border-collapse: collapse;">
+                            <h:outputLabel value="Business Name:" style="font-weight:bold; white-space:nowrap;" />
+                            <h:outputText value="#{lat5Detail.userSession.currentForm.noaPpLat5Collection[0].ownername}" />
+                            <h:outputLabel value="Form Id:" style="font-weight:bold; white-space:nowrap;" />
+                            <h:outputText value="#{lat5Detail.userSession.currentForm.formId}" />
+                            <h:outputLabel value="Business Type:" style="font-weight:bold; white-space:nowrap;" />
+                            <h:outputText value="#{lat5Detail.userSession.currentForm.noaPpLat5Collection[0].businessType.businessDescription}" />
+                            <h:outputLabel value="Tax Bill #:" style="font-weight:bold; white-space:nowrap;" />
+                            <h:outputText value="#{lat5Detail.userSession.currentForm.noaPpLat5Collection[0].altid}" />
+                            <h:outputLabel value="Business Parcel Id:" style="font-weight:bold; white-space:nowrap;" />
+                            <h:outputText value="#{lat5Detail.userSession.currentForm.noaPpLat5Collection[0].parid}" />
+                            <h:outputLabel value="Filing Year:" style="font-weight:bold; white-space:nowrap;" />
+                            <h:outputText value="#{lat5Detail.userSession.currentForm.noaPpLat5Collection[0].taxyr}" />
+                            <h:outputLabel value="Business Parcel Address:" style="font-weight:bold; white-space:nowrap;" />
+                            <h:outputText value="#{lat5Detail.userSession.currentForm.noaPpLat5Collection[0].propertyAddress}" />
+                            <h:outputLabel value="Form Status:" style="font-weight:bold; white-space:nowrap;" />
+                            <h:outputText value="#{lat5Detail.userSession.currentForm.status.name}" />
+                            <h:outputLabel value="Tax District:" style="font-weight:bold; white-space:nowrap;" />
+                            <h:outputText value="#{fn:substring(lat5Detail.userSession.currentForm.noaPpLat5Collection[0].altid,1,3)}" />
+                            <h:outputLabel value="Last Modified:" style="font-weight:bold; white-space:nowrap;" />
+                            <h:panelGroup>
+                                <h:outputText value="#{lat5Detail.userSession.currentForm.lastModifiedDate}" 
+                                            rendered="#{not empty lat5Detail.userSession.currentForm.lastModifiedDate}">
+                                    <f:convertDateTime pattern="MM/dd/yyyy h:mm a" timeZone="America/Chicago" />
+                                </h:outputText>
+                                <h:panelGroup rendered="#{empty lat5Detail.userSession.currentForm.lastModifiedDate and lat5Detail.userSession.currentForm.status.statusId == 1}">
+                                    <span style="color: green; font-weight: bold;">NEW</span>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{lat5Detail.userSession.currentForm.status.statusId == 4}">
+                                    <span style="color: red; font-weight: bold;">CLOSED</span>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            
+                        </h:panelGrid>
+                    </p:fieldset>
+                    <style>
+                        .inlineLabel { width: 20%; }
+                        .inlineValue { width: 30%; }
+                    </style>
+                    <p:panel id="filerPanel" 
+                            widgetVar="filerPanelWV" 
+                            toggleable="true" 
+                            toggleableHeader="true" 
+                            collapsed="true">
+
+                        <f:facet name="header">
+                            <h:panelGroup id="panelHeaderText">
+                                <h:outputText value="Click to view or hide #{lat5Detail.userSession.currentForm.noaPpLat5Collection[0].ownername}'s contact and filer details" />
+                            </h:panelGroup>
+                        </f:facet>
+                        <p:fieldset legend="Contact and Filer's Information" style="margin-bottom:20px">
+                            <div style="display: flex; width: 100%; gap: 40px;">
+                                <h:panelGrid columns="2" cellpadding="7" style="flex: 1;">
+                                    <h:outputLabel value="Contact's Full Name:" style="font-weight:bold" />
+                                    <h:outputText value="#{lat5Detail.userSession.currentForm.noaPpLat5Collection[0].contactName}" />
+                                    <h:outputLabel value="Contact's Email Address:" style="font-weight:bold" />
+                                    <h:outputText value="#{lat5Detail.userSession.currentForm.noaPpLat5Collection[0].contactEmail}" />
+                                    <h:outputLabel value="Contact's Phone Number:" style="font-weight:bold" />
+                                    <h:outputText value="#{lat5Detail.userSession.currentForm.noaPpLat5Collection[0].contactPhone}" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="2" cellpadding="7" style="flex: 1;">
+                                    <h:outputLabel value="Filer's Full Name:" style="font-weight:bold" />
+                                    <h:outputText value="#{lat5Detail.userSession.currentForm.userId.fullName}" />                                    
+                                    <h:outputLabel value="Filer's Email Address:" style="font-weight:bold" />
+                                    <h:outputText value="#{lat5Detail.userSession.currentForm.userId.emailAddress}" />
+                                    <h:outputLabel value="Filer's Phone Number:" style="font-weight:bold" />
+                                    <h:outputText value="#{lat5Detail.userSession.currentForm.userId.phoneNumber}" />
+                                </h:panelGrid>                            
+                            </div>
+                        </p:fieldset>             
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>

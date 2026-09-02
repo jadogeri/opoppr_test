@@ -1,0 +1,198 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:o="http://opoppr.svlogic.com/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" >
+<h:head>
+    <title>IGNORED</title>
+</h:head>
+<h:body>
+    <ui:composition template="/templates/masterTemplate.xhtml">
+
+        <ui:define name="contentHeading">User Profile</ui:define>
+        <ui:define name="content">
+            <ui:include src="/templates/sessionTemplate.xhtml" />
+            <div>
+                <div style="float: left;">
+                    <div style="float: left;">
+                        <h:panelGroup layout="block" rendered="#{userList.isEditable}">
+                            <h2>Edit Mode</h2>
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" rendered="#{!userList.isEditable}">
+                            <h2>View Mode</h2>
+                        </h:panelGroup>
+                    </div>
+                </div>
+                <div style="float: right"><a href="help.html"
+                        onclick="javascript:void window.open('help.html#Home','1359749959948','width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');return false;">Help</a>
+                </div>
+            </div>
+            <p:dialog header="Change Password" widgetVar="changePassword" modal="true" height="300">
+                <h:form id="form1" prependId="false">
+                    <p:focus />
+                    <p:growl id="messages" showSummary="true" showDetail="true" sticky="true" autoUpdate="true" />
+                    <p:fieldset id="fieldset" styleClass="narrow centered single">
+                        <div>
+                            <ol>
+                                <li style="#{resetPassword.resetPasswordFailed ? '' : 'display: none;'} width: 100%">
+                                    <span style="color:red">
+                                        There was an error updating your password. Please try again.
+                                    </span>
+                                </li>
+                                <li style="width: 100%">
+                                    <p:outputLabel for="newPassword">New Password</p:outputLabel>
+                                    <p:tooltip for="newPassword" showEvent="focus" hideEvent="blur" position="right"
+                                        escape="false" value="#{msgs.passwordHint}" />
+                                    <p:password required="true" label="Password" id="newPassword" size="32" maxlength="32"
+                                        value="#{resetPassword.password}">
+                                        <o:validatePassword />
+                                    </p:password>
+                                </li>
+                                <li style="width: 100%">
+                                    <p:outputLabel for="confirmNewPassword">Confirm New Password</p:outputLabel>
+                                    <p:tooltip for="confirmNewPassword" showEvent="focus" hideEvent="blur" position="right" escape="false" value="#{msgs.passwordHint}" />
+                                    <p:password required="true" label="Confirm New Password" id="confirmNewPassword" size="32"
+                                        maxlength="32" value="#{resetPassword.password}">
+                                        <o:validatePassword />
+                                        <o:validateEquals to="newPassword" />
+                                    </p:password>
+                                </li>
+                            </ol>
+                            <div class="sub">
+                                <p:commandButton value="Submit" action="#{resetPassword.resetProfilePassword(userList.selectedUser.userId)}" ajax="false" />
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </h:form>
+            </p:dialog>
+            <p:dialog header="My Dialog Box" widgetVar="changeEmail" modal="true" height="300">
+                <h:outputText value="Change Email - This is the content of the dialog." />
+            </p:dialog>
+            <h:form id="form" styleClass="saveForm" style="float: left; width: 100%">
+                <p:growl id="messages" showSummary="true" showDetail="true" sticky="true" autoUpdate="true" />
+                <p:focus />
+                <o:disablePanel disabled="#{!userList.isEditable}">
+                    <p:fieldset id="fieldset" styleClass="wide centered triple">
+                        <ol>
+                            <li style="width: 100%">
+                                <p:outputLabel for="businessName">Full Name</p:outputLabel>
+                                <span>(NOTE: If not current business owner, please contact assessor's office.</span>)
+                            </li>
+                            <h:outputText id="businessName" value="#{userList.selectedUser.fullName}"
+                                readonly="true" />
+                            <p:fieldset styleClass="medium double">
+                                <ol>
+                                    <li style="width: 45%">
+                                        <p:outputLabel for="fullName">Full Name</p:outputLabel>
+                                        <p:inputText required="true" label="Full Name" id="fullName" size="40" maxlength="50"
+                                            value="#{userList.selectedUser.fullName}" >
+                                            <o:validateFullName />                                        
+                                        </p:inputText>
+                                    </li>
+                                    <li style="width: 25%">
+                                        <p:outputLabel for="role">Role</p:outputLabel>
+                                        <p:selectOneMenu id="role" label="Role" size="15" disabled="true"
+                                            value="#{userList.selectedUser.userRoleId.name}" required="true" style="width: 300px">
+                                            <f:selectItems value="#{userList.roles}" var="r"
+                                                itemValue="#{r.value}" itemLabel="#{r.value}"  />
+                                        </p:selectOneMenu>
+                                    </li>
+                                </ol>
+                                <ol>
+                                    <li style="width: 45%">
+                                        <p:outputLabel for="username">Username</p:outputLabel><br />
+                                        <h:outputText id="username" size="40" maxlength="50"
+                                            value="#{userList.selectedUser.username}" />
+                                    </li>
+                                    <li style="width: 25%">
+                                        <p:outputLabel for="status">Account Status</p:outputLabel>
+                                        <p:selectOneMenu id="status" label="Status" size="15"
+                                            value="#{userList.selectedUser.userStatus.name}" required="true" style="width: 300px;">
+                                            <f:selectItems value="#{userList.statuses}" var="r"
+                                                itemValue="#{r.value}" itemLabel="#{r.value}" />
+                                                    <!-- Call backend when selection changes -->
+                                        <p:ajax listener="#{adminUserProfile.onStatusChange(userList.selectedUser.userStatus.name, userList.selectedUser)}" process="@this"  update="messages" />
+                                        </p:selectOneMenu>
+                                        
+                                    </li>
+                                </ol>                                
+                                <ol>
+                                    <li style="width: 45%">
+                                        <p:outputLabel for="emailAddress">Email Address</p:outputLabel><br />
+                                        <h:outputText id="emailAddress" size="40" maxlength="75"
+                                            value="#{userList.selectedUser.emailAddress}" placeholder="user@email.com" />
+                                    </li>
+                                </ol>
+                                <ol>
+                                    <li>
+                                        <p:outputLabel for="phoneNumber">Phone Number</p:outputLabel>
+                                        <p:inputMask id="phoneNumber" mask="(999) 999-9999" label="PhoneNumber" size="14"
+                                            maxlength="14" value="#{userList.selectedUser.phoneNumber}" required="true">
+                                            <o:convertMask mask="(###) ###-####" />
+                                            <o:validatePhoneNumber />
+                                        </p:inputMask>
+                                    </li>
+                                </ol>
+                            </p:fieldset>
+                            <li style="width: 100%; list-style: none;">
+                                <p:fieldset styleClass="medium double">
+                                    <legend>Account History</legend>                                    
+                                    <ol style="display: flex; flex-wrap: wrap; padding: 0; margin: 0; list-style: none;">
+                                        <li style="flex: 0 0 50%;">
+                                            <p:outputLabel>User Id</p:outputLabel><br />
+                                            <h:outputText id="UserId" value="#{userList.selectedUser.userId}" />
+                                        </li>
+                                        <li style="flex: 0 0 50%;">
+                                            <p:outputLabel for="creationTime">Creation Date</p:outputLabel><br />
+                                            <h:outputText id="creationTime" value="#{userList.selectedUser.creationTime}">
+                                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
+                                            </h:outputText>
+                                        </li>
+                                    </ol>
+                                    <ol style="display: flex; flex-wrap: wrap; padding: 0; margin: 0; list-style: none; margin-top: 10px;">
+                                        <li style="flex: 0 0 50%;">
+                                            <p:outputLabel for="failedLogins">Failed Login Attempts</p:outputLabel><br />
+                                            <h:outputText id="failedLogins" value="#{userList.selectedUser.failedLogins}" />
+                                        </li>
+                                        <li style="flex: 0 0 50%;">
+                                            <p:outputLabel for="lastLoginTime">Last Login Date</p:outputLabel><br />
+                                            <h:outputText id="lastLoginTime" value="#{userList.selectedUser.lastLoginTime}">
+                                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
+                                            </h:outputText>
+                                        </li>
+                                    </ol>
+                                </p:fieldset>
+                            </li>
+                        </ol>
+                    </p:fieldset>
+                </o:disablePanel>
+                <div style="display: flex; align-items: center; width: 100%; margin-top: 10px;">
+                    <p:commandButton action="userManagement" value="previous" />
+                    <h:panelGroup rendered="#{userList.isEditable}" 
+                                layout="block" 
+                                style="margin-left: auto; display: flex; gap: 10px;">                        
+                        <p:commandButton value="Change Password" type="button" 
+                                        onclick="PF('changePassword').show();" update="growl" />            
+                        <p:commandButton value="Save Changes" action="#{adminUserProfile.adminUpdateProfile(userList.selectedUser.userId, userList.selectedUser)}"
+                            oncomplete="if (args.validationFailed) { PF('failureDialog').show(); setTimeout(function(){ PF('failureDialog').hide(); }, 3000); } 
+                                        else { PF('successDialog').show(); setTimeout(function(){ PF('successDialog').hide(); }, 3000); }" 
+                            onclick="window.onbeforeunload = null;"  >
+                            <f:ajax execute="@form" render=":navigationForm :form successDialog failureDialog" />                
+                        </p:commandButton>
+                        <p:dialog widgetVar="successDialog" header="Success" modal="true">
+                            <h:outputText value=" Profile updated successfully." />
+                            <p:commandButton value="Close" onclick="PF('successDialog').hide()" type="button" />
+                        </p:dialog>
+                        <p:dialog widgetVar="failureDialog" header="Failure" modal="true">
+                            <h:outputText value=" Failed to update profile." />
+                            <p:commandButton value="Close" onclick="PF('failureDialog').hide()" type="button" />                    
+                        </p:dialog>
+                    </h:panelGroup>                    
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+
+</html>

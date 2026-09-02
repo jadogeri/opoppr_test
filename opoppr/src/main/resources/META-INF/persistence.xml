@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+  <persistence-unit name="opopprPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <non-jta-data-source>java:comp/env/jdbc/OPOPPR</non-jta-data-source>
+    <class>com.svlogic.opoppr.model.PropertyAsset</class>
+    <class>com.svlogic.opoppr.model.NoaPpLat5</class>
+    <class>com.svlogic.opoppr.model.Account</class>
+    <class>com.svlogic.opoppr.model.FormType</class>
+    <class>com.svlogic.opoppr.model.NoaPpLat5Inventories</class>
+    <class>com.svlogic.opoppr.model.NoaPpLat5Filing</class>
+    <class>com.svlogic.opoppr.model.Status</class>
+    <class>com.svlogic.opoppr.model.Form</class>
+    <class>com.svlogic.opoppr.model.User</class>
+    <class>com.svlogic.opoppr.model.UserRole</class>
+    <class>com.svlogic.opoppr.model.UserChangeType</class>
+    <class>com.svlogic.opoppr.model.UserChange</class>
+    <class>com.svlogic.opoppr.model.BusinessType</class>
+    <class>com.svlogic.opoppr.model.UserStatus</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+  </persistence-unit>
+</persistence>

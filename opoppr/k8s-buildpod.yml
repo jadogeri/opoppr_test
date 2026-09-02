@@ -1,0 +1,25 @@
+metadata:
+  labels:
+    some-label: opoppr-build-pod
+spec:
+  containers:
+  - name: jnlp
+    env:
+    - name: CONTAINER_ENV_VAR
+      value: jnlp
+  - name: maven
+    image: maven:3.6.3-openjdk-8
+    command:
+    - cat
+    tty: true
+    env:
+    - name: CONTAINER_ENV_VAR
+      value: maven
+  - name: busybox
+    image: busybox
+    command:
+    - cat
+    tty: true
+    env:
+    - name: CONTAINER_ENV_VAR
+      value: busybox

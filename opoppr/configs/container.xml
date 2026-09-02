@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/opoppr">
+    <Resource auth="Container"
+              driverClassName="com.mysql.jdbc.Driver"
+              initialSize="5"
+              logAbandoned="true"
+              maxActive="50"
+              maxIdle="15"
+              maxWait="60000"
+              name="jdbc/OPOPPR"
+              removeAbandoned="true"
+              type="javax.sql.DataSource"
+              url="jdbc:mysql://${dbHost}:${dbPort}/opoppr?zeroDateTimeBehavior=convertToNull&amp;useSSL=false"
+              username="${dbUsername}"
+              password="${dbPassword}"
+              testOnBorrow="true"
+              validationQuery="SELECT 1 FROM DUAL"
+              validationInterval="25000" />
+    <!--<Resource auth="Container"
+              mail.transport.protocol="smtp"
+              mail.smtp.host="${smtpHost}"
+              mail.smtp.port="${smtpPort}"
+              mail.smtp.starttls.enable="${smtpStartTLSEnable}"
+              mail.smtp.auth="${smtpAuth}"
+              smtp.user="${smtpUsername}"
+              smtp.password="${smtpPassword}"
+              name="mail/Session"
+              type="javax.mail.Session" /> -->
+    <Manager pathname="" />
+    <!-- disables storage of sessions across restarts -->
+    <Resource auth="Container" factory="org.jboss.weld.resources.ManagerObjectFactory" name="BeanManager" type="javax.enterprise.inject.spi.BeanManager" />
+    <!-- Uncomment to enable injection into Servlet -->
+    <!-- <Listener className="org.jboss.weld.environment.tomcat.WeldLifecycleListener"/> -->
+    <Realm className="org.apache.catalina.realm.DataSourceRealm"
+           dataSourceName="jdbc/OPOPPR"
+           userTable="LOGIN"
+           userNameCol="USERNAME"
+           userCredCol="PASSWORD"
+           userRoleTable="LOGIN"
+           roleNameCol="USER_ROLE_NAME"
+           localDataSource="true" />
+</Context>

@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>IGNORED</title>
+</h:head>
+<h:body>
+    <ui:composition template="/templates/masterTemplate.xhtml">
+        <ui:define name="contentHeading">Administration</ui:define>
+        <ui:define name="content">
+            <div style="float: right"><a href="help.html"
+                    onclick="javascript:void window.open('forms/LAT5/help.html#Home', '1359749959948', 'width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');return false;">Help</a>
+            </div>
+            <h:form id="form">
+                <p>This page provides administrative functions that can be used to start and end a tax year as well as
+                    export data during a tax year.</p>
+                <p:fieldset styleClass="wide centered quadruple">
+                    <ol>
+                        <li style="#{userSession.isSuper() ? 'display: none' : ''}">
+                            <p:commandButton action="loadFromExport" value="Load From Export" />
+                        </li>
+                        <li style="#{userSession.isSuper() ? 'display: none' : ''}">
+                            <p>Load forms from export created from previous year tax season.</p>
+                        </li>
+                        <li style="#{userSession.isSuper() ? 'display: none' : ''}">
+                            <p:commandButton action="loadPropertyAssets" value="Load Property Assets file" />
+                        </li>
+                        <li style="#{userSession.isSuper() ? 'display: none' : ''}">
+                            <p>Load forms from export created from previous year tax season.</p>
+                        </li>
+                        <li style="#{userSession.isSuper() ? 'display: none' : ''}">
+                            <p:commandButton action="export" value="Export Submitted Forms" />
+                        </li>
+                        <li style="#{userSession.isSuper() ? 'display: none' : ''}">
+                            <p>Export submitted forms in CSV format.</p>
+                        </li>
+                        <li style="#{userSession.isSuper() ? 'display: none' : ''}">
+                            <p:commandButton action="close" value="Close Database" />
+                        </li>
+                        <li style="#{userSession.isSuper() ? 'display: none' : ''}">
+                            <p>Close the database to end the tax year. All accounts will be disabled.</p>
+                        </li>
+                        <li>
+                            <p:commandButton action="lat5List" value="LAT5 List" />
+                        </li>
+                        <li>
+                            <p>View all LAT5s for a given Filing Year.</p>
+                        </li>
+                        <li>
+                            <p:commandButton action="resetFormStatus" value="Reset Form Status" />
+                        </li>
+                        <li>
+                            <p>Reset status of submitted form.</p>
+                        </li>
+                        <li>
+                            <p:commandButton action="lat5StatusReport" value="LAT5 Status Report" />
+                        </li>
+                        <li>
+                            <p>Run the LAT 5 Status Report.</p>
+                        </li>
+                        <li style="#{userSession.isSuper() ? 'display: none' : ''}">
+                            <p:commandButton action="purge" value="Purge" />
+                        </li>
+                        <li style="#{userSession.isSuper() ? 'display: none' : ''}">
+                            <p>Purges all data from database.</p>
+                        </li>
+                        <li style="#{userSession.isSuper() ? 'display: none': ''}">
+                            <p:commandButton action="changeSystemAccountPassword" value="Change SA Password" />
+                        </li>
+                        <li style="#{userSession.isSuper() ? 'display: none' : ''}">
+                            <p>Change System Account passwords.</p>
+                        </li>
+                        <li style="#{userSession.isSuper() ? 'display: none': ''}">
+                            <p:commandButton action="#{homeAdmin.flushEntityManagerCache()}" value="Flush EM Cache" />
+                        </li>
+                        <li style="#{userSession.isSuper() ? 'display: none' : ''}">
+                            <p>Flush the EntityManager cache.</p>
+                        </li>
+                        <li style="#{userSession.isSuper() ? 'display: none' : ''}">
+                            <p:commandButton action="userManagement" value="User Management" />
+                        </li>
+                        <li style="#{userSession.isSuper() ? 'display: none' : ''}">
+                            <p> Ability to add, edit and delete user profile.</p>
+                        </li>
+                        <li>
+                            <p:commandButton action="filerDirectory" value="Filer Directory" />
+                        </li>
+                        <li>
+                            <p>Search and view filer profiles and historical form submissions.</p>
+                        </li>                        
+                    </ol>
+                </p:fieldset>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+
+</html>

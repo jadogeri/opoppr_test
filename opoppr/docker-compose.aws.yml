@@ -1,0 +1,17 @@
+services:
+  opoppr:
+    image: opoppr
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    networks:
+      opoppr-net:
+    ports:
+      - 80:8080
+    volumes:
+      - ${EB_LOG_BASE_DIR}/opoppr:/usr/local/tomcat/logs
+    env_file:
+      - .env
+
+networks:
+  opoppr-net:
