@@ -6,6 +6,7 @@ package com.svlogic.opoppr.forms.lat5;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.UUID;
 
 import com.svlogic.opoppr.model.NoaPpLat5Filing;
 import com.svlogic.opoppr.model.PropertyAsset;
@@ -19,6 +20,7 @@ public class Filing implements Serializable {
     private NoaPpLat5Filing noaPpLat5Filing;
     private Collection<PropertyAsset> propertyAssets;
     private boolean valid = true;
+    private final String sheetRowKey = UUID.randomUUID().toString();
 
     public Filing(Collection<PropertyAsset> propertyAssets) {
         this.propertyAssets = propertyAssets;
@@ -34,14 +36,15 @@ public class Filing implements Serializable {
     }
 
     public void setPptype(String pptype) {
-        this.pptype = pptype;
-        if (!pptype.isEmpty()) {
-            getNoaPpLat5Filing().setPropertyAsset(propertyAssets
-                    .stream()
-                    .filter(pa -> pa.getPptype().equals(pptype))
-                    .findFirst()
-                    .get());
+        this.pptype = pptype == null ? "" : pptype;
+        if (this.pptype.isEmpty()) {
+            getNoaPpLat5Filing().setPropertyAsset(null);
+            return;
         }
+        propertyAssets.stream()
+                .filter(pa -> pa.getPptype().equals(this.pptype))
+                .findFirst()
+                .ifPresent(pa -> getNoaPpLat5Filing().setPropertyAsset(pa));
     }
 
     public NoaPpLat5Filing getNoaPpLat5Filing() {
@@ -56,17 +59,30 @@ public class Filing implements Serializable {
     }
 
     public String getPropertyAssetDescription() {
-        String ret = "<not set>";
-        if (!pptype.isEmpty()) {
-            ret = propertyAssets
-                    .stream()
-                    .filter(pa -> pa.getPptype()
-                            .equals(pptype))
-                    .findFirst()
-                    .get()
-                    .getAssetDescription();
+        if (pptype.isEmpty() || propertyAssets == null) {
+            return "";
         }
-        return ret;
+        return propertyAssets.stream()
+                .filter(pa -> pa.getPptype().equals(pptype))
+                .map(PropertyAsset::getAssetDescription)
+                .findFirst()
+                .orElse("");
+    }
+
+    public void setPropertyAssetDescription(String description) {
+        if (description == null || description.isEmpty() || "Delete Row".equals(description)) {
+            setPptype("");
+            return;
+        }
+        propertyAssets.stream()
+                .filter(pa -> description.equals(pa.getAssetDescription()))
+                .map(PropertyAsset::getPptype)
+                .findFirst()
+                .ifPresent(this::setPptype);
+    }
+
+    public String getSheetRowKey() {
+        return sheetRowKey;
     }
 
     public boolean isValid(String category) {
