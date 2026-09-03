@@ -15,6 +15,7 @@
     <ui:composition template="/templates/masterTemplate.xhtml">
         <ui:define name="contentHeading">LAT 5</ui:define>
         <ui:define name="content">
+            <h:outputScript name="lat5-sheet.js" library="js" />
             <ui:include src="/templates/sessionTemplate.xhtml" />
             <div>
                 <div style="float: left;">
@@ -29,7 +30,7 @@
                 <o:disablePanel disabled="#{userSession.currentFormSubmitted}">
                     <pe:sheet id="filings" widgetVar="filingSheet" value="#{lat5Section4.filings}" var="f"
                         rowKey="#{f.sheetRowKey}" height="425" fixedRows="1" showRowHeaders="true"
-                        resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range"
+                        resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range" extender="filingSheetExtender"
                         emptyMessage="#{userSession.emptyTableMessage}" rowStyleClass="#{f.isValid('13') ? '' : 'error'}"
                         styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
                         <p:ajax event="change" update=":form:messages :form:summary" />
@@ -53,7 +54,7 @@
                     </h:outputText>
                 </p:panelGrid>
                 <div class="submit">
-                    <p:commandButton action="#{lat5Section4.addNewRow}" value="Add New Row" update="filings" rendered="#{!userSession.currentFormSubmitted}" />
+                    <p:commandButton id="addRowButton" styleClass="sheet-add-row" action="#{lat5Section4.addNewRow}" value="Add New Row" update="filings" rendered="#{!userSession.currentFormSubmitted}" />
                     <p:button outcome="previous" rendered="#{userSession.currentFormSubmitted}" value="Previous" />
                     <p:commandButton action="#{lat5Section4.previous()}" rendered="#{!userSession.currentFormSubmitted}"
                         value="Previous" ajax="false" styleClass="submitForm" />

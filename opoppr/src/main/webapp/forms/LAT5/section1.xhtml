@@ -15,6 +15,7 @@
     <ui:composition template="/templates/masterTemplate.xhtml">
         <ui:define name="contentHeading">LAT 5</ui:define>
         <ui:define name="content">
+            <h:outputScript name="lat5-sheet.js" library="js" />
             <ui:include src="/templates/sessionTemplate.xhtml" />
             <div>
                 <div style="float: left;">
@@ -29,7 +30,7 @@
                 <o:disablePanel disabled="#{userSession.currentFormSubmitted}">
                     <pe:sheet id="items" widgetVar="itemsSheet" value="#{lat5Section1.inventoryRows}" var="ir"
                         rowKey="#{ir.monthName}" height="425" fixedRows="1" fixedCols="1" showRowHeaders="true"
-                        resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range"
+                        resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range" extender="inventorySheetExtender"
                         styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
                         <p:ajax event="change" update=":form:messages :form:summary" />
                         
