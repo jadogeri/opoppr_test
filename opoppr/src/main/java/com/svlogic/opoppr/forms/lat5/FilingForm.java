@@ -100,13 +100,17 @@ abstract public class FilingForm extends EditableForm {
         return null;
     }
 
+    public void saveFilings() {
+        getUserSession().storeFilings(getAddUpdateFilings());
+        getUserSession().deleteFilings(getDeleteFilings());
+        setDirty(false);
+    }
+
     public String next() {
         if (!validateFilings()) {
             return null;
         }
-        getUserSession().storeFilings(getAddUpdateFilings());
-        getUserSession().deleteFilings(getDeleteFilings());
-        setDirty(false);
+        saveFilings();
         endConversation();
         return "next";
     }
@@ -115,9 +119,7 @@ abstract public class FilingForm extends EditableForm {
         if (!validateFilings()) {
             return null;
         }
-        getUserSession().storeFilings(getAddUpdateFilings());
-        getUserSession().deleteFilings(getDeleteFilings());
-        setDirty(false);
+        saveFilings();
         endConversation();
         return "previous";
     }
