@@ -29,7 +29,7 @@
                 <o:disablePanel disabled="#{userSession.currentFormSubmitted}">
                     <pe:sheet id="filings" widgetVar="filingSheet" value="#{lat5Section5.filings}" var="f"
                         rowKey="#{f.sheetRowKey}" height="425" fixedRows="1" showRowHeaders="true"
-                        resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range" extender="filingSheetExtender"
+                        resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range" extender="section5SheetExtender"
                         emptyMessage="#{userSession.emptyTableMessage}" rowStyleClass="#{f.isValid('99') ? '' : 'error'}"
                         styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
                         <p:ajax event="change" update=":form:messages" />

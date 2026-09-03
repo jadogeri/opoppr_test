@@ -47,7 +47,7 @@
         }
     }
 
-    function deleteSelectedRows() {
+    function deleteSelectedRows(deleteValue) {
         var bounds = selectionBounds(this);
         if (!bounds) {
             return;
@@ -57,12 +57,12 @@
         for (var row = bounds.startRow; row <= bounds.endRow; row++) {
             // The first column is the server-side property selector. Selecting
             // Delete Row clears pptype, which the existing save flow deletes.
-            changes.push([row, 0, "Delete Row"]);
+            changes.push([row, 0, deleteValue]);
         }
         this.setDataAtCell(changes, "contextMenu.deleteRow");
     }
 
-    function commonItems(includeRowActions) {
+    function commonItems(includeRowActions, deleteValue) {
         var items = {
             edit_cell: {
                 name: "Edit Cell",
@@ -79,7 +79,9 @@
             items.delete_row = {
                 name: "Delete Selected Row(s)",
                 disabled: hasSelection,
-                callback: deleteSelectedRows
+                callback: function () {
+                    deleteSelectedRows.call(this, deleteValue);
+                }
             };
         }
 
@@ -97,22 +99,26 @@
         return items;
     }
 
-    function configureSheet(includeRowActions) {
+    function configureSheet(includeRowActions, deleteValue) {
         // PrimeFaces Extensions passes the Sheet widget as this and Handsontable
         // uses the callbacks below with the table instance as their this value.
         this.cfg.contextMenu = {
-            items: commonItems(includeRowActions)
+            items: commonItems(includeRowActions, deleteValue)
         };
     }
 
     window.inventorySheetExtender = function () {
-        configureSheet.call(this, false);
+        configureSheet.call(this, false, "");
     };
 
     window.filingSheetExtender = function () {
-        configureSheet.call(this, true);
+        configureSheet.call(this, true, "Delete Row");
     };
 
     // Keep the name from code.txt available for any page that adopts the generic menu.
+    window.section5SheetExtender = function () {
+        configureSheet.call(this, true, "");
+    };
+
     window.sheetExtender = window.filingSheetExtender;
 }(window));
