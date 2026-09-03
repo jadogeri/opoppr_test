@@ -32,7 +32,7 @@
                         resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range" extender="section5SheetExtender"
                         emptyMessage="#{userSession.emptyTableMessage}" rowStyleClass="#{f.isValid('99') ? '' : 'error'}"
                         invalidCellStyleClass="lat5-required-cell" styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
-                        <p:ajax event="change" update=":form:messages" />
+                        <p:ajax event="change" listener="#{lat5Section5.saveFilings}" update=":form:messages" />
                         <pe:sheetcolumn headerText="Property Description" value="#{f.noaPpLat5Filing.itemDescription}" colType="text" colWidth="165" />
                         <pe:sheetcolumn headerText="Owner Name" value="#{f.noaPpLat5Filing.consignerOwnerName}" colType="text" colWidth="160" />
                         <pe:sheetcolumn headerText="Owner Address" value="#{f.noaPpLat5Filing.consignerMailingAddr}" colType="text" colWidth="225" />
