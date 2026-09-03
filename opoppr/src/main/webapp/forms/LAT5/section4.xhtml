@@ -33,7 +33,7 @@
                         resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range" extender="otherFilingSheetExtender"
                         emptyMessage="#{userSession.emptyTableMessage}" rowStyleClass="#{f.isValid('13') ? '' : 'error'}"
                         invalidCellStyleClass="lat5-required-cell" styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
-                        <p:ajax event="change" update=":form:messages :form:summary" />
+                        <p:ajax event="change" listener="#{lat5Section4.saveFilings}" update=":form:messages :form:summary" />
                         <pe:sheetcolumn headerText="Property Type" value="#{f.propertyAssetDescription}" colType="dropdown" selectItems="#{lat5Section4.propertyAssetDescriptions}" colWidth="350" />
                         <pe:sheetcolumn headerText="Item Description" value="#{f.noaPpLat5Filing.itemDescription}" colType="text" colWidth="225" />
                         <pe:sheetcolumn headerText="Year of Acquisition" value="#{f.noaPpLat5Filing.yracqd}" colType="numeric" numericLocale="en-US" numericPattern="0" colWidth="150">
