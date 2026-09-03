@@ -32,14 +32,14 @@
                         rowKey="#{f.sheetRowKey}" height="425" fixedRows="1" showRowHeaders="true"
                         resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range" extender="filingSheetExtender"
                         emptyMessage="#{userSession.emptyTableMessage}" rowStyleClass="#{f.isValid('10') ? '' : 'error'}"
-                        styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
+                        invalidCellStyleClass="lat5-required-cell" styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
                         <p:ajax event="change" update=":form:messages :form:summary" />
                         <pe:sheetcolumn headerText="Property Type" value="#{f.propertyAssetDescription}" colType="dropdown" selectItems="#{lat5Section3.propertyAssetDescriptions}" colWidth="475" />
                         <pe:sheetcolumn headerText="Year of Acquisition" value="#{f.noaPpLat5Filing.yracqd}" colType="numeric" numericLocale="en-US" numericPattern="0" colWidth="150">
                             <f:convertNumber maxFractionDigits="0" groupingUsed="false" />
                             <f:validateLongRange minimum="#{msgs.minYearOfAcquisition}" maximum="#{currentYear}" />
                         </pe:sheetcolumn>
-                        <pe:sheetcolumn headerText="Acquisition Cost" value="#{f.noaPpLat5Filing.acquisitionCost}" colType="numeric" numericLocale="en-US" numericPattern="$0,0" colWidth="150">
+                        <pe:sheetcolumn headerText="Acquisition Cost" value="#{f.noaPpLat5Filing.acquisitionCost}" colType="numeric" numericLocale="en-US" numericPattern="$#,##0" colWidth="150">
                             <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" groupingUsed="false" />
                             <f:validateLongRange minimum="0" maximum="9999999999" />
                         </pe:sheetcolumn>

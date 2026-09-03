@@ -104,18 +104,29 @@ public class Filing implements Serializable {
                 break;
 
             case "99":
-                this.valid = (getNoaPpLat5Filing().getItemDescription() == null
-                        || getNoaPpLat5Filing().getItemDescription().isEmpty())
-                        || ((getNoaPpLat5Filing().getConsignerOwnerName() != null
-                                && !getNoaPpLat5Filing().getConsignerOwnerName().isEmpty())
-                                && (getNoaPpLat5Filing().getConsignerMailingAddr() != null
-                                        && !getNoaPpLat5Filing().getConsignerMailingAddr().isEmpty())
-                                && (getNoaPpLat5Filing().getConsignerTelNo() != null
-                                        && !getNoaPpLat5Filing().getConsignerTelNo().isEmpty())
-                                && (getNoaPpLat5Filing().getEffectiveLife() != null
-                                        && getNoaPpLat5Filing().getEffectiveLife() >= 0)
-                                && (getNoaPpLat5Filing().getConsignerRentalAmt() != null
-                                        && getNoaPpLat5Filing().getConsignerRentalAmt() >= 0));
+                boolean hasItemDescription = getNoaPpLat5Filing().getItemDescription() != null
+                        && !getNoaPpLat5Filing().getItemDescription().trim().isEmpty();
+                boolean emptyConsignedRow = !hasItemDescription
+                        && (getNoaPpLat5Filing().getConsignerOwnerName() == null
+                                || getNoaPpLat5Filing().getConsignerOwnerName().trim().isEmpty())
+                        && (getNoaPpLat5Filing().getConsignerMailingAddr() == null
+                                || getNoaPpLat5Filing().getConsignerMailingAddr().trim().isEmpty())
+                        && (getNoaPpLat5Filing().getConsignerTelNo() == null
+                                || getNoaPpLat5Filing().getConsignerTelNo().trim().isEmpty())
+                        && getNoaPpLat5Filing().getEffectiveLife() == null
+                        && getNoaPpLat5Filing().getConsignerRentalAmt() == null;
+                this.valid = emptyConsignedRow
+                        || (hasItemDescription
+                                && getNoaPpLat5Filing().getConsignerOwnerName() != null
+                                && !getNoaPpLat5Filing().getConsignerOwnerName().trim().isEmpty()
+                                && getNoaPpLat5Filing().getConsignerMailingAddr() != null
+                                && !getNoaPpLat5Filing().getConsignerMailingAddr().trim().isEmpty()
+                                && getNoaPpLat5Filing().getConsignerTelNo() != null
+                                && !getNoaPpLat5Filing().getConsignerTelNo().trim().isEmpty()
+                                && getNoaPpLat5Filing().getEffectiveLife() != null
+                                && getNoaPpLat5Filing().getEffectiveLife() >= 0
+                                && getNoaPpLat5Filing().getConsignerRentalAmt() != null
+                                && getNoaPpLat5Filing().getConsignerRentalAmt() >= 0);
                 break;
         }
 

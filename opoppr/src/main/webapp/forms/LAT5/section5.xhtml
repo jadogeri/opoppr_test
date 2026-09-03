@@ -31,7 +31,7 @@
                         rowKey="#{f.sheetRowKey}" height="425" fixedRows="1" showRowHeaders="true"
                         resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range" extender="section5SheetExtender"
                         emptyMessage="#{userSession.emptyTableMessage}" rowStyleClass="#{f.isValid('99') ? '' : 'error'}"
-                        styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
+                        invalidCellStyleClass="lat5-required-cell" styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
                         <p:ajax event="change" update=":form:messages" />
                         <pe:sheetcolumn headerText="Property Description" value="#{f.noaPpLat5Filing.itemDescription}" colType="text" colWidth="165" />
                         <pe:sheetcolumn headerText="Owner Name" value="#{f.noaPpLat5Filing.consignerOwnerName}" colType="text" colWidth="160" />
@@ -41,7 +41,7 @@
                             <f:convertNumber maxIntegerDigits="3" maxFractionDigits="0" />
                             <f:validateLongRange minimum="0" maximum="999" />
                         </pe:sheetcolumn>
-                        <pe:sheetcolumn headerText="Monthly Rental" value="#{f.noaPpLat5Filing.consignerRentalAmt}" colType="numeric" numericLocale="en-US" numericPattern="$0,0" colWidth="145">
+                        <pe:sheetcolumn headerText="Monthly Rental" value="#{f.noaPpLat5Filing.consignerRentalAmt}" colType="numeric" numericLocale="en-US" numericPattern="$#,##0" colWidth="145">
                             <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" groupingUsed="false" />
                             <f:validateLongRange minimum="0" maximum="9999999999" />
                         </pe:sheetcolumn>
