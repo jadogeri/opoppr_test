@@ -32,7 +32,7 @@
                         rowKey="#{ir.monthName}" height="425" fixedRows="1" fixedCols="1" showRowHeaders="true"
                         resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range" extender="inventorySheetExtender"
                         styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
-                        <p:ajax event="change" update=":form:messages :form:summary" />
+                        <p:ajax event="change" listener="#{lat5Section1.saveInventories}" update=":form:messages :form:summary" />
                         
                         <pe:sheetcolumn headerText="Month" value="#{ir.monthName}" readOnly="true" colWidth="125" />
                         
