@@ -139,14 +139,19 @@ public class Section1 extends EditableForm implements Serializable {
         this.inventoryRows = inventoryRows;
     }
 
-    public String next() {
+    public void saveInventories() {
         getUserSession().storeInventories(listFromInventoryRows());
+        setDirty(false);
+    }
+
+    public String next() {
+        saveInventories();
         endConversation();
         return "next";
     }
 
     public String previous() {
-        getUserSession().storeInventories(listFromInventoryRows());
+        saveInventories();
         endConversation();
         return "previous";
     }
