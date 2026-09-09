@@ -356,3 +356,17 @@ li.ui-selectonemenu-item
     opacity: 1 !important;
     font-weight: 900 !important;
 }
+
+
+/* Required-field feedback for LAT5 sheets. */
+.opoppr-sheet .handsontable tr.lat5-required-row td {
+    background-color: #fff1f2;
+    color: #1e293b;
+}
+
+.opoppr-sheet .handsontable td.lat5-required-cell {
+    background-color: #fecaca !important;
+    border: 1px solid #dc2626 !important;
+    color: #111827 !important;
+    box-shadow: inset 0 0 0 1px rgba(220, 38, 38, 0.18);
+}

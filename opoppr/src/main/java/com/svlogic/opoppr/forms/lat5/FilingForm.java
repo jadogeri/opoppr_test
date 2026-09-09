@@ -85,14 +85,24 @@ abstract public class FilingForm extends EditableForm {
 
     public String upload() { return null; }
 
+    public void saveFilings() {
+        getUserSession().storeFilings(getAddUpdateFilings());
+        getUserSession().deleteFilings(getDeleteFilings());
+        setDirty(false);
+    }
+
     public String next() {
         if (!validateFilings()) {
             return null;
         }
+<<<<<<< HEAD
         this.showErrors = false;
         getUserSession().storeFilings(getAddUpdateFilings());
         getUserSession().deleteFilings(getDeleteFilings());
         setDirty(false);
+=======
+        saveFilings();
+>>>>>>> 8af8911a3e3abc61567b8985ca9d13072c1661e4
         endConversation();
         return "next";
     }
@@ -101,10 +111,14 @@ abstract public class FilingForm extends EditableForm {
         if (!validateFilings()) {
             return null;
         }
+<<<<<<< HEAD
         this.showErrors = false;
         getUserSession().storeFilings(getAddUpdateFilings());
         getUserSession().deleteFilings(getDeleteFilings());
         setDirty(false);
+=======
+        saveFilings();
+>>>>>>> 8af8911a3e3abc61567b8985ca9d13072c1661e4
         endConversation();
         return "previous";
     }

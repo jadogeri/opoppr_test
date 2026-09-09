@@ -14,6 +14,7 @@
     <ui:composition template="/templates/masterTemplate.xhtml">
         <ui:define name="contentHeading">LAT 5</ui:define>
         <ui:define name="content">
+<<<<<<< HEAD
 
                     <!-- FIXED CSS LOCATION: Embedded style tags must live inside ui:define tags to append safely to the rendered view -->
             <style type="text/css">
@@ -29,6 +30,9 @@
                     border-left: 3px solid #d93025 !important;
                 }
             </style>
+=======
+            <h:outputScript name="lat5-sheet.js" library="js" />
+>>>>>>> 8af8911a3e3abc61567b8985ca9d13072c1661e4
             <ui:include src="/templates/sessionTemplate.xhtml" />
             <div>
                 <div style="float: left;">
@@ -47,8 +51,9 @@
                 <o:disablePanel disabled="#{userSession.currentFormSubmitted}">
                     <pe:sheet id="filings" widgetVar="filingSheet" value="#{lat5Section5.filings}" var="f"
                         rowKey="#{f.sheetRowKey}" height="425" fixedRows="1" showRowHeaders="true"
-                        resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range"
+                        resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range" extender="section5SheetExtender"
                         emptyMessage="#{userSession.emptyTableMessage}" rowStyleClass="#{f.isValid('99') ? '' : 'error'}"
+<<<<<<< HEAD
                         styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
                         
                         <!-- Ajax update target simplified to reflect prependId="false" on the parent form -->
@@ -60,6 +65,11 @@
                             <f:validateLength minimum="11" maximum="255" />
                         </pe:sheetcolumn>
 
+=======
+                        invalidCellStyleClass="lat5-required-cell" styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
+                        <p:ajax event="change" listener="#{lat5Section5.saveFilings}" update=":form:messages" />
+                        <pe:sheetcolumn headerText="Property Description" value="#{f.noaPpLat5Filing.itemDescription}" colType="text" colWidth="165" />
+>>>>>>> 8af8911a3e3abc61567b8985ca9d13072c1661e4
                         <pe:sheetcolumn headerText="Owner Name" value="#{f.noaPpLat5Filing.consignerOwnerName}" colType="text" colWidth="160" />
                         <pe:sheetcolumn headerText="Owner Address" value="#{f.noaPpLat5Filing.consignerMailingAddr}" colType="text" colWidth="225" />
                         <pe:sheetcolumn headerText="Owner Phone #" value="#{f.noaPpLat5Filing.consignerTelNo}" colType="text" colWidth="135" />
@@ -70,10 +80,14 @@
                             <f:convertNumber maxIntegerDigits="3" maxFractionDigits="0" />
                             <f:validateLongRange minimum="0" maximum="999" />
                         </pe:sheetcolumn>
+<<<<<<< HEAD
                         
                         <!-- Monthly Rental: Adds grid-error if it's less than 0, over 9999999999, or empty -->
                         <pe:sheetcolumn headerText="Monthly Rental" value="#{f.noaPpLat5Filing.consignerRentalAmt}" colType="numeric" numericLocale="en-US" numericPattern="0" colWidth="145"
                                         styleClass="#{(empty f.noaPpLat5Filing.consignerRentalAmt or f.noaPpLat5Filing.consignerRentalAmt lt 0 or f.noaPpLat5Filing.consignerRentalAmt gt 9999999999) ? 'grid-error' : ''}">
+=======
+                        <pe:sheetcolumn headerText="Monthly Rental" value="#{f.noaPpLat5Filing.consignerRentalAmt}" colType="numeric" numericLocale="en-US" numericPattern="$#,##0" colWidth="145">
+>>>>>>> 8af8911a3e3abc61567b8985ca9d13072c1661e4
                             <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" groupingUsed="false" />
                             <f:validateLongRange minimum="0" maximum="9999999999" />
                         </pe:sheetcolumn>
@@ -82,7 +96,7 @@
                 </o:disablePanel>
                 
                 <div class="submit">
-                    <p:commandButton action="#{lat5Section5.addNewRow}" value="Add New Row" update="filings" rendered="#{!userSession.currentFormSubmitted}" />
+                    <p:commandButton id="addRowButton" styleClass="sheet-add-row" action="#{lat5Section5.addNewRow}" value="Add New Row" update="filings" rendered="#{!userSession.currentFormSubmitted}" />
                     <p:button outcome="previous" rendered="#{userSession.currentFormSubmitted}" value="Previous" />
                     <p:commandButton action="#{lat5Section5.previous()}" rendered="#{!userSession.currentFormSubmitted}"
                         value="Previous" ajax="false" styleClass="submitForm" />
