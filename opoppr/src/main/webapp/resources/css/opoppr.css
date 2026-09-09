@@ -257,11 +257,13 @@ li.ui-selectonemenu-item
     margin-bottom: 1rem;
 }
 
-/* Excel-like editing surface for LAT5 filing grids. */
+/* ==========================================================================
+   1. STRUCTURAL WRAPPERS & FONTS
+   ========================================================================== */
 .opoppr-sheet {
     width: 100%;
     margin: 0.75rem 0 1rem;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #94a3b8;
     border-radius: 4px;
     overflow: hidden;
     background: #fff;
@@ -272,19 +274,42 @@ li.ui-selectonemenu-item
     font-size: 0.9rem;
 }
 
+/* ==========================================================================
+   2. HEADERS (NORMAL & ACTIVE FOCUS STATES)
+   ========================================================================== */
 .opoppr-sheet .handsontable th {
-    background: #e2e8f0;
+    background: gold;
     color: #1e293b;
     font-weight: 700;
-    border-color: #cbd5e1;
+    border-color: #94a3b8;
 }
 
+.opoppr-sheet .handsontable th.ht__active_highlight {
+    background: #cca300 !important;
+    color: #1e293b !important;
+}
+
+/* ==========================================================================
+   3. STANDARD CELLS & GLOBAL DARKER GRIDLINES
+   ========================================================================== */
+/* Bundled standard cells & error variants together to apply darker gridlines in one place */
+.opoppr-sheet .handsontable td,
+.opoppr-sheet tr.grid-error td,
+.opoppr-sheet td.cell-empty-error,
+.opoppr-sheet td.htInvalid {
+    border-right: 1px solid #94a3b8 !important;
+    border-bottom: 1px solid #94a3b8 !important;
+}
+
+/* Base cell background layout style */
 .opoppr-sheet .handsontable td {
-    background: #fff;
-    border-color: #e2e8f0;
+    background: #feeebd;
     color: #1e293b;
 }
 
+/* ==========================================================================
+   4. SELECTION STATES (HANDSONTABLE CORE DEFAULTS)
+   ========================================================================== */
 .opoppr-sheet .handsontable .current {
     background: #eff6ff;
 }
@@ -293,7 +318,41 @@ li.ui-selectonemenu-item
     background: rgba(59, 130, 246, 0.12);
 }
 
-.opoppr-sheet .handsontable .htInvalid {
-    background: #fee2e2;
-    border-color: #ef4444;
+/* ==========================================================================
+   5. VALIDATION & ERROR BACKGROUND OVERRIDES
+   ========================================================================== */
+.opoppr-sheet tr.grid-error td { 
+    background-color: #fdf0ee !important; 
+} 
+
+/* 
+   FIXED GLOBAL RULE:
+   Adding '.show-errors-active' ensures empty cells stay clean yellow 
+   initially. The thick 3px red boxes will wait to display until 
+   the user presses Next/Previous and navigation fails.
+*/
+.show-errors-active td.cell-empty-error,
+.show-errors-active td.htInvalid { 
+    background-color: #fce8e6 !important; 
+    border: 3px solid #d93025 !important; 
+} 
+
+
+/* Combined identical validation background rules */
+.opoppr-sheet td.cell-empty-error,
+.opoppr-sheet td.htInvalid { 
+    background-color: #fce8e6 !important; 
+    border: 3px solid #d93025 !important; 
+} 
+
+/* ==========================================================================
+   6. CONTRAST DROPDOWN ARROW INDICATORS
+   ========================================================================== */
+.opoppr-sheet .handsontable .changeType {
+    background: transparent !important;
+    color: #0f172a !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    font-weight: 900 !important;
 }

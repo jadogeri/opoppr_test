@@ -9,7 +9,7 @@
     <f:event type="preRenderView" listener="#{lat5Section1.initConversation}" />
 </f:metadata>
 <h:head>
-    <title>IGNORED</title>
+    <title>Inventories and Merchandise</title>
 </h:head>
 <h:body>
     <ui:composition template="/templates/masterTemplate.xhtml">
@@ -25,48 +25,51 @@
                 </div>
             </div>
             <h:form id="form" styleClass="saveForm" prependId="false" style="float: left; width: 100%">
-                <p:growl id="messages" showSummary="true" showDetail="true" autoUpdate="true" sticky="true" />
+                
+                <p:growl id="messages" showSummary="true" showDetail="true" sticky="true">
+                    <p:autoUpdate />
+                </p:growl>
+                
                 <o:disablePanel disabled="#{userSession.currentFormSubmitted}">
                     <pe:sheet id="items" widgetVar="itemsSheet" value="#{lat5Section1.inventoryRows}" var="ir"
                         rowKey="#{ir.monthName}" height="425" fixedRows="1" fixedCols="1" showRowHeaders="true"
                         resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range"
                         styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
-                        <p:ajax event="change" update=":form:messages :form:summary" />
+                        
+                        <!-- FIXED: Added process="items" to successfully capture spreadsheet entries during change calls -->
+                        <p:ajax event="change" process="items" update="summary" />
                         
                         <pe:sheetcolumn headerText="Month" value="#{ir.monthName}" readOnly="true" colWidth="125" />
                         
                         <pe:sheetcolumn headerText="Merchandise" value="#{ir.data['01'].inventoryAmt}" colType="numeric"
-                            numericLocale="en-US" numericPattern="$0,000" colWidth="145">
+                            numericLocale="en-US" numericPattern="$0,0.00" colWidth="145">
                             <f:validateLongRange minimum="0" maximum="9999999999" />
                         </pe:sheetcolumn>
                         
                         <pe:sheetcolumn headerText="Raw Materials" value="#{ir.data['02'].inventoryAmt}" colType="numeric"
-                            numericLocale="en-US" numericPattern="$0,000" colWidth="145">
+                            numericLocale="en-US" numericPattern="$0,0.00" colWidth="145">
                             <f:validateLongRange minimum="0" maximum="9999999999" />
                         </pe:sheetcolumn>
                         
                         <pe:sheetcolumn headerText="Work In Process" value="#{ir.data['03'].inventoryAmt}" colType="numeric"
-                            numericLocale="en-US" numericPattern="$0,000" colWidth="145">
+                            numericLocale="en-US" numericPattern="$0,0.00" colWidth="145">
                             <f:validateLongRange minimum="0" maximum="9999999999" />
                         </pe:sheetcolumn>
                         
                         <pe:sheetcolumn headerText="Finished Goods" value="#{ir.data['04'].inventoryAmt}" colType="numeric"
-                            numericLocale="en-US" numericPattern="$0,000" colWidth="145">
+                            numericLocale="en-US" numericPattern="$0,0.00" colWidth="145">
                             <f:validateLongRange minimum="0" maximum="9999999999" />
                         </pe:sheetcolumn>
                         
                         <pe:sheetcolumn headerText="Supplies And/Or Goods Used" value="#{ir.data['05'].inventoryAmt}" colType="numeric"
-                            numericLocale="en-US" numericPattern="$0,000" colWidth="190">
+                            numericLocale="en-US" numericPattern="$0,0.00" colWidth="190">
                             <f:validateLongRange minimum="0" maximum="9999999999" />
                         </pe:sheetcolumn>
                         
-                        <pe:sheetcolumn headerText="Other" value="#{ir.data['99'].inventoryAmt}" colType="numeric"
-                            numericLocale="en-US" numericPattern="$0,000" colWidth="125">
-                            <f:validateLongRange minimum="0" maximum="9999999999" />
-                        </pe:sheetcolumn>
+                        <!-- REMOVED: "Other" column block was deleted from here -->
                         
                         <pe:sheetcolumn headerText="Total" value="#{ir.total}" colType="numeric" readOnly="true"
-                            numericLocale="en-US" numericPattern="$0,000" colWidth="135">
+                            numericLocale="en-US" numericPattern="$0,0.00" colWidth="135">
                         </pe:sheetcolumn>
                     </pe:sheet>
                 </o:disablePanel>
@@ -85,10 +88,10 @@
                 <div class="submit">
                     <p:button outcome="previous" rendered="#{userSession.currentFormSubmitted}" value="Previous" />
                     <p:commandButton action="#{lat5Section1.previous()}" rendered="#{!userSession.currentFormSubmitted}"
-                        value="Previous" styleClass="submitForm" ajax="false" onclick2="" />
+                        value="Previous" styleClass="submitForm" ajax="false" />
                     <p:button outcome="next" value="Next" rendered="#{userSession.currentFormSubmitted}" />
                     <p:commandButton rendered="#{!userSession.currentFormSubmitted}" action="#{lat5Section1.next()}"
-                        value="Next" styleClass="submitForm" ajax="false" onclick2="" />
+                        value="Next" styleClass="submitForm" ajax="false" />
                 </div>
             </h:form>
         </ui:define>
