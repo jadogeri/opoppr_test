@@ -76,7 +76,16 @@
         this.setDataAtCell(changes, "contextMenu.deleteRow");
     }
 
-    function rowIsComplete(row, mode) {
+    function numericValueIsValid(value, range) {
+        if (isEmpty(value)) return false;
+        if (!range) return true;
+        var number = Number(value);
+        return Number.isFinite(number)
+            && (range.min === undefined || number >= range.min)
+            && (range.max === undefined || number <= range.max);
+    }
+
+    function rowIsComplete(row, mode, numericRanges) {
         if (mode === "none") return true;
         if (!row || !row.length) return false;
         if (mode === "consigned") {
@@ -87,7 +96,8 @@
         if (mode === "other" && String(row[0]).trim().toLowerCase() === "other miscellaneous property" && isEmpty(row[1])) return false;
         var yearColumn = mode === "other" ? 2 : 1;
         var costColumn = mode === "other" ? 3 : 2;
-        return !isEmpty(row[yearColumn]) && !isEmpty(row[costColumn]);
+        return numericValueIsValid(row[yearColumn], numericRanges && numericRanges[yearColumn])
+            && numericValueIsValid(row[costColumn], numericRanges && numericRanges[costColumn]);
     }
 
     function insertionDisabled() {
@@ -95,7 +105,7 @@
         if (!bounds) return true;
         var data = this.getData ? this.getData() : [];
         for (var row = bounds.startRow; row <= bounds.endRow; row++) {
-            if (!rowIsComplete(data[row], this.cfg.lat5ValidationMode)) return true;
+            if (!rowIsComplete(data[row], this.cfg.lat5ValidationMode, this.cfg.lat5ValidationRanges)) return true;
         }
         return false;
     }
@@ -140,7 +150,7 @@
         state.invalidRows[row] = true;
     }
 
-    function validateConditionalRow(row, state, mode) {
+    function validateConditionalRow(row, state, mode, numericRanges) {
         if (mode === "none") return;
         var active = row && row.some(function (value) { return !isEmpty(value); });
         if (!active) return;
@@ -157,18 +167,18 @@
         }
         var yearColumn = mode === "other" ? 2 : 1;
         var costColumn = mode === "other" ? 3 : 2;
-        if (isEmpty(row[yearColumn])) markInvalid(state, state.row, yearColumn);
-        if (isEmpty(row[costColumn])) markInvalid(state, state.row, costColumn);
+        if (!numericValueIsValid(row[yearColumn], numericRanges && numericRanges[yearColumn])) markInvalid(state, state.row, yearColumn);
+        if (!numericValueIsValid(row[costColumn], numericRanges && numericRanges[costColumn])) markInvalid(state, state.row, costColumn);
     }
 
-    function refreshRequiredState(sheet, state, mode) {
+    function refreshRequiredState(sheet, state, mode, numericRanges) {
         state.invalidCells = {};
         state.invalidRows = {};
         if (!state.validationActive) return;
         var data = sheet.getData ? sheet.getData() : [];
         data.forEach(function (row, rowIndex) {
             state.row = rowIndex;
-            validateConditionalRow(row, state, mode);
+            validateConditionalRow(row, state, mode, numericRanges);
         });
         delete state.row;
     }
@@ -188,7 +198,7 @@
             var entry = registry[key];
             if (!entry || !entry.sheet || !entry.sheet.ht) return;
             entry.state.validationActive = true;
-            refreshRequiredState(entry.sheet, entry.state, entry.options.validationMode);
+            refreshRequiredState(entry.sheet, entry.state, entry.options.validationMode, entry.options.numericRanges);
             entry.sheet.render();
         });
     }
@@ -222,6 +232,7 @@
      * @param {number} options.columnCount physical cell count used for deletion
      * @param {number[]} options.numericColumns zero-based numeric columns to sanitize
      * @param {string} options.validationMode none, standard, other, or consigned
+     * @param {Object} options.numericRanges optional inclusive numeric bounds by column
      */
     function configureSheet(options) {
         var state = { invalidCells: {}, invalidRows: {}, validationActive: false };
@@ -230,13 +241,14 @@
         var originalAfterRenderer = this.cfg.afterRenderer;
         var originalAfterInit = this.cfg.afterInit;
         this.cfg.lat5ValidationMode = options.validationMode;
+        this.cfg.lat5ValidationRanges = options.numericRanges || {};
         this.cfg.contextMenu = { items: commonItems(options) };
         this.cfg.beforeChange = function (changes, source) {
             sanitizeNumericChanges(changes, options.numericColumns);
             if (typeof originalBeforeChange === "function") originalBeforeChange.apply(this, arguments);
         };
         this.cfg.afterChange = function (changes, source) {
-            if (source !== "loadData" && state.validationActive) refreshRequiredState(this, state, options.validationMode);
+            if (source !== "loadData" && state.validationActive) refreshRequiredState(this, state, options.validationMode, options.numericRanges);
             if (typeof originalAfterChange === "function") originalAfterChange.apply(this, arguments);
         };
         this.cfg.afterInit = function () {
@@ -260,8 +272,8 @@
     }
 
     window.inventorySheetExtender = function () { configureSheet.call(this, { includeRowActions: false, deleteValue: "", clearEntireRow: false, columnCount: 8, numericColumns: [1, 2, 3, 4, 5, 6], validationMode: "none" }); };
-    window.filingSheetExtender = function () { configureSheet.call(this, { includeRowActions: true, deleteValue: "Delete Row", clearEntireRow: false, columnCount: 3, numericColumns: [1, 2], validationMode: "standard" }); };
-    window.otherFilingSheetExtender = function () { configureSheet.call(this, { includeRowActions: true, deleteValue: "Delete Row", clearEntireRow: false, columnCount: 4, numericColumns: [2, 3], validationMode: "other" }); };
-    window.section5SheetExtender = function () { configureSheet.call(this, { includeRowActions: true, deleteValue: "", clearEntireRow: true, columnCount: 6, numericColumns: [4, 5], validationMode: "consigned" }); };
+    window.filingSheetExtender = function () { configureSheet.call(this, { includeRowActions: true, deleteValue: "Delete Row", clearEntireRow: false, columnCount: 3, numericColumns: [1, 2], numericRanges: { 1: { min: 0, max: new Date().getFullYear() }, 2: { min: 0, max: 9999999999 } }, validationMode: "standard" }); };
+    window.otherFilingSheetExtender = function () { configureSheet.call(this, { includeRowActions: true, deleteValue: "Delete Row", clearEntireRow: false, columnCount: 4, numericColumns: [2, 3], numericRanges: { 2: { min: 0, max: new Date().getFullYear() }, 3: { min: 0, max: 9999999999 } }, validationMode: "other" }); };
+    window.section5SheetExtender = function () { configureSheet.call(this, { includeRowActions: true, deleteValue: "", clearEntireRow: true, columnCount: 6, numericColumns: [4, 5], numericRanges: { 4: { min: 0, max: 999 }, 5: { min: 0, max: 9999999999 } }, validationMode: "consigned" }); };
     window.sheetExtender = window.filingSheetExtender;
 }(window));
