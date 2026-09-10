@@ -1,90 +1,4 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<<<<<<< HEAD
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="jakarta.faces.core"
-	xmlns:ui="jakarta.faces.facelets"
-	xmlns:h="jakarta.faces.html"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:pe="http://primefaces.org/ui/extensions"
-	xmlns:o="http://opoppr.svlogic.com/ui"
-	xmlns:c="jakarta.tags.core">
-	<f:metadata>
-		<f:event type="preRenderView" listener="#{lat5Section2.initConversation}" />
-	</f:metadata>
-	<h:head>
-		<!-- Keep standard structure placeholder intact, but note that facelet engine ignores tags outside ui:composition -->
-		<title>Section 2 - Furniture and Fixtures</title>
-	</h:head>
-	<h:body>
-		<ui:composition template="/templates/masterTemplate.xhtml">
-			<ui:define name="contentHeading">LAT 5</ui:define>
-			<ui:define name="content">
-				<!-- <style type="text/css"> 
-					/* 1. ROW LEVEL ERROR: Whole row turns soft pink on navigation failure */ 
-					.opoppr-sheet tr.grid-error td { background-color: #fdf0ee !important; } 
-					
-					/* 2. CELL LEVEL ERROR: Focuses attention tightly on the specific empty fields with a thicker 3px box */ 
-					.opoppr-sheet td.cell-empty-error { background-color: #fce8e6 !important; border: 3px solid #d93025 !important; } 
-					
-					/* Native handsontable validation safety fallbacks */ 
-					.opoppr-sheet td.htInvalid { background-color: #fce8e6 !important; border: 3px solid #d93025 !important; } 
-				</style> -->
-				<ui:include src="/templates/sessionTemplate.xhtml" />
-				<div>
-					<div style="float: left;">
-						<h2>Section 2 - Furniture and Fixtures</h2>
-					</div>
-					<div style="float: right">
-						<a href="help.html" onclick="javascript:void window.open('help.html#Section2','1359749959948','width=600,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1');return false;">Help</a>
-					</div>
-				</div>
-				<h:form id="form" styleClass="saveForm" prependId="false" style="float: left; width: 100%">
-					<p:growl id="messages" showSummary="true" showDetail="true" sticky="true">
-						<p:autoUpdate />
-					</p:growl>
-					<o:disablePanel disabled="#{userSession.currentFormSubmitted}">
-						<pe:sheet id="filings" widgetVar="filingSheet" value="#{lat5Section2.filings}" var="f" rowKey="#{f.sheetRowKey}" height="425" fixedRows="1" showRowHeaders="true" 
-						          resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range" emptyMessage="#{userSession.emptyTableMessage}" 
-								  rowStyleClass="#{f.isValid('08') ? '' : 'grid-error'}" styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
-							
-							<!-- UPDATED: Re-renders the sheet layout instantly to adjust styling states as the user types and fixes fields -->
-							<p:ajax event="change" process="filings" update="filings summary" />
-							
-							<pe:sheetcolumn headerText="Property Type" value="#{f.propertyAssetDescription}" colType="dropdown" selectItems="#{lat5Section2.propertyAssetDescriptions}" colWidth="475" />
-							
-							<!-- FIXED UX EXPRESSION: Keeps cells clean initially. Highlights with a thick box ONLY after navigation fails AND the cell is blank. -->
-							<pe:sheetcolumn headerText="Year of Acquisition" value="#{f.noaPpLat5Filing.yracqd}" styleClass="#{!f.isValid('08') and (empty f.noaPpLat5Filing.yracqd or f.noaPpLat5Filing.yracqd eq 0) ? 'cell-empty-error' : ''}" colType="numeric" numericLocale="en-US" numericPattern="0" colWidth="150">
-								<f:convertNumber maxFractionDigits="0" groupingUsed="false" />
-								<f:validateLongRange minimum="#{msgs.minYearOfAcquisition}" maximum="#{currentYear}" />
-							</pe:sheetcolumn>
-							
-							<!-- FIXED UX EXPRESSION: Thick box drops to normal background color instantly when corrected, while the row stays pink if other errors remain. -->
-							<pe:sheetcolumn headerText="Acquisition Cost" value="#{f.noaPpLat5Filing.acquisitionCost}" styleClass="#{!f.isValid('08') and (empty f.noaPpLat5Filing.acquisitionCost or f.noaPpLat5Filing.acquisitionCost eq 0) ? 'cell-empty-error' : ''}" colType="numeric" numericLocale="en-US" numericPattern="$#,##0" colWidth="150">
-								<f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" groupingUsed="false" />
-								<f:validateLongRange minimum="0" maximum="9999999999" />
-							</pe:sheetcolumn>
-						</pe:sheet>
-					</o:disablePanel>
-					<p:panelGrid id="summary" layout="grid" columns="2" styleClass="summary">
-						<p:outputLabel>Grand Total</p:outputLabel>
-						<h:outputText value="#{lat5Section2.grandTotal}">
-							<f:convertNumber type="currency" maxFractionDigits="0" />
-						</h:outputText>
-					</p:panelGrid>
-					<div class="submit">
-						<p:commandButton action="#{lat5Section2.addNewRow}" value="Add New Row" update="filings" rendered="#{!userSession.currentFormSubmitted}" />
-						<p:button outcome="previous" rendered="#{userSession.currentFormSubmitted}" value="Previous" />
-						<p:commandButton action="#{lat5Section2.previous()}" rendered="#{!userSession.currentFormSubmitted}" value="Previous" styleClass="submitForm" ajax="false" />
-						<p:button outcome="next" value="Next" rendered="#{userSession.currentFormSubmitted}" />
-						<p:commandButton rendered="#{!userSession.currentFormSubmitted}" action="#{lat5Section2.next()}" value="Next" styleClass="submitForm" ajax="false" />
-					</div>
-				</h:form>
-			</ui:define>
-		</ui:composition>
-	</h:body>
-=======
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="jakarta.faces.core"
@@ -119,7 +33,7 @@
                         resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range" extender="filingSheetExtender"
                         emptyMessage="#{userSession.emptyTableMessage}" rowStyleClass="#{f.isValid('08') ? '' : 'error'}"
                         invalidCellStyleClass="lat5-required-cell" styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
-                        <p:ajax event="change" listener="#{lat5Section2.saveFilings}" update=":form:messages :form:summary" />
+                        <p:ajax event="change" listener="#{lat5Section2.saveFilings}" process="@this" update=":form:messages :form:summary" />
                         <pe:sheetcolumn headerText="Property Type" value="#{f.propertyAssetDescription}" colType="dropdown" selectItems="#{lat5Section2.propertyAssetDescriptions}" colWidth="475" />
                         <pe:sheetcolumn headerText="Year of Acquisition" value="#{f.noaPpLat5Filing.yracqd}" colType="numeric" numericLocale="en-US" numericPattern="0" colWidth="150">
                             <f:convertNumber maxFractionDigits="0" groupingUsed="false" />
@@ -140,6 +54,8 @@
                 </p:panelGrid>
                 <div class="submit">
                     <p:commandButton id="addRowButton" styleClass="sheet-add-row" action="#{lat5Section2.addNewRow}" value="Add New Row" update="filings" rendered="#{!userSession.currentFormSubmitted}" />
+                    <h:inputHidden id="insertRowIndex" styleClass="sheet-insert-row-index" value="#{lat5Section2.insertRowIndex}" />
+                    <p:commandButton id="insertRowButton" styleClass="sheet-insert-row-at" style="display:none" action="#{lat5Section2.addNewRowAt}" process="insertRowIndex" update="filings" rendered="#{!userSession.currentFormSubmitted}" />
                     <p:button outcome="previous" rendered="#{userSession.currentFormSubmitted}" value="Previous" />
                     <p:commandButton action="#{lat5Section2.previous()}" rendered="#{!userSession.currentFormSubmitted}"
                         value="Previous" styleClass="submitForm" ajax="false" />
@@ -152,5 +68,4 @@
     </ui:composition>
 </h:body>
 
->>>>>>> 8af8911a3e3abc61567b8985ca9d13072c1661e4
 </html>
