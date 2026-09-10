@@ -256,7 +256,7 @@
             registry[this.id] = { sheet: this, state: state, options: options };
             installNavigationHook();
             if (typeof originalAfterInit === "function") originalAfterInit.apply(this, arguments);
-            refreshRequiredState(this, state, options.validationMode);
+            refreshRequiredState(this, state, options.validationMode, options.numericRanges);
         };
         this.cfg.afterRenderer = function (TD, row, col) {
             if (typeof originalAfterRenderer === "function") originalAfterRenderer.apply(this, arguments);
