@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="jakarta.faces.facelets" xmlns:fn="jakarta.tags.functions"
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="jakarta.faces.facelets"
     xmlns:f="jakarta.faces.core" xmlns:h="jakarta.faces.html" xmlns:p="http://primefaces.org/ui"
     xmlns:pe="http://primefaces.org/ui/extensions" xmlns:o="http://opoppr.svlogic.com/ui" xmlns:c="jakarta.tags.core">
 <f:metadata>
@@ -14,25 +14,7 @@
     <ui:composition template="/templates/masterTemplate.xhtml">
         <ui:define name="contentHeading">LAT 5</ui:define>
         <ui:define name="content">
-<<<<<<< HEAD
-
-                    <!-- FIXED CSS LOCATION: Embedded style tags must live inside ui:define tags to append safely to the rendered view -->
-            <style type="text/css">
-                /* Targets any sheet column marked with our custom grid-error class */
-                .opoppr-sheet td.grid-error {
-                    background-color: #fce8e6 !important; /* Soft light-red */
-                    border-left: 3px solid #d93025 !important; /* Dark red left indicator border */
-                }
-                
-                /* Handles native handsontable validation failure styling seamlessly */
-                .opoppr-sheet td.htInvalid {
-                    background-color: #fce8e6 !important;
-                    border-left: 3px solid #d93025 !important;
-                }
-            </style>
-=======
             <h:outputScript name="lat5-sheet.js" library="js" />
->>>>>>> 8af8911a3e3abc61567b8985ca9d13072c1661e4
             <ui:include src="/templates/sessionTemplate.xhtml" />
             <div>
                 <div style="float: left;">
@@ -43,60 +25,33 @@
                 </div>
             </div>
             <h:form id="form" styleClass="saveForm" prependId="false" style="float: left; width: 100%">
-                <!-- Updated p:growl to use modern p:autoUpdate component instead of legacy attribute -->
-                <p:growl id="messages" showSummary="true" showDetail="true" sticky="true">
-                    <p:autoUpdate />
-                </p:growl>
-                
+                <p:growl id="messages" showSummary="true" showDetail="true" autoUpdate="true" sticky="true" />
                 <o:disablePanel disabled="#{userSession.currentFormSubmitted}">
                     <pe:sheet id="filings" widgetVar="filingSheet" value="#{lat5Section5.filings}" var="f"
                         rowKey="#{f.sheetRowKey}" height="425" fixedRows="1" showRowHeaders="true"
                         resizableCols="true" resizableRows="true" stretchH="all" selectionMode="range" extender="section5SheetExtender"
                         emptyMessage="#{userSession.emptyTableMessage}" rowStyleClass="#{f.isValid('99') ? '' : 'error'}"
-<<<<<<< HEAD
-                        styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
-                        
-                        <!-- Ajax update target simplified to reflect prependId="false" on the parent form -->
-                        <p:ajax event="change" update="messages" />
-                        
-                        <!-- Property Description -->
-                        <pe:sheetcolumn headerText="Property Description" value="#{f.noaPpLat5Filing.itemDescription}" colType="text" colWidth="165" 
-                                        styleClass="#{(!f.isValid('09') and (empty f.noaPpLat5Filing.itemDescription or fn:length(f.noaPpLat5Filing.itemDescription) le 10)) ? 'grid-error' : ''}">
-                            <f:validateLength minimum="11" maximum="255" />
-                        </pe:sheetcolumn>
-
-=======
                         invalidCellStyleClass="lat5-required-cell" styleClass="opoppr-sheet" readOnly="#{userSession.currentFormSubmitted}">
-                        <p:ajax event="change" listener="#{lat5Section5.saveFilings}" update=":form:messages" />
+                        <p:ajax event="change" listener="#{lat5Section5.saveFilings}" process="@this" update=":form:messages" />
                         <pe:sheetcolumn headerText="Property Description" value="#{f.noaPpLat5Filing.itemDescription}" colType="text" colWidth="165" />
->>>>>>> 8af8911a3e3abc61567b8985ca9d13072c1661e4
                         <pe:sheetcolumn headerText="Owner Name" value="#{f.noaPpLat5Filing.consignerOwnerName}" colType="text" colWidth="160" />
                         <pe:sheetcolumn headerText="Owner Address" value="#{f.noaPpLat5Filing.consignerMailingAddr}" colType="text" colWidth="225" />
                         <pe:sheetcolumn headerText="Owner Phone #" value="#{f.noaPpLat5Filing.consignerTelNo}" colType="text" colWidth="135" />
-                        
-                        <!-- Age of Property: Adds grid-error if it's less than 0, over 999, or empty -->
-                        <pe:sheetcolumn headerText="Age of Property" value="#{f.noaPpLat5Filing.effectiveLife}" colType="numeric" numericLocale="en-US" numericPattern="0" colWidth="110"
-                                        styleClass="#{(empty f.noaPpLat5Filing.effectiveLife or f.noaPpLat5Filing.effectiveLife lt 0 or f.noaPpLat5Filing.effectiveLife gt 999) ? 'grid-error' : ''}">
+                        <pe:sheetcolumn headerText="Age of Property" value="#{f.noaPpLat5Filing.effectiveLife}" colType="numeric" numericLocale="en-US" numericPattern="0" colWidth="110">
                             <f:convertNumber maxIntegerDigits="3" maxFractionDigits="0" />
                             <f:validateLongRange minimum="0" maximum="999" />
                         </pe:sheetcolumn>
-<<<<<<< HEAD
-                        
-                        <!-- Monthly Rental: Adds grid-error if it's less than 0, over 9999999999, or empty -->
-                        <pe:sheetcolumn headerText="Monthly Rental" value="#{f.noaPpLat5Filing.consignerRentalAmt}" colType="numeric" numericLocale="en-US" numericPattern="0" colWidth="145"
-                                        styleClass="#{(empty f.noaPpLat5Filing.consignerRentalAmt or f.noaPpLat5Filing.consignerRentalAmt lt 0 or f.noaPpLat5Filing.consignerRentalAmt gt 9999999999) ? 'grid-error' : ''}">
-=======
                         <pe:sheetcolumn headerText="Monthly Rental" value="#{f.noaPpLat5Filing.consignerRentalAmt}" colType="numeric" numericLocale="en-US" numericPattern="$#,##0" colWidth="145">
->>>>>>> 8af8911a3e3abc61567b8985ca9d13072c1661e4
                             <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10" groupingUsed="false" />
                             <f:validateLongRange minimum="0" maximum="9999999999" />
                         </pe:sheetcolumn>
 
                     </pe:sheet>
                 </o:disablePanel>
-                
                 <div class="submit">
                     <p:commandButton id="addRowButton" styleClass="sheet-add-row" action="#{lat5Section5.addNewRow}" value="Add New Row" update="filings" rendered="#{!userSession.currentFormSubmitted}" />
+                    <h:inputHidden id="insertRowIndex" styleClass="sheet-insert-row-index" value="#{lat5Section5.insertRowIndex}" />
+                    <p:commandButton id="insertRowButton" styleClass="sheet-insert-row-at" style="display:none" action="#{lat5Section5.addNewRowAt}" process="insertRowIndex" update="filings" rendered="#{!userSession.currentFormSubmitted}" />
                     <p:button outcome="previous" rendered="#{userSession.currentFormSubmitted}" value="Previous" />
                     <p:commandButton action="#{lat5Section5.previous()}" rendered="#{!userSession.currentFormSubmitted}"
                         value="Previous" ajax="false" styleClass="submitForm" />
@@ -105,8 +60,6 @@
                         value="Next" ajax="false" styleClass="submitForm" />
                 </div>
             </h:form>
-
-
         </ui:define>
     </ui:composition>
 </h:body>
