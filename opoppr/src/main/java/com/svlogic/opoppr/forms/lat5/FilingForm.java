@@ -20,6 +20,7 @@ abstract public class FilingForm extends EditableForm {
     private String category;
     private List<Filing> filings = new ArrayList<>();
     private List<PropertyAsset> propertyAssets;
+    private Integer insertRowIndex;
     
     // Tracks whether row errors should show on screen (keeps cells clean initially)
     private boolean showErrors = false;
@@ -32,6 +33,8 @@ abstract public class FilingForm extends EditableForm {
     }
 
     public boolean isShowErrors() { return showErrors; }
+    public Integer getInsertRowIndex() { return insertRowIndex; }
+    public void setInsertRowIndex(Integer insertRowIndex) { this.insertRowIndex = insertRowIndex; }
     public void setShowErrors(boolean showErrors) { this.showErrors = showErrors; }
     public List<Filing> getFilings() { return filings; }
     public void setFilings(List<Filing> filings) { this.filings = filings; }
@@ -73,13 +76,29 @@ abstract public class FilingForm extends EditableForm {
         this.showErrors = false;
     }
 
+    /** Adds a blank filing row at the end of the current sheet. */
     public String addNewRow() {
+        return addNewRowAtIndex(filings.size());
+    }
+
+    /**
+     * Adds a blank filing row at the requested visual position. The Sheet extender
+     * supplies this position through the hidden input used by its context menu.
+     */
+    public String addNewRowAt() {
+        int index = insertRowIndex == null ? filings.size() : insertRowIndex.intValue();
+        index = Math.max(0, Math.min(index, filings.size()));
+        insertRowIndex = null;
+        return addNewRowAtIndex(index);
+    }
+
+    private String addNewRowAtIndex(int index) {
         NoaPpLat5Filing f = new NoaPpLat5Filing();
         Filing filing = new Filing(propertyAssets);
         filing.setNoaPpLat5Filing(f);
-        filings.add(filing);
+        filings.add(index, filing);
         setDirty(true);
-        PrimeFaces.current().ajax().addCallbackParam("newRowIndex", filings.size() - 1);
+        PrimeFaces.current().ajax().addCallbackParam("newRowIndex", index);
         return null;
     }
 
@@ -95,14 +114,8 @@ abstract public class FilingForm extends EditableForm {
         if (!validateFilings()) {
             return null;
         }
-<<<<<<< HEAD
         this.showErrors = false;
-        getUserSession().storeFilings(getAddUpdateFilings());
-        getUserSession().deleteFilings(getDeleteFilings());
-        setDirty(false);
-=======
         saveFilings();
->>>>>>> 8af8911a3e3abc61567b8985ca9d13072c1661e4
         endConversation();
         return "next";
     }
@@ -111,14 +124,8 @@ abstract public class FilingForm extends EditableForm {
         if (!validateFilings()) {
             return null;
         }
-<<<<<<< HEAD
         this.showErrors = false;
-        getUserSession().storeFilings(getAddUpdateFilings());
-        getUserSession().deleteFilings(getDeleteFilings());
-        setDirty(false);
-=======
         saveFilings();
->>>>>>> 8af8911a3e3abc61567b8985ca9d13072c1661e4
         endConversation();
         return "previous";
     }
