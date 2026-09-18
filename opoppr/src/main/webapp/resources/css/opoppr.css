@@ -273,7 +273,7 @@ li.ui-selectonemenu-item
 }
 
 .opoppr-sheet .handsontable th {
-    background: #e2e8f0;
+    background: gold;
     color: #1e293b;
     font-weight: 700;
     border-color: #cbd5e1;
@@ -297,33 +297,3 @@ li.ui-selectonemenu-item
     background: #fee2e2;
     border-color: #ef4444;
 }
-
-
-/* Required-field feedback for LAT5 sheets. */
-.opoppr-sheet .handsontable tr.lat5-required-row td {
-    background-color: red !important;
-    border-color: red !important;
-    color: red !important;
-}
-
-.opoppr-sheet .handsontable td.lat5-required-cell {
-    background-color: red !important;
-    border-color: red !important;
-    color: red !important;
-}
-
-
-/* LAT5 Sheet validation and context-menu insertion. */
-.opoppr-sheet .handsontable tr.error td,
-.opoppr-sheet .handsontable tr.grid-error td,
-.opoppr-sheet .handsontable tr.lat5-required-row td {
-    background-color: red !important;
-    border-color: red !important;
-    color: red !important;
-}
-.opoppr-sheet .handsontable td.lat5-required-cell {
-    background-color: red !important;
-    border: 1px solid red !important;
-    color: red !important;
-}
-.sheet-insert-row-at { display: none !important; }
