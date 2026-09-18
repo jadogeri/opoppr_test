@@ -256,3 +256,77 @@ li.ui-selectonemenu-item
 {
     margin-bottom: 1rem;
 }
+
+/* Excel-like editing surface for LAT5 filing grids. */
+.opoppr-sheet {
+    width: 100%;
+    margin: 0.75rem 0 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.opoppr-sheet .handsontable {
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+}
+
+.opoppr-sheet .handsontable th {
+    background: #e2e8f0;
+    color: #1e293b;
+    font-weight: 700;
+    border-color: #cbd5e1;
+}
+
+.opoppr-sheet .handsontable td {
+    background: #fff;
+    border-color: #e2e8f0;
+    color: #1e293b;
+}
+
+.opoppr-sheet .handsontable .current {
+    background: #eff6ff;
+}
+
+.opoppr-sheet .handsontable .area {
+    background: rgba(59, 130, 246, 0.12);
+}
+
+.opoppr-sheet .handsontable .htInvalid {
+    background: #fee2e2;
+    border-color: #ef4444;
+}
+
+
+/* Required-field feedback for LAT5 sheets. */
+.opoppr-sheet .handsontable tr.lat5-required-row td {
+    background-color: red !important;
+    border-color: red !important;
+    color: red !important;
+}
+
+.opoppr-sheet .handsontable td.lat5-required-cell {
+    background-color: red !important;
+    border-color: red !important;
+    color: red !important;
+}
+
+
+/* LAT5 Sheet validation and context-menu insertion. */
+.opoppr-sheet .handsontable tr.error td,
+.opoppr-sheet .handsontable tr.grid-error td {
+    background-color: #fff1f2 !important;
+    color: #1e293b !important;
+}
+.opoppr-sheet .handsontable tr.lat5-required-row td {
+    background-color: #fff1f2 !important;
+    color: #1e293b !important;
+}
+.opoppr-sheet .handsontable td.lat5-required-cell {
+    background-color: #fecaca !important;
+    border: 1px solid #dc2626 !important;
+    color: #111827 !important;
+    box-shadow: inset 0 0 0 1px rgba(220, 38, 38, 0.18);
+}
+.sheet-insert-row-at { display: none !important; }
