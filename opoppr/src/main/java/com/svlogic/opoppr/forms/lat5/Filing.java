@@ -6,6 +6,7 @@ package com.svlogic.opoppr.forms.lat5;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.UUID;
 
 import com.svlogic.opoppr.model.NoaPpLat5Filing;
 import com.svlogic.opoppr.model.PropertyAsset;
@@ -19,6 +20,7 @@ public class Filing implements Serializable {
     private NoaPpLat5Filing noaPpLat5Filing;
     private Collection<PropertyAsset> propertyAssets;
     private boolean valid = true;
+    private final String sheetRowKey = UUID.randomUUID().toString();
 
     public Filing(Collection<PropertyAsset> propertyAssets) {
         this.propertyAssets = propertyAssets;
@@ -34,14 +36,15 @@ public class Filing implements Serializable {
     }
 
     public void setPptype(String pptype) {
-        this.pptype = pptype;
-        if (!pptype.isEmpty()) {
-            getNoaPpLat5Filing().setPropertyAsset(propertyAssets
-                    .stream()
-                    .filter(pa -> pa.getPptype().equals(pptype))
-                    .findFirst()
-                    .get());
+        this.pptype = pptype == null ? "" : pptype;
+        if (this.pptype.isEmpty()) {
+            getNoaPpLat5Filing().setPropertyAsset(null);
+            return;
         }
+        propertyAssets.stream()
+                .filter(pa -> pa.getPptype().equals(this.pptype))
+                .findFirst()
+                .ifPresent(pa -> getNoaPpLat5Filing().setPropertyAsset(pa));
     }
 
     public NoaPpLat5Filing getNoaPpLat5Filing() {
@@ -56,17 +59,30 @@ public class Filing implements Serializable {
     }
 
     public String getPropertyAssetDescription() {
-        String ret = "<not set>";
-        if (!pptype.isEmpty()) {
-            ret = propertyAssets
-                    .stream()
-                    .filter(pa -> pa.getPptype()
-                            .equals(pptype))
-                    .findFirst()
-                    .get()
-                    .getAssetDescription();
+        if (pptype.isEmpty() || propertyAssets == null) {
+            return "";
         }
-        return ret;
+        return propertyAssets.stream()
+                .filter(pa -> pa.getPptype().equals(pptype))
+                .map(PropertyAsset::getAssetDescription)
+                .findFirst()
+                .orElse("");
+    }
+
+    public void setPropertyAssetDescription(String description) {
+        if (description == null || description.isEmpty() || "Delete Row".equals(description)) {
+            setPptype("");
+            return;
+        }
+        propertyAssets.stream()
+                .filter(pa -> description.equals(pa.getAssetDescription()))
+                .map(PropertyAsset::getPptype)
+                .findFirst()
+                .ifPresent(this::setPptype);
+    }
+
+    public String getSheetRowKey() {
+        return sheetRowKey;
     }
 
     public boolean isValid(String category) {
@@ -88,18 +104,29 @@ public class Filing implements Serializable {
                 break;
 
             case "99":
-                this.valid = (getNoaPpLat5Filing().getItemDescription() == null
-                        || getNoaPpLat5Filing().getItemDescription().isEmpty())
-                        || ((getNoaPpLat5Filing().getConsignerOwnerName() != null
-                                && !getNoaPpLat5Filing().getConsignerOwnerName().isEmpty())
-                                && (getNoaPpLat5Filing().getConsignerMailingAddr() != null
-                                        && !getNoaPpLat5Filing().getConsignerMailingAddr().isEmpty())
-                                && (getNoaPpLat5Filing().getConsignerTelNo() != null
-                                        && !getNoaPpLat5Filing().getConsignerTelNo().isEmpty())
-                                && (getNoaPpLat5Filing().getEffectiveLife() != null
-                                        && getNoaPpLat5Filing().getEffectiveLife() >= 0)
-                                && (getNoaPpLat5Filing().getConsignerRentalAmt() != null
-                                        && getNoaPpLat5Filing().getConsignerRentalAmt() >= 0));
+                boolean hasItemDescription = getNoaPpLat5Filing().getItemDescription() != null
+                        && !getNoaPpLat5Filing().getItemDescription().trim().isEmpty();
+                boolean emptyConsignedRow = !hasItemDescription
+                        && (getNoaPpLat5Filing().getConsignerOwnerName() == null
+                                || getNoaPpLat5Filing().getConsignerOwnerName().trim().isEmpty())
+                        && (getNoaPpLat5Filing().getConsignerMailingAddr() == null
+                                || getNoaPpLat5Filing().getConsignerMailingAddr().trim().isEmpty())
+                        && (getNoaPpLat5Filing().getConsignerTelNo() == null
+                                || getNoaPpLat5Filing().getConsignerTelNo().trim().isEmpty())
+                        && getNoaPpLat5Filing().getEffectiveLife() == null
+                        && getNoaPpLat5Filing().getConsignerRentalAmt() == null;
+                this.valid = emptyConsignedRow
+                        || (hasItemDescription
+                                && getNoaPpLat5Filing().getConsignerOwnerName() != null
+                                && !getNoaPpLat5Filing().getConsignerOwnerName().trim().isEmpty()
+                                && getNoaPpLat5Filing().getConsignerMailingAddr() != null
+                                && !getNoaPpLat5Filing().getConsignerMailingAddr().trim().isEmpty()
+                                && getNoaPpLat5Filing().getConsignerTelNo() != null
+                                && !getNoaPpLat5Filing().getConsignerTelNo().trim().isEmpty()
+                                && getNoaPpLat5Filing().getEffectiveLife() != null
+                                && getNoaPpLat5Filing().getEffectiveLife() >= 0
+                                && getNoaPpLat5Filing().getConsignerRentalAmt() != null
+                                && getNoaPpLat5Filing().getConsignerRentalAmt() >= 0);
                 break;
         }
 
