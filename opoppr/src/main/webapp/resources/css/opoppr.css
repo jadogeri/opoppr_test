@@ -315,18 +315,15 @@ li.ui-selectonemenu-item
 
 /* LAT5 Sheet validation and context-menu insertion. */
 .opoppr-sheet .handsontable tr.error td,
-.opoppr-sheet .handsontable tr.grid-error td {
-    background-color: #fff1f2 !important;
-    color: #1e293b !important;
-}
+.opoppr-sheet .handsontable tr.grid-error td,
 .opoppr-sheet .handsontable tr.lat5-required-row td {
-    background-color: #fff1f2 !important;
-    color: #1e293b !important;
+    background-color: red !important;
+    border-color: red !important;
+    color: red !important;
 }
 .opoppr-sheet .handsontable td.lat5-required-cell {
-    background-color: #fecaca !important;
-    border: 1px solid #dc2626 !important;
-    color: #111827 !important;
-    box-shadow: inset 0 0 0 1px rgba(220, 38, 38, 0.18);
+    background-color: red !important;
+    border: 1px solid red !important;
+    color: red !important;
 }
 .sheet-insert-row-at { display: none !important; }
