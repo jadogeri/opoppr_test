@@ -28,7 +28,6 @@ abstract public class FilingForm extends EditableForm {
     private String category;
     private List<Filing> filings = new ArrayList<Filing>();
     private List<PropertyAsset> propertyAssets;
-    private 
 
     public FilingForm() {
     }

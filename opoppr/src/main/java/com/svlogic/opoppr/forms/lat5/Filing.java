@@ -70,6 +70,8 @@ public class Filing implements Serializable {
     }
 
     public void setPropertyAssetDescription(String description) {
+        // Reset validation state because the user is actively modifying this row
+        this.valid = true; 
         if (description == null || description.isEmpty() || "Delete Row".equals(description)) {
             setPptype("");
             return;
@@ -120,5 +122,13 @@ public class Filing implements Serializable {
         }
 
         return this.valid;
+    }
+
+    public boolean isValid() {
+        return this.valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 }
