@@ -1,0 +1,61 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-opoppr}
+      MYSQL_USER: ${MYSQL_USER:-opoppr}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-opoppr}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-admin}
+    ports:
+      - '3386:3306'
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./opoppr/database/initdb.d:/docker-entrypoint-initdb.d:ro
+    command: --lower-case-table-names=1 --local-infile
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-padmin']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  mailpit:
+    image: axllent/mailpit:v1.21
+    ports:
+      - '1025:1025'
+      - '8025:8025'
+
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: ${MYSQL_DATABASE:-opoppr}
+      DB_USERNAME: ${MYSQL_USER:-opoppr}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-opoppr}
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      JWT_SECRET: ${JWT_SECRET:-local-development-secret-change-me}
+    ports:
+      - '8081:8081'
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    depends_on:
+      - api
+    environment:
+      NEXT_PUBLIC_API_URL: http://api:8081
+    ports:
+      - '3000:3000'
+
+volumes:
+  mysql-data:

@@ -2,3 +2,21 @@ opoppr/target
 **/.directory
 **/*.zip
 **/*.bak
+
+# Turborepo / Node
+node_modules
+.turbo
+**/*.tsbuildinfo
+dist
+coverage
+apps/web/.next
+apps/web/out
+
+# Spring Boot / Java
+apps/api/target
+*.log
+
+# Local environment
+.env
+.env.*
+!.env.example

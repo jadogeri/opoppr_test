@@ -1,0 +1,38 @@
+{
+  "name": "@opoppr/web",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --port 3000",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run src/**/*.test.ts*",
+    "test:integration": "vitest run src/**/*.integration.test.ts*",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@handsontable/react": "^15.2.0",
+    "@opoppr/contracts": "workspace:*",
+    "@reduxjs/toolkit": "^2.9.0",
+    "axios": "^1.12.2",
+    "handsontable": "^15.2.0",
+    "next": "^15.5.4",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-redux": "^9.2.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^24.5.2",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "jsdom": "^26.0.0",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}

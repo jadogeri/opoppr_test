@@ -1,0 +1,48 @@
+server:
+  port: ${API_PORT:8081}
+  forward-headers-strategy: framework
+
+spring:
+  application:
+    name: opoppr-api
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3386}/${DB_NAME:opoppr}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${DB_USERNAME:opoppr}
+    password: ${DB_PASSWORD:opoppr}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+  thymeleaf:
+    check-template-location: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+opoppr:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
+  jwt:
+    secret: ${JWT_SECRET:local-development-secret-change-me}
+    ttl: ${JWT_TTL:PT8H}
+  mail:
+    from: ${MAIL_FROM:no-reply@opoppr.local}
